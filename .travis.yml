@@ -14,3 +14,5 @@ install:
     - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION
     - source activate test
 
+script:
+    - python setup.py install
