@@ -1,2 +1,2 @@
-# pyspace
-A toolbox for trajectory calculation and simulation
+# PySpace
+**A python-based toolbox for trajectory calculation and simulation**
