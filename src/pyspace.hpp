@@ -22,13 +22,10 @@ struct ThreeTuple
 typedef ThreeTuple Position;
 typedef ThreeTuple Velocity;
 
-class SimConfig
+struct SimConfig
 {
-	
-public:
 	double G;
-	double error_margin;
-
+	double step_size;
 	void write_to_file(std::string filename);
 };
 
@@ -62,15 +59,17 @@ class SimObject
 private:
 	//Data Structures
 	static int object_id;
-	
+	double mass;
+	double radius;
 	Position position;
 	Velocity velocity;
 public:
-	SimObject();
+	SimObject(double mass, double radius);
 	~SimObject();
 	
 	void set_position(Position);
 	void set_velocity(Velocity);
+ 
 	Velocity get_velocity();
 	Position get_position();
 };
