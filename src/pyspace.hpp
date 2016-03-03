@@ -1,4 +1,5 @@
 #include <vector>
+#include <string>
 
 class SimObject;
 class SimConfig;
@@ -23,10 +24,12 @@ typedef ThreeTuple Velocity;
 
 class SimConfig
 {
+	
 public:
 	double G;
 	double error_margin;
 
+	void write_to_file(std::string filename);
 };
 
 class Simulator
@@ -38,12 +41,14 @@ private:
 public:
 	Simulator();
 	Simulator(SimConfig);
+	Simulator(std::string filename);
 	~Simulator();
 	
 	int add_object(SimObject);
 	std::vector<SimObject> get_objects();
 	int delete_object(int);
-	
+
+	void write_to_file(std::string filename);
 	int get_status();
 	void start_simulation(double);
 	void abort();
@@ -66,7 +71,6 @@ public:
 	
 	void set_position(Position);
 	void set_velocity(Velocity);
-       	
 	Velocity get_velocity();
 	Position get_position();
 };
