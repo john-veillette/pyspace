@@ -42,7 +42,7 @@ public:
 	~Simulator();
 	
 	int add_object(SimObject);
-	std::vector<SimObject> get_objects();
+	std::vector<SimObject> &get_objects();
 	int delete_object(int);
 
 	void write_to_file(std::string filename);
