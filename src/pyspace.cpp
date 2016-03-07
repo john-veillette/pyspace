@@ -3,6 +3,23 @@
 #include <vector>
 #include <cmath>
 
+SimConfig::SimConfig(std::string filename)
+{
+    //Read config from file
+}
+
+SimConfig::SimConfig()
+{
+    //Dummy constructor to enable stack allocation with cython
+    this->G = 0;
+    this->step_size = 0;
+}
+
+void SimConfig::write_to_file(std::string filename)
+{
+    //Write this config to filename
+}
+
 SimObject::SimObject(double mass, double radius, cVector init_pos,
         cVector init_vel, int object_id)
 {
@@ -11,11 +28,6 @@ SimObject::SimObject(double mass, double radius, cVector init_pos,
     this->position = init_pos;
     this->velocity = init_vel;
     this->object_id = object_id;
-}
-
-SimObject::~SimObject()
-{
-    //Destructor
 }
 
 Engine::Engine(std::vector<SimObject> *obj_list, SimConfig* config)

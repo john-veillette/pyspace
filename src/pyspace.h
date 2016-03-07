@@ -7,14 +7,6 @@
 class SimObject;
 class SimConfig;
 
-/*
-  Status codes
-*/
-#define SIMULATION_RUNNING 1
-#define SIMULATION_COMPLETE 2
-#define SIMULATION_ERROR 3
-#define SIMULATION_NOT_STARTED 4
-
 class cVector
 {
 public:
@@ -110,7 +102,6 @@ public:
 
     SimObject(double mass, double radius, cVector init_pos,
             cVector init_vel, int object_id);
-    ~SimObject();
 };
 
 class Engine

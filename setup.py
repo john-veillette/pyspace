@@ -1,10 +1,9 @@
 from distutils.core import setup
 from setuptools import find_packages
 from distutils.extension import Extension
+from Cython.Build import cythonize
 
 requires = ["cython"]
-
-from Cython.Build import cythonize
 
 ext_modules = []
 
@@ -35,7 +34,9 @@ ext_modules += [
 ext_modules = cythonize(ext_modules)
 
 setup(
-        name="pyspace",
+        name="PySpace",
+        author="PySpace developers",
+        description="A toolbox for trajectoruy calculation and simulation",
         version="0.0.1",
         install_requires=requires,
         packages=find_packages(),
