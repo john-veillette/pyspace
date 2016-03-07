@@ -1,4 +1,5 @@
 # distutils: language = c++
+from libcpp.vector cimport vector
 from utils cimport Vector, SimObject
 
 cdef class PlanetArray:

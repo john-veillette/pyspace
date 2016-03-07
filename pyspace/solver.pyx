@@ -1,6 +1,7 @@
 # distutils: language = c++
 from libcpp.vector cimport vector
 from utils cimport cVector, SimObject, Engine, Config
+from planet cimport PlanetArray
 
 cdef class Solver:
     cdef Engine* _eng
