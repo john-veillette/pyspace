@@ -1,10 +1,6 @@
 # distutils: language = c++
-from libcpp.vector cimport vector
-from utils cimport Vector, SimObject
 
 cdef class PlanetArray:
-    cdef vector[SimObject] obj_list
-
     def __cinit__(self, int res_len):
         self.obj_list.reserve(res_len)
 

@@ -1,48 +1,7 @@
-#include "pyspace.hpp"
+#include "pyspace.h"
 #include <string>
 #include <vector>
 #include <cmath>
-
-Simulator::Simulator()
-{
-    //Constructor for Simulator
-}
-
-Simulator::Simulator(SimConfig config)
-{
-    this->config = config;
-}
-
-Simulator::Simulator(std::string filename)
-{
-    //Read from file
-}
-
-Simulator::~Simulator()
-{
-    //Destructor for Simulator
-}
-
-inline int Simulator::add_object(SimObject obj)
-{
-    this->obj_list.push_back(obj);
-    return 1;
-}
-
-inline std::vector<SimObject>& Simulator::get_objects()
-{
-    return this->obj_list;
-}
-
-int Simulator::delete_object(int obj_id)
-{
-    //delete object
-}
-
-void start_simulation(double tot_time)
-{
-    //do calculations and return result
-}
 
 SimObject::SimObject(double mass, double radius, cVector init_pos,
         cVector init_vel, int object_id)

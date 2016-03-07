@@ -1,3 +1,5 @@
+#ifndef PYSPACE_H
+#define PYSPACE_H
 #include <vector>
 #include <string>
 #include <cmath>
@@ -13,8 +15,9 @@ class SimConfig;
 #define SIMULATION_ERROR 3
 #define SIMULATION_NOT_STARTED 4
 
-struct cVector
+class cVector
 {
+public:
     double x, y, z;
 
     cVector()
@@ -79,8 +82,9 @@ struct cVector
 
 };
 
-struct SimConfig
+class SimConfig
 {
+public:
     double G;
     double step_size;
     
@@ -88,29 +92,6 @@ struct SimConfig
     SimConfig(double G, double step_size);
     SimConfig(std::string filename);
     void write_to_file(std::string filename);
-};
-
-class Simulator
-{
-private:
-    //Data Structures
-    std::vector<SimObject> obj_list;
-    SimConfig config;
-public:
-    Simulator();
-    Simulator(SimConfig);
-    Simulator(std::string filename);
-    ~Simulator();
-    
-    inline int add_object(SimObject);
-    inline std::vector<SimObject> &get_objects();
-    int delete_object(int);
-
-    void write_to_file(std::string filename);
-    int get_status();
-    void start_simulation(double);
-    void abort();
-
 };
 
 class SimObject
@@ -124,7 +105,9 @@ public:
     cVector position;
     cVector velocity;
     cVector acceleration;
-    
+   
+    SimObject();
+
     SimObject(double mass, double radius, cVector init_pos,
             cVector init_vel, int object_id);
     ~SimObject();
@@ -132,14 +115,11 @@ public:
 
 class Engine
 {
-private:
-    //Private members
+public:
     std::vector<SimObject> *obj_list;
     SimConfig* config;
-public:
     Engine(std::vector<SimObject> *obj_list, SimConfig* config);
     void update();
 };
 
-
-
+#endif
