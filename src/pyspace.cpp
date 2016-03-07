@@ -56,17 +56,27 @@ SimObject::~SimObject()
     //Destructor
 }
 
-int Engine::update()
+Engine::Engine(std::vector<SimObject> *obj_list, SimConfig* config)
 {
-    double dt = this->config.step_size;
-    double G = this->config.G;
-    int num_objs = this->obj_list.size();
+    this->config = config;
+    this->obj_list = obj_list;
+}
+
+void Engine::update()
+{
+    double dt = this->config->step_size;
+    double G = this->config->G;
+    
+    std::vector<SimObject> &obj_ref = *this->obj_list;
+    
+    int num_objs = obj_ref.size();
     Vector a_i, v_i, x_i, x_j, temp;
     double m_j;
     SimObject *obj, *obj_j;
+    
     for(int i=0; i<num_objs; i++)
     {
-        obj = &this->obj_list[i];
+        obj = &obj_ref[i];
         
         a_i = obj->acceleration;
         v_i = obj->velocity;
@@ -77,7 +87,7 @@ int Engine::update()
         {
             if(j==i)
                 continue;
-            obj_j = &this->obj_list[j];
+            obj_j = &obj_ref[j];
             
             x_j = obj_j->position;
             m_j = obj_j->mass;

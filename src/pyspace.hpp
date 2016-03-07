@@ -133,11 +133,11 @@ class Engine
 {
 private:
     //Private members
-    std::vector<SimObject> &obj_list;
-    SimConfig& config;
+    std::vector<SimObject> *obj_list;
+    SimConfig* config;
 public:
-    Engine(std::vector<SimObject> &obj_list, SimConfig &config);
-    int update();
+    Engine(std::vector<SimObject> *obj_list, SimConfig* config);
+    void update();
 };
 
 
