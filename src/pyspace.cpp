@@ -44,10 +44,13 @@ void start_simulation(double tot_time)
     //do calculations and return result
 }
 
-SimObject::SimObject(double mass, double radius, int object_id)
+SimObject::SimObject(double mass, double radius, cVector init_pos,
+        cVector init_vel, int object_id)
 {
     this->mass = mass;
     this->radius = radius;
+    this->position = init_pos;
+    this->velocity = init_vel;
     this->object_id = object_id;
 }
 
@@ -70,7 +73,7 @@ void Engine::update()
     std::vector<SimObject> &obj_ref = *this->obj_list;
     
     int num_objs = obj_ref.size();
-    Vector a_i, v_i, x_i, x_j, temp;
+    cVector a_i, v_i, x_i, x_j, temp;
     double m_j;
     SimObject *obj, *obj_j;
     

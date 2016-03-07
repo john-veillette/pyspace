@@ -13,59 +13,59 @@ class SimConfig;
 #define SIMULATION_ERROR 3
 #define SIMULATION_NOT_STARTED 4
 
-struct Vector
+struct cVector
 {
     double x, y, z;
 
-    Vector()
+    cVector()
     {
         this->x = 0;
         this->y = 0;
         this->z = 0;
     }
 
-    Vector(double x, double y, double z)
+    cVector(double x, double y, double z)
     {
         this->x = x;
         this->y = y;
         this->z = z;
     }
     
-    void operator=(const Vector& v)
+    void operator=(const cVector& v)
     {
         this->x = v.x;
         this->y = v.y;
         this->z = v.z;
     }
 
-    Vector operator+(const Vector& v)
+    cVector operator+(const cVector& v)
     {
-        Vector result;
+        cVector result;
         result.x = this->x + v.x;
         result.y = this->y + v.y;
         result.z = this->z + v.z;
         return result;
     }
 
-    Vector operator-(const Vector& v)
+    cVector operator-(const cVector& v)
     {
-        Vector result;
+        cVector result;
         result.x = this->x - v.x;
         result.y = this->y - v.y;
         result.z = this->z - v.z;
         return result;
     }
 
-    Vector operator*(const double& scalar)
+    cVector operator*(const double& scalar)
     {
-        Vector result;
+        cVector result;
         result.x = this->x*scalar;
         result.y = this->y*scalar;
         result.z = this->z*scalar;
         return result;
     }
 
-    void operator+=(const Vector& v)
+    void operator+=(const cVector& v)
     {
         this->x += v.x;
         this->y += v.y;
@@ -121,11 +121,12 @@ public:
     //Data Structures
     double mass;
     double radius;
-    Vector position;
-    Vector velocity;
-    Vector acceleration;
+    cVector position;
+    cVector velocity;
+    cVector acceleration;
     
-    SimObject(double mass, double radius, int object_id);
+    SimObject(double mass, double radius, cVector init_pos,
+            cVector init_vel, int object_id);
     ~SimObject();
 };
 
