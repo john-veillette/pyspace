@@ -10,7 +10,7 @@ ext_modules = []
 ext_modules += [
         Extension(
             "pyspace.utils",
-            ["pyspace/utils.pyx"],
+            ["pyspace/utils.pyx", "src/pyspace.cpp"],
             include_dirs = ["src"]
             )
         ]
@@ -18,7 +18,7 @@ ext_modules += [
 ext_modules += [
         Extension(
             "pyspace.planet",
-            ["pyspace/planet.pyx"],
+            ["pyspace/planet.pyx", "src/pyspace.cpp"],
             include_dirs = ["src"]
             )
         ]
@@ -26,7 +26,7 @@ ext_modules += [
 ext_modules += [
         Extension(
             "pyspace.simulator",
-            ["pyspace/simulator.pyx"],
+            ["pyspace/simulator.pyx", "src/pyspace.cpp"],
             include_dirs = ["src"]
             )
         ]

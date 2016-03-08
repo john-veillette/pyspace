@@ -15,6 +15,12 @@ SimConfig::SimConfig()
     this->step_size = 0;
 }
 
+SimConfig::SimConfig(double G, double step_size)
+{
+    this->G = G;
+    this->step_size = step_size;
+}
+
 void SimConfig::write_to_file(std::string filename)
 {
     //Write this config to filename
@@ -28,6 +34,14 @@ SimObject::SimObject(double mass, double radius, cVector init_pos,
     this->position = init_pos;
     this->velocity = init_vel;
     this->object_id = object_id;
+}
+
+SimObject::SimObject()
+{
+    //Dummy constructor to enable stack allocation with cython
+    this->mass = 0;
+    this->radius = 0;
+    this->object_id = 0;
 }
 
 Engine::Engine(std::vector<SimObject> *obj_list, SimConfig* config)

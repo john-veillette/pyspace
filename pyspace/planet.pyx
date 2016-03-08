@@ -1,7 +1,7 @@
 # distutils: language = c++
 
 cdef class PlanetArray:
-    def __cinit__(self, int res_len):
+    def __cinit__(self, int res_len=0):
         self.obj_list.reserve(res_len)
 
     cdef inline void _add_planet(self, double mass, double radius, Vector init_pos,
@@ -14,6 +14,4 @@ cdef class PlanetArray:
             Vector init_vel, int planet_id):
         self._add_planet(mass, radius, init_pos, init_vel, planet_id)
 
-    def __dealloc__(self):
-        del self.obj
 
