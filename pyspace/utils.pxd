@@ -16,9 +16,11 @@ cdef extern from "pyspace.h":
 
     cdef cppclass SimObject:
         double mass, radius
-        cVector position, velocity, acceleration
+        cVector* position
+        cVector* velocity
+        cVector* acceleration
         SimObject() nogil except +
-        SimObject(double, double, cVector, cVector, int) nogil except +
+        SimObject(double, double, cVector*, cVector*, int) nogil except +
 
     cdef cppclass Engine:
         vector[SimObject] *obj_list

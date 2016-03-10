@@ -26,8 +26,8 @@ void SimConfig::write_to_file(std::string filename)
     //Write this config to filename
 }
 
-SimObject::SimObject(double mass, double radius, cVector init_pos,
-        cVector init_vel, int object_id)
+SimObject::SimObject(double mass, double radius, cVector *init_pos,
+        cVector *init_vel, int object_id)
 {
     this->mass = mass;
     this->radius = radius;
@@ -66,9 +66,9 @@ void Engine::update()
     {
         obj = &obj_ref[i];
         
-        a_i = obj->acceleration;
-        v_i = obj->velocity;
-        x_i = obj->position;
+        a_i = *obj->acceleration;
+        v_i = *obj->velocity;
+        x_i = *obj->position;
 
         //Update acceleration of obj
         for(int j=0; j<num_objs; j++)
@@ -77,18 +77,18 @@ void Engine::update()
                 continue;
             obj_j = &obj_ref[j];
             
-            x_j = obj_j->position;
+            x_j = *obj_j->position;
             m_j = obj_j->mass;
            
             //Can be optimized
             temp += (x_i - x_j)*(G*m_j/pow(x_j.magnitude(),3));
         }
 
-        obj->acceleration = temp;
+        *obj->acceleration = temp;
                 
         //Using leapfrog integrator for updating r and v
-        obj->velocity = v_i + (a_i + obj->acceleration)*0.5*dt;
-        obj->position = x_i + v_i*dt + a_i*0.5*dt;
+        *obj->velocity = v_i + (a_i + *obj->acceleration)*0.5*dt;
+        *obj->position = x_i + v_i*dt + a_i*0.5*dt;
     }
 }
 

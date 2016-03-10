@@ -94,14 +94,14 @@ public:
     //Data Structures
     double mass;
     double radius;
-    cVector position;
-    cVector velocity;
-    cVector acceleration;
+    cVector* position;
+    cVector* velocity;
+    cVector* acceleration;
    
     SimObject();
 
-    SimObject(double mass, double radius, cVector init_pos,
-            cVector init_vel, int object_id);
+    SimObject(double mass, double radius, cVector* init_pos,
+            cVector* init_vel, int object_id);
 };
 
 class Engine
