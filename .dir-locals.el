@@ -1,0 +1,8 @@
+((c-mode . ((indent-tabs-mode . nil)
+	    (c-basic-offset . 4)
+	    (tab-width . 4)
+	    (eval . (smart-tabs-mode 0))))
+ (c++-mode . ((indent-tabs-mode . nil)
+              (tab-width . 4)
+	      (c-basic-offset . 4)
+	      (eval . (smart-tabs-mode 0)))))
