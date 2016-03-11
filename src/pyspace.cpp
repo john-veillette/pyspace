@@ -55,21 +55,21 @@ void Engine::update()
     double dt = this->config->step_size;
     double G = this->config->G;
     
-    std::vector<SimObject> &obj_ref = *this->obj_list;
+    std::vector<SimObject> &obj_ref = *(this->obj_list);
     
     int num_objs = obj_ref.size();
-    cVector a_i, v_i, x_i, x_j, temp;
-    double m_j;
+    cVector a_i, v_i, x_i, x_j, temp, r_ij;
+    double m_j, temp_magnitude;
     SimObject *obj, *obj_j;
-    
+
     for(int i=0; i<num_objs; i++)
     {
         obj = &obj_ref[i];
         
-        a_i = *obj->acceleration;
-        v_i = *obj->velocity;
-        x_i = *obj->position;
-
+        a_i = *(obj->acceleration);
+        v_i = *(obj->velocity);
+        x_i = *(obj->position);
+        
         //Update acceleration of obj
         for(int j=0; j<num_objs; j++)
         {
@@ -77,18 +77,20 @@ void Engine::update()
                 continue;
             obj_j = &obj_ref[j];
             
-            x_j = *obj_j->position;
+            x_j = *(obj_j->position);
             m_j = obj_j->mass;
            
             //Can be optimized
-            temp += (x_i - x_j)*(G*m_j/pow(x_j.magnitude(),3));
+            r_ij = (x_i - x_j);
+            temp_magnitude = r_ij.magnitude();
+            temp += r_ij*(G*m_j/(temp_magnitude*temp_magnitude*temp_magnitude));
         }
 
-        *obj->acceleration = temp;
+        *(obj->acceleration) = temp;
                 
         //Using leapfrog integrator for updating r and v
-        *obj->velocity = v_i + (a_i + *obj->acceleration)*0.5*dt;
-        *obj->position = x_i + v_i*dt + a_i*0.5*dt;
+        *(obj->velocity) = v_i + (a_i + *(obj->acceleration))*0.5*dt;
+        *(obj->position) = x_i + v_i*dt + a_i*0.5*dt*dt;
     }
 }
 
