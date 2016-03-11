@@ -20,7 +20,7 @@ cdef class Simulator:
         """Calculates position and velocity of all particles
         after time 'total_time'
         """
-        self._start_simulation(total_time)
+        self._get_final_state(total_time)
 
     def __dealloc__(self):
         del self._eng
