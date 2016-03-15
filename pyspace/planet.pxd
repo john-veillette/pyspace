@@ -1,13 +1,13 @@
 # distutils: language = c++
-from libcpp.vector cimport vector
-from libcpp.string cimport string
-from utils cimport Vector, SimObject
+import numpy as np
+cimport numpy as np
+
+ctypedef np.double_t DOUBLE
 
 cdef class PlanetArray:
-    cdef vector[SimObject] obj_list
+    cdef np.ndarray[DOUBLE, ndim=1, mode="c"] x, y, z
+    cdef np.ndarray[DOUBLE, ndim=1, mode="c"] v_x, v_y, v_z
+    cdef np.ndarray[DOUBLE, ndim=1, mode="c"] a_x, a_y, a_z
 
-    cdef inline void _add_planet(self, double, double, Vector,
-            Vector, int) nogil
+    cpdef int get_number_of_planets(self)
 
-    cpdef add_planet(self, double, double, Vector,
-            Vector, int)

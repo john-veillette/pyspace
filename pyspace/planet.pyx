@@ -1,25 +1,40 @@
 # distutils: language = c++
 
 cdef class PlanetArray:
-    def __cinit__(self, int res_len=0):
-        self.obj_list.reserve(res_len)
+    def __init__(self,  x, np.ndarray y, np.ndarray z,
+            np.ndarray v_x = None, np.ndarray v_y = None,  np.ndarray v_z = None,
+            np.ndarray m = None):
+        cdef int num_planets = self.get_number_of_planets()
+        self.x = np.ascontiguousarray(x, dtype = np.double)
+        self.y = np.ascontiguousarray(y, dtype = np.double)
+        self.z = np.ascontiguousarray(z, dtype = np.double)
 
-    cdef inline void _add_planet(self, double mass, double radius, Vector init_pos,
-            Vector init_vel, int planet_id) nogil:
-        cdef SimObject new_planet = SimObject(mass, radius, &init_pos.v,
-                &init_vel.v, planet_id)
-        self.obj_list.push_back(new_planet)
 
-    cpdef add_planet(self, double mass, double radius, Vector init_pos,
-            Vector init_vel, int planet_id):
-        """Adds a planet to PlanetArray
+        if v_x is None:
+            self.v_x = np.zeros(num_planets, dtype = np.double, order = "c")
+        else:
+            self.v_x = np.ascontiguousarray(v_x, dtype = np.double)
 
-        Note
-        ----
-        **WARNING**
-        The Vector's init_pos and init_vel are being passed around as references.
-        As a consequence, if the Vector's passed to this function go out of scope,
-        the simulation will return garbage values.
-        """
-        self._add_planet(mass, radius, init_pos, init_vel, planet_id)
+        if v_y is None:
+            self.v_y = np.zeros(num_planets, dtype = np.double, order = "c")
+        else:
+            self.v_x = np.ascontiguousarray(v_x, dtype = np.double)
+
+        if v_z is None:
+            self.v_z = np.zeros(num_planets, dtype = np.double, order = "c")
+        else:
+            self.v_x = np.ascontiguousarray(v_x, dtype = np.double)
+
+        if m is None:
+            self.m = np.ones(num_planets, dtype = np.double, order = "c")
+        else:
+            self.m = np.ascontiguousarray(m, dtype = np.double)
+
+        self.a_x = np.zeros(num_planets, dtype = np.double, order = "c")
+        self.a_y = np.zeros(num_planets, dtype = np.double, order = "c")
+        self.a_z = np.zeros(num_planets, dtype = np.double, order = "c")
+
+    cpdef int get_number_of_planets(self):
+        return self.x.size
+
 
