@@ -10,7 +10,7 @@ before_install:
 install:
     - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION
     - source activate test
-    - conda install --yes cython nose
+    - conda install --yes cython nose numpy
 
 script:
     - python setup.py install
