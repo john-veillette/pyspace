@@ -3,6 +3,7 @@
 #include <omp.h>
 
 #define MAGNITUDE(x, y, z) sqrt(x*x + y*y + z*z)
+
 void brute_force_update(double* x, double* y, double* z, 
         double* v_x, double* v_y, double* v_z,
         double* a_x, double* a_y, double* a_z,
@@ -17,7 +18,10 @@ void brute_force_update(double* x, double* y, double* z,
     double temp_a_x = 0, temp_a_y = 0, temp_a_z = 0;
     double dist_ij, cnst;
     double m_j;
-    
+
+    double v_cnst = 0.5*dt;
+    double a_cnst = 0.5*dt*dt;
+
     for(int i=0; i<num_planets; i++)
     {
         a_x_i = a_x[i];

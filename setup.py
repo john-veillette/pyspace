@@ -29,7 +29,7 @@ ext_modules = cythonize(ext_modules)
 setup(
         name="PySpace",
         author="PySpace developers",
-        description="A toolbox for trajectory calculation and simulation",
+        description="A toolbox for galactic simulations.",
         version="0.0.1",
         install_requires=requires,
         packages=find_packages(),
