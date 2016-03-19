@@ -1,0 +1,10 @@
+ToDo list for PySpace
+
+- Implement serial version of Barnes Hut algorithm
+
+- Write a script to dump vtk output
+
+- Write tests for Simulator
+
+- Implement algorithms in CUDA
+
