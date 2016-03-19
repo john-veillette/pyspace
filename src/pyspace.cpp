@@ -19,9 +19,6 @@ void brute_force_update(double* x, double* y, double* z,
     double dist_ij, cnst;
     double m_j;
 
-    double v_cnst = 0.5*dt;
-    double a_cnst = 0.5*dt*dt;
-
     for(int i=0; i<num_planets; i++)
     {
         a_x_i = a_x[i];
