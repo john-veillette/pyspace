@@ -11,20 +11,19 @@ cdef class Simulator:
     @cython.cdivision(True)
     cdef void _get_final_state(self, double total_time) nogil:
 
-        cdef double* x_ptr = <double*> self.pa.x.data
-        cdef double* y_ptr = <double*> self.pa.y.data
-        cdef double* z_ptr = <double*> self.pa.z.data
+        cdef double* x_ptr = <double*> self.planets.x.data
+        cdef double* y_ptr = <double*> self.planets.y.data
+        cdef double* z_ptr = <double*> self.planets.z.data
 
-        cdef double* v_x_ptr = <double*> self.pa.v_x.data
-        cdef double* v_y_ptr = <double*> self.pa.v_y.data
-        cdef double* v_z_ptr = <double*> self.pa.v_z.data
+        cdef double* v_x_ptr = <double*> self.planets.v_x.data
+        cdef double* v_y_ptr = <double*> self.planets.v_y.data
+        cdef double* v_z_ptr = <double*> self.planets.v_z.data
 
-        cdef double* a_x_ptr = <double*> self.pa.a_x.data
-        cdef double* a_y_ptr = <double*> self.pa.a_y.data
-        cdef double* a_z_ptr = <double*> self.pa.a_z.data
+        cdef double* a_x_ptr = <double*> self.planets.a_x.data
+        cdef double* a_y_ptr = <double*> self.planets.a_y.data
+        cdef double* a_z_ptr = <double*> self.planets.a_z.data
 
-        cdef double* m_ptr = <double*> self.pa.m.data
-
+        cdef double* m_ptr = <double*> self.planets.m.data
 
         cdef double G = self.G
         cdef double dt = self.dt

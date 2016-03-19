@@ -1,3 +1,4 @@
+import numpy
 from distutils.core import setup
 from setuptools import find_packages
 from distutils.extension import Extension
@@ -9,17 +10,9 @@ ext_modules = []
 
 ext_modules += [
         Extension(
-            "pyspace.utils",
-            ["pyspace/utils.pyx", "src/pyspace.cpp"],
-            include_dirs = ["src"]
-            )
-        ]
-
-ext_modules += [
-        Extension(
             "pyspace.planet",
-            ["pyspace/planet.pyx", "src/pyspace.cpp"],
-            include_dirs = ["src"]
+            ["pyspace/planet.pyx"],
+            include_dirs = [numpy.get_include()],
             )
         ]
 
@@ -27,7 +20,7 @@ ext_modules += [
         Extension(
             "pyspace.simulator",
             ["pyspace/simulator.pyx", "src/pyspace.cpp"],
-            include_dirs = ["src"]
+            include_dirs = ["src", numpy.get_include()],
             )
         ]
 
