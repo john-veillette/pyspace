@@ -23,6 +23,20 @@ cdef class Simulator:
     cdef double dt
     cdef int num_planets
 
+    cdef double* x_ptr
+    cdef double* y_ptr
+    cdef double* z_ptr
+
+    cdef double* v_x_ptr
+    cdef double* v_y_ptr
+    cdef double* v_z_ptr
+
+    cdef double* a_x_ptr
+    cdef double* a_y_ptr
+    cdef double* a_z_ptr
+
+    cdef double* m_ptr
+
     cdef void _get_final_state(self, double) nogil
     cpdef get_final_state(self, double)
 
