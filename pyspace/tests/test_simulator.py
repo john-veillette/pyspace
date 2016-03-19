@@ -1,9 +1,9 @@
-from pyspace.simulator import Simulator
+from pyspace.simulator import BruteForceSimulator
 from pyspace.planet import PlanetArray
 import numpy
 import unittest
 
-class TestSimulator(unittest.TestCase):
+class TestBruteForceSimulator(unittest.TestCase):
     def setUp(self):
         x, y, z = numpy.mgrid[0:1:0.04, 0:1:0.04, 0:1:0.04]
         self.x = x.ravel(); self.y = y.ravel(); self.z = z.ravel()
@@ -12,12 +12,12 @@ class TestSimulator(unittest.TestCase):
 
     def test_simulator_init(self):
         try:
-            sim = Simulator(self.pa, 100, 1)
+            sim = BruteForceSimulator(self.pa, 100, 1)
         except:
             self.fail("Simulator initialization failed!")
 
     def test_get_final_state(self):
-        sim = Simulator(self.pa, 100, 1)
+        sim = BruteForceSimulator(self.pa, 100, 1)
 
         try:
             sim.get_final_state(1)

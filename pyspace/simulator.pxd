@@ -13,8 +13,10 @@ cdef extern from "numpy/arrayobject.h":
         cdef int flags
 
 cdef extern from "pyspace.h":
-    cdef void update(double*, double*, double*, double*, double*, double*,
-            double*, double*, double*, double*, double, double, int) nogil
+    cdef void brute_force_update(double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*, double, double, int) nogil
 
 cdef class Simulator:
     cdef PlanetArray planets
@@ -36,6 +38,10 @@ cdef class Simulator:
     cdef double* a_z_ptr
 
     cdef double* m_ptr
+
+    cpdef get_final_state(self, double)
+
+cdef class BruteForceSimulator(Simulator):
 
     cdef void _get_final_state(self, double) nogil
     cpdef get_final_state(self, double)

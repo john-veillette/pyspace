@@ -2,7 +2,7 @@
 cimport cython
 
 cdef class Simulator:
-    def __cinit__(self, PlanetArray pa, double G, double dt):
+    def __init__(self, PlanetArray pa, double G, double dt):
         self.planets = pa
         self.G = G
         self.dt = dt
@@ -23,6 +23,15 @@ cdef class Simulator:
 
         self.num_planets = pa.get_number_of_planets()
 
+    cpdef get_final_state(self, double total_time):
+        """Implement this in derived classes to get final state"""
+        raise NotImplementedError("Simulator::get_final_state called")
+
+cdef class BruteForceSimulator(Simulator):
+
+    def __cinit__(self, PlanetArray pa, double G, double dt):
+        Simulator.__init__(self, pa, G, dt)
+
     @cython.cdivision(True)
     cdef void _get_final_state(self, double total_time) nogil:
 
@@ -33,7 +42,7 @@ cdef class Simulator:
         cdef int i
 
         for i from 0<=i<n_steps:
-            update( self.x_ptr, self.y_ptr, self.z_ptr,
+            brute_force_update( self.x_ptr, self.y_ptr, self.z_ptr,
                     self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
                     self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
                     self.m_ptr, G, dt, self.num_planets)
@@ -43,4 +52,5 @@ cdef class Simulator:
         after time 'total_time'
         """
         self._get_final_state(total_time)
+
 
