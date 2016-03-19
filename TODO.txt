@@ -1,5 +1,7 @@
 ToDo list for PySpace
 
+- Write docs and set up sphinx. Also set up readthedocs
+
 - Implement serial version of Barnes Hut algorithm
 
 - Write a script to dump vtk output
