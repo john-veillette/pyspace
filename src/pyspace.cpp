@@ -18,10 +18,6 @@ void brute_force_update(double* x, double* y, double* z,
     double dist_ij, cnst;
     double m_j;
     
-    #pragma omp parallel for shared(x, y, z, v_x, v_y, v_z, a_x, a_y, a_z, m, G, dt) \
-    private(a_x_i, a_y_i, a_z_i, v_x_i, v_y_i, v_z_i, r_x_i, r_y_i, r_z_i, r_x_j, \
-            r_y_j, r_z_j, x_ij, y_ij, z_ij, temp_a_x, temp_a_y, temp_a_z, dist_ij, \
-            cnst, m_j)
     for(int i=0; i<num_planets; i++)
     {
         a_x_i = a_x[i];
