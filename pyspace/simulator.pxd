@@ -19,20 +19,6 @@ cdef extern from "pyspace.h":
 cdef class Simulator:
     cdef PlanetArray planets
 
-    cdef double* x
-    cdef double* y
-    cdef double* z
-
-    cdef double* v_x
-    cdef double* v_y
-    cdef double* v_z
-
-    cdef double* a_x
-    cdef double* a_y
-    cdef double* a_z
-
-    cdef double* m
-
     cdef double G
     cdef double dt
     cdef int num_planets

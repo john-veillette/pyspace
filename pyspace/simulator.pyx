@@ -32,10 +32,10 @@ cdef class Simulator:
         cdef int i
 
         for i from 0<=i<n_steps:
-            update(self.x, self.y, self.z,
-                    self.v_x, self.v_y, self.v_z,
-                    self.a_x, self.a_y, self.a_z,
-                    self.m, G, dt, self.num_planets)
+            update( x_ptr, y_ptr, z_ptr,
+                    v_x_ptr, v_y_ptr, v_z_ptr,
+                    a_x_ptr, a_y_ptr, a_z_ptr,
+                    m_ptr, G, dt, self.num_planets)
 
     cpdef get_final_state(self, double total_time):
         """Calculates position and velocity of all particles
