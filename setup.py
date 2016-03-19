@@ -12,7 +12,7 @@ ext_modules += [
         Extension(
             "pyspace.planet",
             ["pyspace/planet.pyx"],
-            include_dirs = [numpy.get_include()],
+            include_dirs = [numpy.get_include()]
             )
         ]
 
@@ -21,6 +21,8 @@ ext_modules += [
             "pyspace.simulator",
             ["pyspace/simulator.pyx", "src/pyspace.cpp"],
             include_dirs = ["src", numpy.get_include()],
+            extra_compile_args = ['-fopenmp'],
+            extra_link_args = ['-fopenmp']
             )
         ]
 

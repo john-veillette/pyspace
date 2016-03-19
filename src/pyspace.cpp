@@ -1,8 +1,8 @@
 #include "pyspace.h"
 #include <cmath>
+#include <omp.h>
 
 #define MAGNITUDE(x, y, z) sqrt(x*x + y*y + z*z)
-
 void brute_force_update(double* x, double* y, double* z, 
         double* v_x, double* v_y, double* v_z,
         double* a_x, double* a_y, double* a_z,
@@ -17,7 +17,11 @@ void brute_force_update(double* x, double* y, double* z,
     double temp_a_x = 0, temp_a_y = 0, temp_a_z = 0;
     double dist_ij, cnst;
     double m_j;
-
+    
+    #pragma omp parallel for shared(x, y, z, v_x, v_y, v_z, a_x, a_y, a_z, m, G, dt) \
+    private(a_x_i, a_y_i, a_z_i, v_x_i, v_y_i, v_z_i, r_x_i, r_y_i, r_z_i, r_x_j, \
+            r_y_j, r_z_j, x_ij, y_ij, z_ij, temp_a_x, temp_a_y, temp_a_z, dist_ij, \
+            cnst, m_j)
     for(int i=0; i<num_planets; i++)
     {
         a_x_i = a_x[i];
@@ -32,7 +36,7 @@ void brute_force_update(double* x, double* y, double* z,
         r_y_i = y[i];
         r_z_i = z[i];
 
-        for(int j=0; j<num_planets; j++)
+       for(int j=0; j<num_planets; j++)
         {
             if(j == i)
                 continue;
