@@ -2,6 +2,13 @@
 **A python-based toolbox for trajectory calculation and simulation** <br><br>
 [![Build Status](https://travis-ci.com/adityapb/pyspace.svg?token=cRaLayDadtZBxrGbfQPp&branch=master)](https://travis-ci.com/adityapb/pyspace) <br>
 
+##Features
+* A python interface for high performance C++ implementation of N-body simulation algorithms.
+* PySpace has a numpy friendly API which makes it easier to use.
+
+##Algorithms
+* Brute Force *O(n<sup>2</sup>)*
+
 ##Installation
 ###Linux and OSX
 Clone this repository by `git clone https://github.com/adityapb/pyspace.git` <br>
