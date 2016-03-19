@@ -28,8 +28,28 @@ cdef class Simulator:
         raise NotImplementedError("Simulator::get_final_state called")
 
 cdef class BruteForceSimulator(Simulator):
-
+    """Simulator using Brute Force algorithm"""
     def __cinit__(self, PlanetArray pa, double G, double dt):
+        """Constructor for BruteForceSimulator
+
+        Parameters
+        ----------
+
+        pa: PlanetArray
+            Planet array for simulation
+
+        G: double
+            Universal Gravitational constant
+
+        dt: double
+            Time step for simulation
+
+        Notes
+        -----
+
+        Uses brute force for simulation
+
+        """
         Simulator.__init__(self, pa, G, dt)
 
     @cython.cdivision(True)
@@ -50,6 +70,13 @@ cdef class BruteForceSimulator(Simulator):
     cpdef get_final_state(self, double total_time):
         """Calculates position and velocity of all particles
         after time 'total_time'
+
+        Parameters
+        ----------
+
+        total_time: double
+            Total time for simulation
+
         """
         self._get_final_state(total_time)
 

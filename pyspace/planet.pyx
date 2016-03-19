@@ -6,6 +6,37 @@ cdef class PlanetArray:
     def __cinit__(self, ndarray x, ndarray y, ndarray z,
             ndarray v_x = None, ndarray v_y = None,  ndarray v_z = None,
             ndarray m = None):
+        """Constructor for PlanetArray
+
+        Parameters
+        ----------
+
+        x: np.ndarray
+            'x' coordinates of planets
+
+        y: np.ndarray
+            'y' coordinates of planets
+
+        z: np.ndarray
+            'z' coordinates of planets
+
+        v_x: np.ndarray
+            'x' components of initial velocity
+            Default value: 0
+
+        v_y: np.ndarray
+            'y' components of initial velocity
+            Default value: 0
+
+        v_z: np.ndarray
+            'z' components of initial velocity
+            Default value: 0
+
+        m: np.ndarray
+            Mass of planets
+            Default value: 1
+
+        """
         self.x = x
         self.y = y
         self.z = z
@@ -37,5 +68,6 @@ cdef class PlanetArray:
         self.a_z = np.zeros(num_planets)
 
     cpdef int get_number_of_planets(self):
+        """Returns number of planets in the PlanetArray"""
         return self.x.size
 
