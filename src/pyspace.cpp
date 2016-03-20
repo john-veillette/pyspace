@@ -1,5 +1,6 @@
 #include "pyspace.h"
 #include <cmath>
+#include <iostream>
 #include <omp.h>
 
 #define MAGNITUDE(x, y, z) sqrt(x*x + y*y + z*z)
@@ -65,14 +66,14 @@ void brute_force_update(double* x, double* y, double* z,
         temp_a_y = 0;
         temp_a_z = 0;
 
+        x[i] += v_x_i*dt + a_x_i*0.5*dt*dt;
+        y[i] += v_y_i*dt + a_y_i*0.5*dt*dt;
+        z[i] += v_z_i*dt + a_z_i*0.5*dt*dt;
+
         v_x[i] += (a_x_i + a_x[i])*0.5*dt;
         v_y[i] += (a_y_i + a_y[i])*0.5*dt;
         v_z[i] += (a_z_i + a_z[i])*0.5*dt;
 
-        x[i] += v_x_i*dt + a_x_i*0.5*dt*dt;
-        y[i] += v_y_i*dt + a_y_i*0.5*dt*dt;
-        z[i] += v_z_i*dt + a_z_i*0.5*dt*dt;
     }
 }
-
 

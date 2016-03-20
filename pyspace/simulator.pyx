@@ -62,7 +62,7 @@ cdef class BruteForceSimulator(Simulator):
         cdef int i
 
         for i from 0<=i<n_steps:
-            brute_force_update( self.x_ptr, self.y_ptr, self.z_ptr,
+            brute_force_update(self.x_ptr, self.y_ptr, self.z_ptr,
                     self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
                     self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
                     self.m_ptr, G, dt, self.num_planets)
