@@ -4,7 +4,7 @@ import os
 from pyspace.utils import dump_vtk
 
 cdef class Simulator:
-    def __init__(self, PlanetArray pa, double G, double dt, str sim_name = ""):
+    def __init__(self, PlanetArray pa, double G, double dt, str sim_name = "pyspace"):
         self.planets = pa
         self.G = G
         self.dt = dt

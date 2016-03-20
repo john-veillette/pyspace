@@ -8,7 +8,7 @@ x = x.ravel(); y = y.ravel(); z = z.ravel()
 
 pa = PlanetArray(x, y, z)
 
-sim = BruteForceSimulator(pa, 1, 1, "two_planets")
+sim = BruteForceSimulator(pa, 1, 1, "square_grid")
 
 sim.simulate(1000, dump_output = True)
 
