@@ -15,7 +15,7 @@ void brute_force_update(double* x, double* y, double* z,
     double v_x_i, v_y_i, v_z_i;
     double r_x_i, r_y_i, r_z_i;
     double r_x_j, r_y_j, r_z_j;
-    double x_ij, y_ij, z_ij;
+    double x_ji, y_ji, z_ji;
     double temp_a_x = 0, temp_a_y = 0, temp_a_z = 0;
     double dist_ij, cnst;
     double m_j;
@@ -56,17 +56,17 @@ void brute_force_update(double* x, double* y, double* z,
 
             m_j = m[j];
 
-            x_ij = r_x_i - r_x_j;
-            y_ij = r_y_i - r_y_j;
-            z_ij = r_z_i - r_z_j;
+            x_ji = r_x_j - r_x_i;
+            y_ji = r_y_j - r_y_i;
+            z_ji = r_z_j - r_z_i;
 
-            dist_ij = MAGNITUDE(x_ij, y_ij, z_ij);
+            dist_ij = MAGNITUDE(x_ji, y_ji, z_ji);
 
             cnst = (G*m_j/dist_ij*dist_ij*dist_ij);
 
-            temp_a_x += x_ij*cnst;
-            temp_a_y += y_ij*cnst;
-            temp_a_z += z_ij*cnst;
+            temp_a_x += x_ji*cnst;
+            temp_a_y += y_ji*cnst;
+            temp_a_z += z_ji*cnst;
         }
 
         a_x[i] = temp_a_x;
