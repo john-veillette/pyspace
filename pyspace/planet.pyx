@@ -1,6 +1,7 @@
 # distutils: language = c++
 import numpy as np
 cimport numpy as np
+from libc.math cimport sqrt
 
 cdef class PlanetArray:
     def __cinit__(self, ndarray x, ndarray y, ndarray z,
@@ -70,4 +71,9 @@ cdef class PlanetArray:
     cpdef int get_number_of_planets(self):
         """Returns number of planets in the PlanetArray"""
         return self.x.size
+
+    cpdef double dist(self, int i, int j):
+        """Distance between planet 'i' and planet 'j'"""
+        return sqrt((self.x[i] - self.x[j])**2 + (self.y[i] - self.y[j])**2 + \
+                (self.z[i] - self.z[j])**2)
 

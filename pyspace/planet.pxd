@@ -24,4 +24,5 @@ cdef class PlanetArray:
     cdef public ndarray m
 
     cpdef int get_number_of_planets(self)
+    cpdef double dist(self, int i, int j)
 
