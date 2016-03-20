@@ -47,22 +47,22 @@ cdef class PlanetArray:
         if v_x is None:
             self.v_x = np.zeros(num_planets)
         else:
-            self.v_x = v_x
+            self.v_x = v_x.astype(np.float64)
 
         if v_y is None:
             self.v_y = np.zeros(num_planets)
         else:
-            self.v_y = v_y
+            self.v_y = v_y.astype(np.float64)
 
         if v_z is None:
             self.v_z = np.zeros(num_planets)
         else:
-            self.v_y = v_y
+            self.v_y = v_y.astype(np.float64)
 
         if m is None:
             self.m = np.ones(num_planets)
         else:
-            self.m = m
+            self.m = m.astype(np.float64)
 
         self.a_x = np.zeros(num_planets)
         self.a_y = np.zeros(num_planets)
