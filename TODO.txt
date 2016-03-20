@@ -4,7 +4,7 @@ ToDo list for PySpace
 
 - Implement serial version of Barnes Hut algorithm
 
-- Write a script to dump vtk output
+- Write a script to dump vtk output ... DONE
 
 - Write tests for Simulator
 
