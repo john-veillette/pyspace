@@ -39,10 +39,10 @@ cdef class Simulator:
 
     cdef double* m_ptr
 
-    cpdef get_final_state(self, double)
+    cpdef get_state(self, double)
 
 cdef class BruteForceSimulator(Simulator):
 
-    cdef void _get_final_state(self, double) nogil
-    cpdef get_final_state(self, double)
+    cdef void _get_state(self, double) nogil
+    cpdef get_state(self, double)
 

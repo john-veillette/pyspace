@@ -23,9 +23,9 @@ cdef class Simulator:
 
         self.num_planets = pa.get_number_of_planets()
 
-    cpdef get_final_state(self, double total_time):
+    cpdef get_state(self, double total_time):
         """Implement this in derived classes to get final state"""
-        raise NotImplementedError("Simulator::get_final_state called")
+        raise NotImplementedError("Simulator::get_state called")
 
 cdef class BruteForceSimulator(Simulator):
     """Simulator using Brute Force algorithm"""
@@ -53,7 +53,7 @@ cdef class BruteForceSimulator(Simulator):
         Simulator.__init__(self, pa, G, dt)
 
     @cython.cdivision(True)
-    cdef void _get_final_state(self, double total_time) nogil:
+    cdef void _get_state(self, double total_time) nogil:
 
         cdef double G = self.G
         cdef double dt = self.dt
@@ -67,7 +67,7 @@ cdef class BruteForceSimulator(Simulator):
                     self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
                     self.m_ptr, G, dt, self.num_planets)
 
-    cpdef get_final_state(self, double total_time):
+    cpdef get_state(self, double total_time):
         """Calculates position and velocity of all particles
         after time 'total_time'
 
@@ -78,6 +78,6 @@ cdef class BruteForceSimulator(Simulator):
             Total time for simulation
 
         """
-        self._get_final_state(total_time)
+        self._get_state(total_time)
 
 
