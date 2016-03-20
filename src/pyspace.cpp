@@ -62,7 +62,7 @@ void brute_force_update(double* x, double* y, double* z,
 
             dist_ij = MAGNITUDE(x_ji, y_ji, z_ji);
 
-            cnst = (G*m_j/dist_ij*dist_ij*dist_ij);
+            cnst = (G*m_j/(dist_ij*dist_ij*dist_ij));
 
             temp_a_x += x_ji*cnst;
             temp_a_y += y_ji*cnst;
