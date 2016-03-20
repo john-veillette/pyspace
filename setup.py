@@ -21,6 +21,8 @@ ext_modules += [
             "pyspace.simulator",
             ["pyspace/simulator.pyx", "src/pyspace.cpp"],
             include_dirs = ["src", numpy.get_include()],
+            extra_compile_args = ['-fopenmp'],
+            extra_link_args = ['-fopenmp']
             )
         ]
 

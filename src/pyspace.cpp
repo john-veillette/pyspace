@@ -5,7 +5,7 @@
 
 #define MAGNITUDE(x, y, z) sqrt(x*x + y*y + z*z)
 
-void brute_force_update(double* x, double* y, double* z, 
+void brute_force_update(double* x, double* y, double* z,
         double* v_x, double* v_y, double* v_z,
         double* a_x, double* a_y, double* a_z,
         double* m, double G, double dt, int num_planets)
@@ -23,7 +23,8 @@ void brute_force_update(double* x, double* y, double* z,
     double* x_old = new double[num_planets];
     double* y_old = new double[num_planets];
     double* z_old = new double[num_planets];
-    
+
+    #pragma omp parallel for shared(x_old, y_old, z_old, x, y, z)
     for(int i=0; i<num_planets; i++)
     {
         x_old[i] = x[i];
@@ -31,6 +32,11 @@ void brute_force_update(double* x, double* y, double* z,
         z_old[i] = z[i];
     }
 
+    #pragma omp parallel for shared(x, y, z, x_old, y_old, z_old, v_x, v_y, v_z, \
+            a_x, a_y, a_z, m, G, dt) \
+    private(a_x_i, a_y_i, a_z_i, v_x_i, v_y_i, v_z_i, r_x_i, r_y_i, r_z_i, r_x_j, \
+      r_y_j, r_z_j, x_ji, y_ji, z_ji, temp_a_x, temp_a_y, temp_a_z, dist_ij, \
+      cnst, m_j)
     for(int i=0; i<num_planets; i++)
     {
         a_x_i = a_x[i];
@@ -49,7 +55,7 @@ void brute_force_update(double* x, double* y, double* z,
         {
             if(j == i)
                 continue;
-            
+
             r_x_j = x_old[j];
             r_y_j = y_old[j];
             r_z_j = z_old[j];
@@ -91,4 +97,3 @@ void brute_force_update(double* x, double* y, double* z,
     delete[] y_old;
     delete[] z_old;
 }
-
