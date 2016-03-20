@@ -16,13 +16,13 @@ class TestBruteForceSimulator(unittest.TestCase):
         except:
             self.fail("Simulator initialization failed!")
 
-    def test_get_state(self):
+    def test_simulate(self):
         sim = BruteForceSimulator(self.pa, 100, 1)
 
         try:
-            sim.get_state(1)
+            sim.simulate(1)
         except:
-            self.fail("get_state() failed!")
+            self.fail("simulate() failed!")
 
 if __name__ == "__main__":
     unittest.main()
