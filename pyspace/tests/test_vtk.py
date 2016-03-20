@@ -1,4 +1,4 @@
-from pyspace.vtk import dump_vtk
+from pyspace.utils import dump_vtk
 import numpy
 from pyspace.planet import PlanetArray
 
