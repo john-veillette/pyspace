@@ -38,9 +38,9 @@ cdef class PlanetArray:
             Default value: 1
 
         """
-        self.x = x
-        self.y = y
-        self.z = z
+        self.x = x.astype(np.float64)
+        self.y = y.astype(np.float64)
+        self.z = z.astype(np.float64)
 
         cdef int num_planets = self.get_number_of_planets()
 
