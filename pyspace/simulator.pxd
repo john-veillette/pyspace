@@ -23,6 +23,7 @@ cdef class Simulator:
 
     cdef double G
     cdef double dt
+    cdef str sim_name
     cdef int num_planets
 
     cdef double* x_ptr
@@ -39,10 +40,10 @@ cdef class Simulator:
 
     cdef double* m_ptr
 
-    cpdef get_state(self, double)
+    cpdef simulate(self, double total_time, bint dump_output = *)
 
 cdef class BruteForceSimulator(Simulator):
 
-    cdef void _get_state(self, double) nogil
-    cpdef get_state(self, double)
+    cdef void _simulate(self, double total_time, bint dump_output = *)
+    cpdef simulate(self, double total_time, bint dump_output = *)
 
