@@ -20,6 +20,17 @@ void brute_force_update(double* x, double* y, double* z,
     double dist_ij, cnst;
     double m_j;
 
+    double* x_old = new double[num_planets];
+    double* y_old = new double[num_planets];
+    double* z_old = new double[num_planets];
+    
+    for(int i=0; i<num_planets; i++)
+    {
+        x_old[i] = x[i];
+        y_old[i] = y[i];
+        z_old[i] = z[i];
+    }
+
     for(int i=0; i<num_planets; i++)
     {
         a_x_i = a_x[i];
@@ -34,14 +45,14 @@ void brute_force_update(double* x, double* y, double* z,
         r_y_i = y[i];
         r_z_i = z[i];
 
-       for(int j=0; j<num_planets; j++)
+        for(int j=0; j<num_planets; j++)
         {
             if(j == i)
                 continue;
             
-            r_x_j = x[j];
-            r_y_j = y[j];
-            r_z_j = z[j];
+            r_x_j = x_old[j];
+            r_y_j = y_old[j];
+            r_z_j = z_old[j];
 
             m_j = m[j];
 
@@ -75,5 +86,9 @@ void brute_force_update(double* x, double* y, double* z,
         v_z[i] += (a_z_i + a_z[i])*0.5*dt;
 
     }
+
+    delete[] x_old;
+    delete[] y_old;
+    delete[] z_old;
 }
 
