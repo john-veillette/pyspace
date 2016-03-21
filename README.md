@@ -5,6 +5,7 @@
 ##Features
 * A python interface for high performance C++ implementation of N-body simulation algorithms.
 * PySpace has a numpy friendly API which makes it easier to use.
+* Parallel support using OpenMP.
 * Dumps vtk output which allows users to take advantage of tools like ParaView, MayaVi, etc. for visualization.
 
 ##Algorithms
