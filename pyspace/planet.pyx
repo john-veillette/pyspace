@@ -5,13 +5,13 @@ cimport cython
 from libc.math cimport sqrt
 
 cdef class PlanetArray:
-    def __cinit__(self, ndarray x, ndarray y, ndarray z,
+    """PlanetArray for storing planets"""
+    def __init__(self, ndarray x, ndarray y, ndarray z,
             ndarray v_x = None, ndarray v_y = None,  ndarray v_z = None,
             ndarray m = None):
         """Constructor for PlanetArray
 
-        Parameters
-        ----------
+        Parameters:
 
         x: np.ndarray
             'x' coordinates of planets
@@ -84,17 +84,44 @@ cdef class PlanetArray:
         self.m_ptr = <double*> self.m.data
 
     cpdef int get_number_of_planets(self):
-        """Returns number of planets in the PlanetArray"""
+        """Returns number of planets in the PlanetArray
+
+        Parameters:
+
+        None
+
+        Returns:
+
+        int: Number of planets in PlanetArray
+
+        """
         return self.x.size
 
     cpdef double dist(self, int i, int j):
-        """Distance between planet 'i' and planet 'j'"""
+        """Distance between planet 'i' and planet 'j'
+
+        Parameters:
+
+        i, j: int
+            Indices of planets whose distance is sought.
+
+        """
         return sqrt((self.x_ptr[i] - self.x_ptr[j])**2 + (self.y_ptr[i] - self.y_ptr[j])**2 + \
                 (self.z_ptr[i] - self.z_ptr[j])**2)
 
     @cython.cdivision(True)
     cpdef double potential_energy_planet(self, double G, int i):
-        """Returns potential energy of planet 'i'"""
+        """Returns potential energy of planet 'i'
+
+        Parameters:
+
+        G: double
+            Universal Gravitational constant
+
+        i: int
+            Index of the particle whose potential energy is sought
+
+        """
         cdef double pot_energy = 0
         cdef int num_planets = self.get_number_of_planets()
         cdef int j

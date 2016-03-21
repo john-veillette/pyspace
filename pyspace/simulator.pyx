@@ -18,11 +18,10 @@ cdef class Simulator:
 
 cdef class BruteForceSimulator(Simulator):
     """Simulator using Brute Force algorithm"""
-    def __cinit__(self, PlanetArray pa, double G, double dt, str sim_name = ""):
+    def __init__(self, PlanetArray pa, double G, double dt, str sim_name = ""):
         """Constructor for BruteForceSimulator
 
-        Parameters
-        ----------
+        Parameters:
 
         pa: PlanetArray
             Planet array for simulation
@@ -33,8 +32,7 @@ cdef class BruteForceSimulator(Simulator):
         dt: double
             Time step for simulation
 
-        Notes
-        -----
+        Notes:
 
         Uses brute force for simulation
 
@@ -62,8 +60,7 @@ cdef class BruteForceSimulator(Simulator):
         """Calculates position and velocity of all particles
         after time 'total_time'
 
-        Parameters
-        ----------
+        Parameters:
 
         total_time: double
             Total time for simulation
