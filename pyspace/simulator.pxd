@@ -26,20 +26,6 @@ cdef class Simulator:
     cdef str sim_name
     cdef int num_planets
 
-    cdef double* x_ptr
-    cdef double* y_ptr
-    cdef double* z_ptr
-
-    cdef double* v_x_ptr
-    cdef double* v_y_ptr
-    cdef double* v_z_ptr
-
-    cdef double* a_x_ptr
-    cdef double* a_y_ptr
-    cdef double* a_z_ptr
-
-    cdef double* m_ptr
-
     cpdef simulate(self, double total_time, bint dump_output = *)
 
 cdef class BruteForceSimulator(Simulator):
