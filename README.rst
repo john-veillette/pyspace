@@ -3,7 +3,7 @@ PySpace
 
 | **A python-based toolbox for galactic simulations**
 |
-| |Build Status|
+|Build Status| |Docs Status|
 
 Documentation
 -------------
@@ -50,5 +50,9 @@ Use PEP 8 coding standard for python and follow
 `this <https://users.ece.cmu.edu/~eno/coding/CppCodingStandard.html>`__
 for C++.
 
-.. |Build Status| image:: https://travis-ci.com/adityapb/pyspace.svg?token=cRaLayDadtZBxrGbfQPp&branch=master
-   :target: https://travis-ci.com/adityapb/pyspace
+.. |Build Status| image:: https://travis-ci.org/adityapb/pyspace.svg?branch=master
+    :target: https://travis-ci.org/adityapb/pyspace
+   
+.. |Docs Status| image:: https://readthedocs.org/projects/pyspace/badge/?version=latest
+   :target: http://pyspace.readthedocs.org/?badge=latest
+   :alt: Documentation Status
