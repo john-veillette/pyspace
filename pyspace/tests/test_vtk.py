@@ -9,4 +9,3 @@ def test_vtk_dump():
     pa = PlanetArray(x=x, y=y, z=z, v_x=v_x)
     dump_vtk(pa, "points")
 
-
