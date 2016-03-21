@@ -11,10 +11,7 @@ install:
     - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION
     - source activate test
     - conda install --yes cython nose numpy
-    - hg clone https://bitbucket.org/pauloh/pyevtk
-    - cd pyevtk
-    - python setup.py install
-    - cd -
+    - pip install pyevtk
 
 script:
     - python setup.py install
