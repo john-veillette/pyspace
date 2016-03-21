@@ -3,7 +3,7 @@ PySpace
 
 | **A python-based toolbox for galactic simulations**
 |
-| |Build Status|
+|Build Status| |Docs Status|
 
 Documentation
 -------------
@@ -52,3 +52,7 @@ for C++.
 
 .. |Build Status| image:: https://travis-ci.com/adityapb/pyspace.svg?token=cRaLayDadtZBxrGbfQPp&branch=master
    :target: https://travis-ci.com/adityapb/pyspace
+   
+.. |Docs Status| image:: https://readthedocs.org/projects/pyspace/badge/?version=latest
+:target: http://pyspace.readthedocs.org/?badge=latest
+:alt: Documentation Status
