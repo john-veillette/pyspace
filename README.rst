@@ -18,7 +18,7 @@ Features
 Algorithms
 ----------
 
--  Brute Force O(n\ :sup:`2`\)
+-  Brute Force :math:`O(n^2)`
 
 Installation
 ------------
