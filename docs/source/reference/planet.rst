@@ -1,6 +1,6 @@
-==================
-Module PlanetArray
-==================
+=============
+Module planet
+=============
 
 .. automodule:: pyspace.planet
     :members:

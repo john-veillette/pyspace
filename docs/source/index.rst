@@ -23,6 +23,14 @@ Installation and getting started
     :maxdepth: 2
  
     installation.rst
+
+*********
+Tutorials
+*********
+
+.. toctree::
+    :maxdepth: 2
+ 
     tutorial/brute_force.rst
 
 *************************

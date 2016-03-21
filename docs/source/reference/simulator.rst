@@ -1,5 +1,5 @@
 ================
-Module Simulator
+Module simulator
 ================
 
 .. automodule:: pyspace.simulator
