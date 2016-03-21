@@ -32,6 +32,7 @@ setup(
         name="PySpace",
         author="PySpace developers",
         description="A toolbox for galactic simulations.",
+        long_description = open('README.rst').read(),
         version="0.0.1",
         install_requires=requires,
         packages=find_packages(),
