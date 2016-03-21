@@ -1,6 +1,6 @@
 #!usr/bin/env python
 from pyspace.planet import PlanetArray
-from evtk.hl import pointsToVTK
+from pyevtk.hl import pointsToVTK
 
 def dump_vtk(pa, filename, base = ".", **data):
     """Dumps vtk output to file 'base/filename'"""
