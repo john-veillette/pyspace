@@ -18,7 +18,7 @@ Features
 Algorithms
 ----------
 
--  Brute Force *O(n2)*
+-  Brute Force O(n\ :sup:`2`\)
 
 Installation
 ------------
