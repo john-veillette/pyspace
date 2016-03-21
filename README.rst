@@ -3,7 +3,7 @@ PySpace
 
 | **A python-based toolbox for galactic simulations**
 |
-|Build Status| |Docs Status|
+| |Build Status| |Docs Status|
 
 Documentation
 -------------
@@ -32,7 +32,7 @@ Dependencies
 ~~~~~~~~~~~~
 
 -  Numpy
--  PyEVTK (Install `here <https://pypi.python.org/pypi/PyEVTK>`__)
+-  PyEVTK (``pip install pyevtk``)
 
 Linux and OSX
 ~~~~~~~~~~~~~
