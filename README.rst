@@ -5,6 +5,11 @@ PySpace
 |
 | |Build Status|
 
+Documentation
+-------------
+
+The documentation for this project can be found at `http://pyspace.readthedocs.org/ <http://pyspace.readthedocs.org/>`_.
+
 Features
 --------
 
