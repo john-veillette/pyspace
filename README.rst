@@ -64,5 +64,5 @@ for C++.
     :target: https://travis-ci.org/adityapb/pyspace
    
 .. |Docs Status| image:: https://readthedocs.org/projects/pyspace/badge/?version=stable
-:target: http://pyspace.readthedocs.org/en/stable/?badge=stable
-:alt: Documentation Status
+   :target: http://pyspace.readthedocs.org/en/stable/?badge=stable
+   :alt: Documentation Status
