@@ -63,6 +63,6 @@ for C++.
 .. |Build Status| image:: https://travis-ci.org/adityapb/pyspace.svg?branch=master
     :target: https://travis-ci.org/adityapb/pyspace
    
-.. |Docs Status| image:: https://readthedocs.org/projects/pyspace/badge/?version=latest
-   :target: http://pyspace.readthedocs.org/?badge=latest
-   :alt: Documentation Status
+.. |Docs Status| image:: https://readthedocs.org/projects/pyspace/badge/?version=stable
+:target: http://pyspace.readthedocs.org/en/stable/?badge=stable
+:alt: Documentation Status
