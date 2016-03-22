@@ -6,6 +6,13 @@
 Welcome to PySpace's documentation!
 ===================================
 
+PySpace is an open-source framework for galactic simulations.
+It is implemented in Cython and the computational part is implemented in pure C++.
+
+PySpace provides parallel support through OpenMP and we plan on providing GPU support
+in future releases.
+
+
 ********
 Overview
 ********
@@ -24,15 +31,6 @@ Installation and getting started
  
     installation.rst
 
-*********
-Tutorials
-*********
-
-.. toctree::
-    :maxdepth: 2
- 
-    tutorial/brute_force.rst
-
 *************************
 The framework and library
 *************************
@@ -41,6 +39,15 @@ The framework and library
     :maxdepth: 2
  
     design/framework.rst
+
+*********
+Tutorials
+*********
+
+.. toctree::
+    :maxdepth: 2
+ 
+    tutorial/brute_force.rst
 
 ***********************
 Reference Documentation

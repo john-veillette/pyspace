@@ -6,8 +6,9 @@ Installation
 Dependencies
 ------------
 
--  Numpy
--  PyEVTK (Install `here <https://pypi.python.org/pypi/PyEVTK>`__)
+- Numpy
+- PyEVTK (``pip install pyevtk``)
+- ParaView / MayaVi or any other vtk rendering tool
 
 -------------
 Linux and OSX
