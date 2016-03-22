@@ -41,7 +41,7 @@ Numerical Integration
 Understanding the framework
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-We will be using ``pyspace.planet.PlanetArray`` for storing planets.
+PySpace uses ``pyspace.planet.PlanetArray`` for storing planets.
 
 ``pyspace.planet.PlanetArray`` stores numpy arrays for :math:`x, y, z, v_x, v_y, v_z, a_x, a_y,\
 a_z, m` and also stores a raw pointer to each numpy array.
@@ -88,6 +88,7 @@ PySpace dumps a vtk output of the simulations. These can then be visualized usin
 Paraview, MayaVi, etc.
 
 The vtk dump is controlled by the ``dump_output`` flag in ``Simulator::simulate``.
-The vtk dump by default only dumps ``v_x`` ie. x component of velocity.
-For dumping custom data, use ``dump_vtk`` function in ``pyspace.utils`` module.
+The vtk dump by default only dumps :math:`v_x, v_y, v_z` ie. velocities
+of the planets.
+For dumping custom data, use ``set_data`` in ``pyspace.simulator.Simulator``.
 
