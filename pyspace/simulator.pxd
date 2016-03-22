@@ -26,7 +26,11 @@ cdef class Simulator:
     cdef str sim_name
     cdef int num_planets
 
+    cdef bint _custom_data
+    cdef dict _data
+
     cpdef simulate(self, double total_time, bint dump_output = *)
+    cdef dict get_data(self)
 
 cdef class BruteForceSimulator(Simulator):
 

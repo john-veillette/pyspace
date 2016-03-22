@@ -9,12 +9,34 @@ cdef class Simulator:
         self.G = G
         self.dt = dt
         self.sim_name = sim_name
+        self._custom_data = False
 
         self.num_planets = pa.get_number_of_planets()
 
     cpdef simulate(self, double total_time, bint dump_output = False):
         """Implement this in derived classes to get final state"""
         raise NotImplementedError("Simulator::simulate called")
+
+    def set_data(self, **kwargs):
+        """Sets what data has to be dumped to the vtk output
+
+        Parameters:
+
+        **kwargs: {property name = attribute name}
+
+        """
+        self._custom_data = True
+        self._data = kwargs
+
+    cdef dict get_data(self):
+        """Gets data for vtk dumps"""
+        cdef dict data = {}
+        if not self._custom_data:
+            return data
+        cdef str property_name, attribute_name
+        for property_name, attribute_name in self._data.iteritems():
+            data[property_name] = getattr(self.planets, attribute_name)
+        return data
 
 cdef class BruteForceSimulator(Simulator):
     """Simulator using Brute Force algorithm"""
@@ -54,7 +76,8 @@ cdef class BruteForceSimulator(Simulator):
                     self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
                     self.planets.m_ptr, G, dt, self.num_planets)
             if dump_output:
-                dump_vtk(self.planets, self.sim_name + str(i), self.sim_name)
+                dump_vtk(self.planets, self.sim_name + str(i),
+                        base = self.sim_name, **self.get_data())
 
     cpdef simulate(self, double total_time, bint dump_output = False):
         """Calculates position and velocity of all particles

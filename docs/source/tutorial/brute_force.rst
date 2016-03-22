@@ -65,4 +65,35 @@ Following is the syntax for ``simulate``.
     
     ``dump_output = True`` essentially dumps a vtk output for every timestep.
 
+Dumping custom vtk output
+~~~~~~~~~~~~~~~~~~~~~~~~~
+
+``pyspace.simulator.BruteForceSimulator`` by default only dumps ``v_x``,
+``v_y`` and ``v_z`` ie. the velocity in the generated vtk output. To dump
+additional data, you need to use ``pyspace.simulator.Simulator.set_data``
+function. 
+
+Using this method for the above problem, you can write,
+
+.. code-block:: python
+
+    # Do all imports and set up the PlanetArray as done above
+    # Import dump_vtk from pyspace.utils
+    from pyspace.utils import dump_vtk
+
+    # Set up the simulator
+    sim = BruteForceSimulator(pa, G, dt, "square_grid")
+
+    # Use set_data() to tell the simulator what to dump
+    # For this problem, lets say you only need a_x, a_y and a_z
+    sim.set_data(a_x = 'a_x', a_y = 'a_y', a_z = 'a_z')
+
+    sim.simulate(total_time = total_time, dump_output = True)
+
+.. note::
+
+    Arguments of ``set_data`` is a property name, attribute name pair.
+    For the above example, we could have called ``set_data`` as
+    ``set_data(acc_x = 'a_x', ...)`` and it would still work.
+
 
