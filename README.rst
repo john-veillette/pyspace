@@ -5,16 +5,6 @@ PySpace
 |
 | |Build Status| |Docs Status|
 
-Here's a video of planets arranged in cube simulation using PySpace.
-
-.. raw:: html
-
-    <div align="center">
-        <iframe width="420" height="315" src="https://www.youtube.com/embed/aJneOtU__LY" frameborder="0" allowfullscreen>
-        </iframe>
-    </div>
-
-
 Documentation
 -------------
 
