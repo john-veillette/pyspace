@@ -68,8 +68,8 @@ Following is the syntax for ``simulate``.
 Dumping custom vtk output
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``pyspace.simulator.BruteForceSimulator`` by default only dumps ``v_x``,
-``v_y`` and ``v_z`` ie. the velocity in the generated vtk output. To dump
+``pyspace.simulator.BruteForceSimulator`` by default only dumps 
+:math:`v_x, v_y, v_z` ie. the velocity in the generated vtk output. To dump
 additional data, you need to use ``pyspace.simulator.Simulator.set_data``
 function. 
 
