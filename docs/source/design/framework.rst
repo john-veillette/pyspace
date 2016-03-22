@@ -20,7 +20,7 @@ Equations
 .. math::
     :label: force    
 
-    a_i = \sum_{\substack{j=1 \\ j\neq i}}^{n} G \frac{m_j}{r_{ij}^3} (\vec{r_j} - \vec{r_i})
+    \vec{a_i} = \sum_{\substack{j=1 \\ j\neq i}}^{n} G \frac{m_j}{r_{ij}^3} (\vec{r_j} - \vec{r_i})
 
 Numerical Integration
 ~~~~~~~~~~~~~~~~~~~~~
