@@ -40,7 +40,7 @@ cdef class Simulator:
 
 cdef class BruteForceSimulator(Simulator):
     """Simulator using Brute Force algorithm"""
-    def __init__(self, PlanetArray pa, double G, double dt, str sim_name = ""):
+    def __init__(self, PlanetArray pa, double G, double dt, str sim_name = "pyspace"):
         """Constructor for BruteForceSimulator
 
         Parameters:
