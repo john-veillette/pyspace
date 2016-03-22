@@ -43,11 +43,41 @@ Understanding the framework
 
 We will be using ``pyspace.planet.PlanetArray`` for storing planets.
 
-``pyspace.planet.PlanetArray`` stores numpy arrays for :math:`x, y, z, v_x, v_y, v_z, a_x, a_y, \
+``pyspace.planet.PlanetArray`` stores numpy arrays for :math:`x, y, z, v_x, v_y, v_z, a_x, a_y,\
 a_z, m` and also stores a raw pointer to each numpy array.
 
-``pyspace.simulator.BruteForceSimulator`` then passes these raw pointers to the C++ function, 
-``brute_force_update`` which then updates the pointers using the above numerical integration 
+.. code-block:: cython
+
+    cdef public ndarray x
+    cdef public ndarray y
+    cdef public ndarray z
+    cdef public ndarray v_x
+    cdef public ndarray v_y
+    cdef public ndarray v_z
+    cdef public ndarray a_x
+    cdef public ndarray a_y
+    cdef public ndarray a_z
+    cdef public ndarray m
+
+    cdef double* x_ptr
+    cdef double* y_ptr
+    cdef double* z_ptr
+
+    cdef double* v_x_ptr
+    cdef double* v_y_ptr
+    cdef double* v_z_ptr
+
+    cdef double* a_x_ptr
+    cdef double* a_y_ptr
+    cdef double* a_z_ptr
+
+    cdef double* m_ptr
+
+
+Here we will be using ``pyspace.simulator.BruteForceSimulator`` which uses
+the :math:`O(n^2)` brute force algorithm for calculating forces in a planet.
+
+``pyspace.simulator.BruteForceSimulator`` then passes these raw pointers to the C++ function, ``brute_force_update`` which then updates the pointers using the above numerical integration 
 scheme.
 
 -------------
