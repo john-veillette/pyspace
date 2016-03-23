@@ -8,7 +8,7 @@ cdef class PlanetArray:
     """PlanetArray for storing planets"""
     def __init__(self, ndarray x, ndarray y, ndarray z,
             ndarray v_x = None, ndarray v_y = None,  ndarray v_z = None,
-            ndarray m = None):
+            ndarray m = None, ndarray r = None):
         """Constructor for PlanetArray
 
         Parameters:
@@ -65,6 +65,11 @@ cdef class PlanetArray:
         else:
             self.m = m.astype(np.float64)
 
+        if r is None:
+            self.r = np.ones(num_planets)
+        else:
+            self.r = r.astype(np.float64)
+
         self.a_x = np.zeros(num_planets)
         self.a_y = np.zeros(num_planets)
         self.a_z = np.zeros(num_planets)
@@ -82,6 +87,7 @@ cdef class PlanetArray:
         self.a_z_ptr = <double*> self.a_z.data
 
         self.m_ptr = <double*> self.m.data
+        self.r_ptr = <double*> self.r.data
 
     cpdef int get_number_of_planets(self):
         """Returns number of planets in the PlanetArray
