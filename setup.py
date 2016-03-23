@@ -99,6 +99,7 @@ ext_modules = cythonize(ext_modules)
 setup(
         name="PySpace",
         author="PySpace developers",
+        author_email="adityapb1546@gmail.com",
         description="A toolbox for galactic simulations.",
         url = "https://github.com/adityapb/pyspace",
         long_description = open('README.rst').read(),

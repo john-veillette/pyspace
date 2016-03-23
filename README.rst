@@ -40,7 +40,9 @@ Dependencies
 Linux and OSX
 ~~~~~~~~~~~~~
 
-| Clone this repository by
+To install the latest stable version run ``pip install pyspace`` 
+
+| To install development version, clone this repository by
   ``git clone https://github.com/adityapb/pyspace.git``
 | Run ``python setup.py install`` to install.
 |

@@ -2,6 +2,7 @@ include *rst LICENSE docs/Makefile
 recursive-include examples *.py
 recursive-include docs *.rst
 recursive-include docs *.py
-recursive-exclude pyspace pyspace *.cpp
+recursive-include pyspace *.pyx *.pxd
+recursive-exclude pyspace *.cpp
 prune docs/build
 
