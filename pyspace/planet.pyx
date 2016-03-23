@@ -38,6 +38,10 @@ cdef class PlanetArray:
             Mass of planets
             Default value: 1
 
+        r: np.ndarray
+            Radius of planets
+            Default value: 1
+
         """
         self.x = x.astype(np.float64)
         self.y = y.astype(np.float64)
