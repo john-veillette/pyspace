@@ -3,7 +3,6 @@ from distutils.core import setup
 from setuptools import find_packages
 from distutils.extension import Extension
 from Cython.Build import cythonize
-from distutils.errors import CompileError, LinkError
 import os
 from os import path
 
@@ -97,18 +96,14 @@ ext_modules += [
 
 ext_modules = cythonize(ext_modules)
 
-try:
-    setup(
-            name="PySpace",
-            author="PySpace developers",
-            description="A toolbox for galactic simulations.",
-            long_description = open('README.rst').read(),
-            version="0.0.1",
-            install_requires=requires,
-            packages=find_packages(),
-            ext_modules = ext_modules
-        )
-except CompileError or LinkError:
-    print("-"*70)
-    print "OpenMP not found. Please disable by setting 'USE_OPENMP=0'"
-    print("-"*70)
+setup(
+        name="PySpace",
+        author="PySpace developers",
+        description="A toolbox for galactic simulations.",
+        long_description = open('README.rst').read(),
+        version="0.0.1",
+        install_requires=requires,
+        packages=find_packages(),
+        ext_modules = ext_modules
+    )
+
