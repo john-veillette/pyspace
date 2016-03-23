@@ -22,6 +22,7 @@ cdef class PlanetArray:
     cdef public ndarray a_y
     cdef public ndarray a_z
     cdef public ndarray m
+    cdef public ndarray r
 
     cdef double* x_ptr
     cdef double* y_ptr
@@ -36,6 +37,7 @@ cdef class PlanetArray:
     cdef double* a_z_ptr
 
     cdef double* m_ptr
+    cdef double* r_ptr
 
     cpdef int get_number_of_planets(self)
     cpdef double dist(self, int i, int j)

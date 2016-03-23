@@ -8,6 +8,9 @@ effectively.
 
 To understand the framework, we will work through a general N-body problem.
 
+Here we will be using the ``BruteForceSimulator``, however the framework
+is essentially the same for any ``Simulator``.
+
 --------------
 N-body problem
 --------------
@@ -43,8 +46,7 @@ Understanding the framework
 
 PySpace uses ``pyspace.planet.PlanetArray`` for storing planets.
 
-``pyspace.planet.PlanetArray`` stores numpy arrays for :math:`x, y, z, v_x, v_y, v_z, a_x, a_y,\
-a_z, m` and also stores a raw pointer to each numpy array.
+``pyspace.planet.PlanetArray`` stores numpy arrays for :math:`x, y, z, v_x, v_y, v_z, a_x, a_y, a_z, m, r` and also stores a raw pointer to each numpy array.
 
 .. code-block:: cython
 
@@ -58,6 +60,7 @@ a_z, m` and also stores a raw pointer to each numpy array.
     cdef public ndarray a_y
     cdef public ndarray a_z
     cdef public ndarray m
+    cdef public ndarray r
 
     cdef double* x_ptr
     cdef double* y_ptr
@@ -72,7 +75,12 @@ a_z, m` and also stores a raw pointer to each numpy array.
     cdef double* a_z_ptr
 
     cdef double* m_ptr
+    cdef double* r_ptr
 
+.. note::
+
+    Currently ``r`` doesn't have any use per se. However, we plan to use it
+    for better collision handling in the future.
 
 Here we will be using ``pyspace.simulator.BruteForceSimulator`` which uses
 the :math:`O(n^2)` brute force algorithm for calculating forces in a planet.

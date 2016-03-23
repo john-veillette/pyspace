@@ -33,6 +33,9 @@ Dependencies
 
 -  Numpy
 -  PyEVTK (``pip install pyevtk``)
+-  gcc compiler
+-  OpenMP (optional)
+-  ParaView / MayaVi or any other vtk rendering tool (optional)
 
 Linux and OSX
 ~~~~~~~~~~~~~
