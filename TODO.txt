@@ -12,3 +12,5 @@ ToDo list for PySpace
 
 - Implement algorithms in CUDA
 
+- Find error in example simulations
+
