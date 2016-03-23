@@ -70,7 +70,7 @@ def get_omp_flags():
     else:
         return [], [], False
 
-requires = ["cython", "numpy"]
+requires = ["cython", "numpy", "pyevtk"]
 
 ext_modules = []
 
@@ -100,8 +100,9 @@ setup(
         name="PySpace",
         author="PySpace developers",
         description="A toolbox for galactic simulations.",
+        url = "https://github.com/adityapb/pyspace",
         long_description = open('README.rst').read(),
-        version="0.0.1",
+        version="0.0.2",
         install_requires=requires,
         packages=find_packages(),
         ext_modules = ext_modules
