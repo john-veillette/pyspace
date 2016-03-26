@@ -8,7 +8,7 @@
 #define MAGNITUDE(x, y, z) sqrt(x*x + y*y + z*z)
 #define MIN(X,Y) ((X) < (Y)) ? (X) : (Y)
 #define MAX(X,Y) ((X) < (Y)) ? (Y) : (X)
-#define ERR 1e-7
+#define ERR 1e-5
 
 using namespace std;
 
@@ -99,11 +99,12 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
         return BarnesPlanet(planets.front().x, planets.front().y, planets.front().z, planets.front().mass);
     }
 
-    list<BarnesPlanet> temp;
+
     BarnesPlanet com(0,0,0,0);
 
     for(int octant=0;octant<8;octant++)
     {
+        list<BarnesPlanet> temp;
         int i=(octant&1);
         int j=((octant&2)>>1);
         int k=((octant&4)>>2);
@@ -144,7 +145,7 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
         com.y = (octant_com.mass*octant_com.y + com.mass*com.y)/total_mass;
         com.z = (octant_com.mass*octant_com.z + com.mass*com.z)/total_mass;
         com.mass += octant_com.mass;
-       
+        
     }
  
     node->x = com.x;
@@ -152,8 +153,7 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
     node->z = com.z;
     node->mass = com.mass;
     node->width = width;
-    //cout << node->x << " " << node->y << " " << node->z << endl;
- 
+  
  
     return com;
 }
@@ -221,7 +221,7 @@ void barnes_update(double *x, double *y, double *z,
         max_z = MAX(max_z, z[i]);
     }
     
-    double width = MAX(max_x - min_x, MAX(max_y - min_y, max_z - min_z));
+    double width = MAX(max_x - min_x, MAX(max_y - min_y, max_z - min_z)) + ERR;
 
     BarnesNode *root = new BarnesNode;
     build_barnes_tree(root, planets, min_x, min_y, min_z, width);
