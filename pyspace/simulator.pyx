@@ -38,6 +38,48 @@ cdef class Simulator:
             data[property_name] = getattr(self.planets, attribute_name)
         return data
 
+cdef class BarnesSimulator(Simulator):
+    def __init__(self, PlanetArray pa, double G, double dt, double theta = 1.0, str sim_name = "pyspace"):
+        self.theta = theta
+        Simulator.__init__(self, pa, G, dt, sim_name)
+
+    @cython.cdivision(True)
+    cdef void _simulate(self, double total_time,  bint dump_output = False):
+
+        cdef double G = self.G
+        cdef double dt = self.dt
+        
+        cdef int n_steps = <int> floor(total_time/dt)
+        cdef int i
+
+        for i from 0<=i<n_steps:
+            barnes_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
+                    self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
+                    self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
+                    self.planets.m_ptr, G, dt, self.num_planets,
+                    self.theta)   
+
+            if dump_output:
+                dump_vtk(self.planets, self.sim_name + str(i),
+                        base = self.sim_name, **self.get_data())
+
+    cpdef simulate(self, double total_time, bint dump_output = False):
+        """Calculates position and velocity of all particles
+        after time 'total_time'
+
+        Parameters:
+
+        total_time: double
+            Total time for simulation
+
+        """
+        if dump_output and (not os.path.isdir(self.sim_name)):
+            os.mkdir(self.sim_name)
+
+        self._simulate(total_time, dump_output)
+
+
+
 cdef class BruteForceSimulator(Simulator):
     """Simulator using Brute Force algorithm"""
     def __init__(self, PlanetArray pa, double G, double dt, str sim_name = "pyspace"):
