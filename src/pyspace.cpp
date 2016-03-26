@@ -3,10 +3,12 @@
 #include <iostream>
 #include <omp.h>
 #include <list>
+#include <iostream>
 
 #define MAGNITUDE(x, y, z) sqrt(x*x + y*y + z*z)
 #define MIN(X,Y) ((X) < (Y)) ? (X) : (Y)
 #define MAX(X,Y) ((X) < (Y)) ? (Y) : (X)
+#define ERR 1e-7
 
 using namespace std;
 
@@ -92,6 +94,8 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
         node->y = planets.front().y;
         node->z = planets.front().z;
         node->mass = planets.front().mass;
+        node->width = width;
+     
         return BarnesPlanet(planets.front().x, planets.front().y, planets.front().z, planets.front().mass);
     }
 
@@ -106,10 +110,10 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
         
         double x1 = x0 + i*width/2;
         double x2 = x0 + (i+1)*width/2;
-        double y1 = y0 + i*width/2;
-        double y2 = y0 + (i+1)*width/2;
-        double z1 = z0 + i*width/2;
-        double z2 = z0 + (i+1)*width/2;
+        double y1 = y0 + j*width/2;
+        double y2 = y0 + (j+1)*width/2;
+        double z1 = z0 + k*width/2;
+        double z2 = z0 + (k+1)*width/2;
                                       
         for(list<BarnesPlanet>::iterator it = planets.begin();it != planets.end();)
         {
@@ -135,18 +139,22 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
                           x1, y1, z1, width/2);
 
         double total_mass = octant_com.mass + com.mass;
-
-        com.x += (octant_com.mass*octant_com.x + com.mass*com.x)/total_mass;
-        com.y += (octant_com.mass*octant_com.y + com.mass*com.y)/total_mass;
-        com.z += (octant_com.mass*octant_com.z + com.mass*com.z)/total_mass;
+ 
+        com.x = (octant_com.mass*octant_com.x + com.mass*com.x)/total_mass;
+        com.y = (octant_com.mass*octant_com.y + com.mass*com.y)/total_mass;
+        com.z = (octant_com.mass*octant_com.z + com.mass*com.z)/total_mass;
         com.mass += octant_com.mass;
+       
     }
+ 
     node->x = com.x;
     node->y = com.y;
     node->z = com.z;
     node->mass = com.mass;
     node->width = width;
-
+    //cout << node->x << " " << node->y << " " << node->z << endl;
+ 
+ 
     return com;
 }
 
@@ -158,8 +166,13 @@ Vec3 get_barnes_acceleration(BarnesNode *node,
     double r_y = node->y - y;
     double r_z = node->z - z;
     double dist = MAGNITUDE(r_x, r_y, r_z);
+    
+    if(dist<ERR)
+        return Vec3(0,0,0);
+
     if(node->isChild() || (node->width)/dist < theta)
     {      
+
         double cnst = G*(node->mass)/(dist*dist*dist);
         return Vec3(cnst*r_x, cnst*r_y, cnst*r_z);
     }
