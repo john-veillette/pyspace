@@ -24,7 +24,8 @@ Algorithms
 ----------
 
 -  Brute Force :math:`O(n^2)`
-
+-  Barnes-Hut :math: `O(nlog(n))`
+ 
 Installation
 ------------
 
