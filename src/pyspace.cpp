@@ -4,8 +4,10 @@
 #include <omp.h>
 #include <list>
 #include <iostream>
+#include <cstdio>
+#include <cstring>
 
-#define MAGNITUDE(x, y, z) sqrt(x*x + y*y + z*z)
+#define MAGNITUDE(x, y, z) sqrt((x)*(x) + (y)*(y) +(z)*(z))
 #define MIN(X,Y) ((X) < (Y)) ? (X) : (Y)
 #define MAX(X,Y) ((X) < (Y)) ? (Y) : (X)
 #define ERR 1e-5
@@ -33,11 +35,13 @@ struct BarnesNode
     double y;
     double z;
     double width;
+    bool is_child;
     BarnesNode *children[2][2][2];
     
     BarnesNode()
     {
         mass = x = y = z = width = 0;
+        is_child = true;
         for(int i=0;i<2;i++)
             for(int j=0;j<2;j++)
                 for(int k=0;k<2;k++)
@@ -53,15 +57,6 @@ struct BarnesNode
                         delete children[i][j][k];
     }
  
-    bool isChild()
-    {
-        for(int i=0;i<2;i++)
-            for(int j=0;j<2;j++)
-                for(int k=0;k<2;k++)
-                    if(children[i][j][k] != NULL)
-                        return false;
-        return true;
-    }
 };
 
 struct BarnesPlanet
@@ -95,7 +90,7 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
         node->z = planets.front().z;
         node->mass = planets.front().mass;
         node->width = width;
-     
+        node->is_child = true;
         return BarnesPlanet(planets.front().x, planets.front().y, planets.front().z, planets.front().mass);
     }
 
@@ -109,12 +104,12 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
         int j=((octant&2)>>1);
         int k=((octant&4)>>2);
         
-        double x1 = x0 + i*width/2;
-        double x2 = x0 + (i+1)*width/2;
-        double y1 = y0 + j*width/2;
-        double y2 = y0 + (j+1)*width/2;
-        double z1 = z0 + k*width/2;
-        double z2 = z0 + (k+1)*width/2;
+        double x1 = x0 + i*width/2 - ((i+1)&1)*ERR;
+        double x2 = x0 + (i+1)*width/2 + i*ERR;
+        double y1 = y0 + j*width/2 - ((j+1)&1)*ERR;
+        double y2 = y0 + (j+1)*width/2 + j*ERR;
+        double z1 = z0 + k*width/2 - ((k+1)&1)*ERR;
+        double z2 = z0 + (k+1)*width/2 + k*ERR;
                                       
         for(list<BarnesPlanet>::iterator it = planets.begin();it != planets.end();)
         {
@@ -137,29 +132,30 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
 
         node->children[i][j][k] = new BarnesNode;
         BarnesPlanet octant_com = build_barnes_tree(node->children[i][j][k], temp,
-                          x1, y1, z1, width/2);
+                          x1, y1, z1, width/2+ERR);
 
-        double total_mass = octant_com.mass + com.mass;
- 
-        com.x = (octant_com.mass*octant_com.x + com.mass*com.x)/total_mass;
-        com.y = (octant_com.mass*octant_com.y + com.mass*com.y)/total_mass;
-        com.z = (octant_com.mass*octant_com.z + com.mass*com.z)/total_mass;
+        com.x += octant_com.mass*octant_com.x;
+        com.y += octant_com.mass*octant_com.y;
+        com.z += octant_com.mass*octant_com.z;
         com.mass += octant_com.mass;
-        
     }
- 
+    
+    com.x /= com.mass;
+    com.y /= com.mass;
+    com.z /= com.mass;
+
     node->x = com.x;
     node->y = com.y;
     node->z = com.z;
     node->mass = com.mass;
     node->width = width;
-  
+    node->is_child = false;
  
     return com;
 }
 
 Vec3 get_barnes_acceleration(BarnesNode *node, 
-                             double mass, double x, double y, double z,
+                             double x, double y, double z,
                              double G, double theta)
 {
     double r_x = node->x - x;
@@ -170,7 +166,7 @@ Vec3 get_barnes_acceleration(BarnesNode *node,
     if(dist<ERR)
         return Vec3(0,0,0);
 
-    if(node->isChild() || (node->width)/dist < theta)
+    if(node->is_child || (node->width)/dist < theta)
     {      
 
         double cnst = G*(node->mass)/(dist*dist*dist);
@@ -188,7 +184,7 @@ Vec3 get_barnes_acceleration(BarnesNode *node,
                     BarnesNode *child = node->children[i][j][k];
                     if(child!=NULL)
                     {
-                        Vec3 temp = get_barnes_acceleration(child, mass, x, y, z, G, theta);
+                        Vec3 temp = get_barnes_acceleration(child, x, y, z, G, theta);
                         a_x += temp.x;
                         a_y += temp.y;
                         a_z += temp.z;
@@ -225,23 +221,26 @@ void barnes_update(double *x, double *y, double *z,
 
     BarnesNode *root = new BarnesNode;
     build_barnes_tree(root, planets, min_x, min_y, min_z, width);
-
+                                 
     for(int i=0;i<num_planets;i++)
     {
-        Vec3 a = get_barnes_acceleration(root, m[i], x[i], y[i], z[i], G, theta);
+       
+        Vec3 a = get_barnes_acceleration(root, x[i], y[i], z[i], G, theta);
         
-        x[i] += v_x[i]*dt + a_x[i]*dt*dt/2;
-        y[i] += v_y[i]*dt + a_y[i]*dt*dt/2;
-        z[i] += v_z[i]*dt + a_z[i]*dt*dt/2;
+        x[i] += v_x[i]*dt + a_x[i]*0.5*dt*dt;
+        y[i] += v_y[i]*dt + a_y[i]*0.5*dt*dt;
+        z[i] += v_z[i]*dt + a_z[i]*0.5*dt*dt;
 
-        v_x[i] += (a_x[i] + a.x)*dt/2;
-        v_y[i] += (a_y[i] + a.y)*dt/2;
-        v_z[i] += (a_z[i] + a.z)*dt/2;
+        v_x[i] += (a_x[i] + a.x)*0.5*dt;
+        v_y[i] += (a_y[i] + a.y)*0.5*dt;
+        v_z[i] += (a_z[i] + a.z)*0.5*dt;
         
         a_x[i] = a.x;
         a_y[i] = a.y;
         a_z[i] = a.z;
     }
+    
+    delete root;
 }
 
 void brute_force_update(double* x, double* y, double* z,

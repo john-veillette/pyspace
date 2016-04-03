@@ -15,5 +15,5 @@ pa = PlanetArray(x, y, z, v_y=v_y, m=m)
 
 sim = BarnesSimulator(pa, 1, 1, 0,  "two_planets")
 
-sim.simulate(2500, dump_output = True)
+sim.simulate(1000, dump_output = True)
 
