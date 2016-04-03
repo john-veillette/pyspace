@@ -48,7 +48,7 @@ cdef class BarnesSimulator(Simulator):
 
         cdef double G = self.G
         cdef double dt = self.dt
-        
+
         cdef int n_steps = <int> floor(total_time/dt)
         cdef int i
 
@@ -57,7 +57,7 @@ cdef class BarnesSimulator(Simulator):
                     self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
                     self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
                     self.planets.m_ptr, G, dt, self.num_planets,
-                    self.theta)   
+                    self.theta)
 
             if dump_output:
                 dump_vtk(self.planets, self.sim_name + str(i),
