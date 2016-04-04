@@ -1,7 +1,6 @@
 #!usr/bin/env python
 from pyspace.planet import PlanetArray
 from pyspace.simulator import BarnesSimulator
-from time import time
 import numpy
 
 x, y, z = numpy.mgrid[0:500:5j, 0:500:5j, 0:500:5j]
@@ -14,4 +13,3 @@ sim =BarnesSimulator(pa, 1, 1, 0.1, "square_grid")
 
 sim.simulate(1000, dump_output = True)
 
-print "Total time ", time() - initial_time

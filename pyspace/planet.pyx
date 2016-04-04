@@ -116,8 +116,11 @@ cdef class PlanetArray:
             Indices of planets whose distance is sought.
 
         """
-        return sqrt((self.x_ptr[i] - self.x_ptr[j])**2 + (self.y_ptr[i] - self.y_ptr[j])**2 + \
-                (self.z_ptr[i] - self.z_ptr[j])**2)
+        return sqrt(
+                (self.x_ptr[i] - self.x_ptr[j])**2 + \
+                (self.y_ptr[i] - self.y_ptr[j])**2 + \
+                (self.z_ptr[i] - self.z_ptr[j])**2
+                )
 
     @cython.cdivision(True)
     cpdef double potential_energy_planet(self, double G, int i):
