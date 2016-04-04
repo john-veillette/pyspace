@@ -13,7 +13,7 @@ v_y = numpy.array([0,(1000/100)**0.5])
 
 pa = PlanetArray(x, y, z, v_y=v_y, m=m)
 
-sim = BarnesSimulator(pa, 1, 1, 0,  "two_planets")
+sim = BarnesSimulator(pa, 1, 1, 0, "two_planets")
 
 sim.simulate(1000, dump_output = True)
 
