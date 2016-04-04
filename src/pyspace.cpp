@@ -154,8 +154,9 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
     return com;
 }
 
-Vec3 get_barnes_acceleration(BarnesNode *node, 
+void get_barnes_acceleration(BarnesNode *node, 
                              double x, double y, double z,
+                             double &a_x, double &a_y, double &a_z,
                              double G, double theta)
 {
     double r_x = node->x - x;
@@ -164,19 +165,18 @@ Vec3 get_barnes_acceleration(BarnesNode *node,
     double dist = MAGNITUDE(r_x, r_y, r_z);
     
     if(dist<ERR)
-        return Vec3(0,0,0);
+        return;
 
     if(node->is_child || (node->width)/dist < theta)
     {      
 
         double cnst = G*(node->mass)/(dist*dist*dist);
-        return Vec3(cnst*r_x, cnst*r_y, cnst*r_z);
+        a_x += cnst*r_x;
+        a_y += cnst*r_y;
+        a_z += cnst*r_z;
     }
     else
     {
-        double a_x = 0;
-        double a_y = 0;
-        double a_z = 0;
         for(int i=0;i<2;i++)
             for(int j=0;j<2;j++)
                 for(int k=0;k<2;k++)
@@ -184,13 +184,10 @@ Vec3 get_barnes_acceleration(BarnesNode *node,
                     BarnesNode *child = node->children[i][j][k];
                     if(child!=NULL)
                     {
-                        Vec3 temp = get_barnes_acceleration(child, x, y, z, G, theta);
-                        a_x += temp.x;
-                        a_y += temp.y;
-                        a_z += temp.z;
+                        get_barnes_acceleration(child, x, y, z, a_x, a_y, a_z, G, theta);
                     }
                 }
-        return Vec3(a_x, a_y, a_z);
+      
     }
 }
 
@@ -224,8 +221,8 @@ void barnes_update(double *x, double *y, double *z,
                                  
     for(int i=0;i<num_planets;i++)
     {
-       
-        Vec3 a = get_barnes_acceleration(root, x[i], y[i], z[i], G, theta);
+        Vec3 a(0,0,0);
+        get_barnes_acceleration(root, x[i], y[i], z[i], a.x, a.y, a.z, G, theta);
         
         x[i] += v_x[i]*dt + a_x[i]*0.5*dt*dt;
         y[i] += v_y[i]*dt + a_y[i]*0.5*dt*dt;
