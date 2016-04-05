@@ -82,11 +82,30 @@ PySpace uses ``pyspace.planet.PlanetArray`` for storing planets.
     Currently ``r`` doesn't have any use per se. However, we plan to use it
     for better collision handling in the future.
 
-Here we will be using ``pyspace.simulator.BruteForceSimulator`` which uses
+``pyspace.simulator.Simulator`` then passes these raw pointers to the C++ function, ``brute_force_update`` which then updates the pointers using the above numerical integration 
+scheme.
+
+----------
+Algorithms
+----------
+
+A number of techniques for solving the N-body problem are available.
+Following are currently implemented in PySpace.
+
+Brute Force
+~~~~~~~~~~~
+
+This is implemented in ``pyspace.simulator.BruteForceSimulator`` which uses
 the :math:`O(n^2)` brute force algorithm for calculating forces in a planet.
 
-``pyspace.simulator.BruteForceSimulator`` then passes these raw pointers to the C++ function, ``brute_force_update`` which then updates the pointers using the above numerical integration 
-scheme.
+Barnes Hut
+~~~~~~~~~~
+
+This is implemented in ``pyspace.simulator.BarnesSimulator`` which uses
+the :math:`O(nlogn)` barnes hut algorithm for calculating forces in a planet.
+
+For details see `this <https://en.wikipedia.org/wiki/Barnes%E2%80%93Hut_simulation>`_ 
+wikipedia article.
 
 -------------
 Visualization
