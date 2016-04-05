@@ -140,7 +140,8 @@ cdef class PlanetArray:
         cdef int j
 
         for j from 0<=j<num_planets:
-            pot_energy += -G*self.m_ptr[i]*self.m_ptr[j]/self.dist(i,j)
+            if i!=j:
+                pot_energy += -G*self.m_ptr[i]*self.m_ptr[j]/self.dist(i,j)
 
         return pot_energy
 
