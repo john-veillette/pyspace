@@ -48,3 +48,15 @@ To run the tests, cd to pyspace/tests directory and run::
     
     $ nosetests -v
 
+----------------------
+Running the benchmarks
+----------------------
+
+For running benchmarks you will need to install ``pandas``, install using::
+
+    $ pip install pandas
+
+To run the benchmarks, cd to benchmarks directory and run::
+
+    $ python run_benchmarks.py
+
