@@ -206,11 +206,16 @@ void barnes_update(double *x, double *y, double *z,
     BarnesNode *root = new BarnesNode;
     build_barnes_tree(root, planets, min_x, min_y, min_z, width);
                                  
+    double a_x_temp = 0;
+    double a_y_temp = 0;
+    double a_z_temp = 0;
+    
     for(int i=0;i<num_planets;i++)
     {
-        double a_x_temp = 0;
-        double a_y_temp = 0;
-        double a_z_temp = 0;
+        a_x_temp = 0;
+        a_y_temp = 0;
+        a_z_temp = 0;
+        
         get_barnes_acceleration(root, x[i], y[i], z[i], 
                 a_x_temp, a_y_temp, a_z_temp, G, theta);
         
