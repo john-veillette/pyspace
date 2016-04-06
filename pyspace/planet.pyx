@@ -93,6 +93,10 @@ cdef class PlanetArray:
         self.m_ptr = <double*> self.m.data
         self.r_ptr = <double*> self.r.data
 
+        self.com_x = 0
+        self.com_y = 0
+        self.com_z = 0
+
     cpdef int get_number_of_planets(self):
         """Returns number of planets in the PlanetArray
 
@@ -179,4 +183,23 @@ cdef class PlanetArray:
     cpdef double total_energy(self, double G):
         """Returns total energy of PlanetArray"""
         return self.potential_energy(G) + self.kinetic_energy()
+
+    cpdef double com(self):
+        """Sets com_x, com_y, com_z to centre of mass of the system of planets"""
+        cdef double com_x = 0
+        cdef double com_y = 0
+        cdef double com_z = 0
+        cdef double m_tot = 0
+
+        cdef int num_planets = self.get_number_of_planets()
+
+        cdef int i
+        for i from 0<=i<num_planets:
+            com_x += self.x_ptr[i]*self.m_ptr[i]
+            com_y += self.y_ptr[i]*self.m_ptr[i]
+            com_z += self.z_ptr[i]*self.m_ptr[i]
+
+        self.com_x = com_x/m_tot
+        self.com_y = com_y/m_tot
+        self.com_z = com_z/m_tot
 

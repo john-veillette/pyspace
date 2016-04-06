@@ -14,20 +14,6 @@
 
 using namespace std;
 
-struct Vec3
-{
-    double x;
-    double y;
-    double z;
-    Vec3() = default;
-    Vec3(double x, double y, double z)
-    {
-        this->x = x;
-        this->y = y;
-        this->z = z;
-    }
-};
-
 struct BarnesNode
 {
     double mass;
@@ -91,7 +77,8 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
         node->mass = planets.front().mass;
         node->width = width;
         node->is_child = true;
-        return BarnesPlanet(planets.front().x, planets.front().y, planets.front().z, planets.front().mass);
+        return BarnesPlanet(planets.front().x, planets.front().y, 
+                planets.front().z, planets.front().mass);
     }
 
 
@@ -221,20 +208,23 @@ void barnes_update(double *x, double *y, double *z,
                                  
     for(int i=0;i<num_planets;i++)
     {
-        Vec3 a(0,0,0);
-        get_barnes_acceleration(root, x[i], y[i], z[i], a.x, a.y, a.z, G, theta);
+        double a_x_temp = 0;
+        double a_y_temp = 0;
+        double a_z_temp = 0;
+        get_barnes_acceleration(root, x[i], y[i], z[i], 
+                a_x_temp, a_y_temp, a_z_temp, G, theta);
         
         x[i] += v_x[i]*dt + a_x[i]*0.5*dt*dt;
         y[i] += v_y[i]*dt + a_y[i]*0.5*dt*dt;
         z[i] += v_z[i]*dt + a_z[i]*0.5*dt*dt;
 
-        v_x[i] += (a_x[i] + a.x)*0.5*dt;
-        v_y[i] += (a_y[i] + a.y)*0.5*dt;
-        v_z[i] += (a_z[i] + a.z)*0.5*dt;
+        v_x[i] += (a_x[i] + a_x_temp)*0.5*dt;
+        v_y[i] += (a_y[i] + a_y_temp)*0.5*dt;
+        v_z[i] += (a_z[i] + a_z_temp)*0.5*dt;
         
-        a_x[i] = a.x;
-        a_y[i] = a.y;
-        a_z[i] = a.z;
+        a_x[i] = a_x_temp;
+        a_y[i] = a_y_temp;
+        a_z[i] = a_z_temp;
     }
     
     delete root;
