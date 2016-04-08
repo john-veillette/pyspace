@@ -1,13 +1,10 @@
 #include "pyspace.h"
 #include <cmath>
-#include <iostream>
+#include <cstddef>
 #include <omp.h>
 #include <list>
-#include <iostream>
-#include <cstdio>
-#include <cstring>
 
-#define MAGNITUDE(x, y, z) sqrt((x)*(x) + (y)*(y) +(z)*(z))
+#define MAGNITUDE(X, Y, Z) sqrt(X*X + Y*Y + Z*Z)
 #define MIN(X,Y) ((X) < (Y)) ? (X) : (Y)
 #define MAX(X,Y) ((X) < (Y)) ? (Y) : (X)
 #define ERR 1e-5
