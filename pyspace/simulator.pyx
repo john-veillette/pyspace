@@ -62,7 +62,9 @@ cdef class Simulator:
 
 
 cdef class BarnesSimulator(Simulator):
-    def __init__(self, PlanetArray pa, double G, double dt, double theta = 1.0, str sim_name = "pyspace"):
+    """Simulator using Barnes Hut algorithm"""
+    def __init__(self, PlanetArray pa, double G, double dt, double theta = 1.0,
+            str sim_name = "pyspace"):
         self.theta = theta
         Simulator.__init__(self, pa, G, dt, sim_name)
 
