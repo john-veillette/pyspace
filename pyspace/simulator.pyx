@@ -75,6 +75,12 @@ cdef class BarnesSimulator(Simulator):
         cdef int n_steps = <int> floor(total_time/dt)
         cdef int i
 
+        if dump_output:
+            dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
+                    base = self.sim_name, **self.get_data())
+            self.curr_time_step += 1
+
+
         for i from 0<=i<n_steps:
             barnes_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
                     self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
@@ -122,6 +128,11 @@ cdef class BruteForceSimulator(Simulator):
         cdef int n_steps = <int> floor(total_time/dt)
         cdef int i
 
+        if dump_output:
+            dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
+                    base = self.sim_name, **self.get_data())
+            self.curr_time_step += 1
+
         for i from 0<=i<n_steps:
             brute_force_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
                     self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
@@ -131,5 +142,4 @@ cdef class BruteForceSimulator(Simulator):
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())
                 self.curr_time_step += 1
-
 
