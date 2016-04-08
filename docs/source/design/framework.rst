@@ -18,15 +18,35 @@ N-body problem
 Consider a problem of :math:`n` bodies with mass :math:`m_i` for the :math:`i^{th}` planet. 
 
 Equations
-~~~~~~~~~
+---------
 
 .. math::
     :label: force    
 
     \vec{a_i} = \sum_{\substack{j=1 \\ j\neq i}}^{n} G \frac{m_j}{r_{ij}^3} (\vec{r_j} - \vec{r_i})
 
+
+Handling collisions
+~~~~~~~~~~~~~~~~~~~
+
+From the above equation, it is clear that force will become infinite when
+:math:`r_{ij} = 0`
+
+To solve this problem we use a gravity softening method proposed by Aarseth in 1963.
+Thus we change our force equation to
+
+.. math::
+    :label: softening
+
+    \vec{a_i} = \sum_{\substack{j=1 \\ j\neq i}}^{n} G \
+    \frac{m_j}{(\epsilon^2 + r_{ij}^2)^{3/2}} (\vec{r_j} - \vec{r_i})
+
+where :math:`\epsilon` is the softening factor. By default, 
+:math:`\epsilon = 0`
+
+
 Numerical Integration
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 ``BruteForceSimulator`` uses leap frog integrator for updating velocity and positions of planets.
 
@@ -42,7 +62,7 @@ Numerical Integration
 
 
 Understanding the framework
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+---------------------------
 
 PySpace uses ``pyspace.planet.PlanetArray`` for storing planets.
 
@@ -93,13 +113,13 @@ A number of techniques for solving the N-body problem are available.
 Following are currently implemented in PySpace.
 
 Brute Force
-~~~~~~~~~~~
+-----------
 
 This is implemented in ``pyspace.simulator.BruteForceSimulator`` which uses
 the :math:`O(n^2)` brute force algorithm for calculating forces in a planet.
 
 Barnes Hut
-~~~~~~~~~~
+----------
 
 This is implemented in ``pyspace.simulator.BarnesSimulator`` which uses
 the :math:`O(nlogn)` barnes hut algorithm for calculating forces in a planet.
