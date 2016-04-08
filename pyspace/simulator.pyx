@@ -90,7 +90,8 @@ cdef class BarnesSimulator(Simulator):
 
 cdef class BruteForceSimulator(Simulator):
     """Simulator using Brute Force algorithm"""
-    def __init__(self, PlanetArray pa, double G, double dt, str sim_name = "pyspace"):
+    def __init__(self, PlanetArray pa, double G, double dt, double epsilon = 0,
+            str sim_name = "pyspace"):
         """Constructor for BruteForceSimulator
 
         Parameters:
@@ -110,6 +111,7 @@ cdef class BruteForceSimulator(Simulator):
 
         """
         Simulator.__init__(self, pa, G, dt, sim_name)
+        self.epsilon = epsilon
 
     @cython.cdivision(True)
     cdef void _simulate(self, double total_time, bint dump_output = False):
@@ -124,7 +126,7 @@ cdef class BruteForceSimulator(Simulator):
             brute_force_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
                     self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
                     self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
-                    self.planets.m_ptr, G, dt, self.num_planets)
+                    self.planets.m_ptr, G, dt, self.num_planets, self.epsilon)
             if dump_output:
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())

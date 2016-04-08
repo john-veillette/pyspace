@@ -5,6 +5,7 @@
 #include <list>
 
 #define MAGNITUDE(X, Y, Z) sqrt(X*X + Y*Y + Z*Z)
+#define NORM2(X, Y, Z) X*X + Y*Y + Z*Z
 #define MIN(X,Y) ((X) < (Y)) ? (X) : (Y)
 #define MAX(X,Y) ((X) < (Y)) ? (Y) : (X)
 #define ERR 1e-5
@@ -235,7 +236,7 @@ void barnes_update(double *x, double *y, double *z,
 void brute_force_update(double* x, double* y, double* z,
         double* v_x, double* v_y, double* v_z,
         double* a_x, double* a_y, double* a_z,
-        double* m, double G, double dt, int num_planets)
+        double* m, double G, double dt, int num_planets, double eps)
 {
     //Calculate and update all pointers
     double a_x_i, a_y_i, a_z_i;
@@ -293,7 +294,7 @@ void brute_force_update(double* x, double* y, double* z,
             y_ji = r_y_j - r_y_i;
             z_ji = r_z_j - r_z_i;
 
-            dist_ij = MAGNITUDE(x_ji, y_ji, z_ji);
+            dist_ij = sqrt(eps*eps + NORM2(x_ji, y_ji, z_ji));
 
             cnst = (G*m_j/(dist_ij*dist_ij*dist_ij));
 

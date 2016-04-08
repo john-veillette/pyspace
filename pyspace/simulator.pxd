@@ -16,7 +16,7 @@ cdef extern from "pyspace.h":
     cdef void brute_force_update(double*, double*, double*,
             double*, double*, double*,
             double*, double*, double*,
-            double*, double, double, int) nogil
+            double*, double, double, int, double) nogil
 
     cdef void barnes_update(double*, double*, double*,
             double*, double*, double*,
@@ -45,6 +45,7 @@ cdef class Simulator:
     cpdef reset(self)
 
 cdef class BruteForceSimulator(Simulator):
+    cdef double epsilon
 
     cdef void _simulate(self, double total_time, bint dump_output = *)
 
