@@ -91,10 +91,11 @@ Use PEP 8 coding standard for python and follow
 for C++.
 
 .. |Build Status| image:: https://travis-ci.org/adityapb/pyspace.svg?branch=master
-    :target: https://travis-ci.org/adityapb/pyspace
+   :target: https://travis-ci.org/adityapb/pyspace
    
 .. |Docs Status| image:: https://readthedocs.org/projects/pyspace/badge/?version=stable
    :target: http://pyspace.readthedocs.org/en/stable/?badge=stable
    :alt: Documentation Status
 
-.. |Coverage| image:: https://coveralls.io/repos/github/adityapb/pyspace/badge.svg?branch=master :target: https://coveralls.io/github/adityapb/pyspace?branch=master
+.. |Coverage| image:: https://coveralls.io/repos/github/adityapb/pyspace/badge.svg?branch=master
+   :target: https://coveralls.io/github/adityapb/pyspace?branch=master
