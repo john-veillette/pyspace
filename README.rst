@@ -3,7 +3,7 @@ PySpace
 
 | **A python-based toolbox for galactic simulations**
 |
-| |Build Status| |Docs Status| |Health| |Coverage|
+| |Build Status| |Docs Status| |Coverage|
 
 Documentation
 -------------
@@ -96,9 +96,5 @@ for C++.
 .. |Docs Status| image:: https://readthedocs.org/projects/pyspace/badge/?version=stable
    :target: http://pyspace.readthedocs.org/en/stable/?badge=stable
    :alt: Documentation Status
-
-.. |Health| image:: https://landscape.io/github/adityapb/pyspace/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/adityapb/pyspace/master
-   :alt: Code Health
 
 .. |Coverage| image:: https://coveralls.io/repos/github/adityapb/pyspace/badge.svg?branch=barnes :target: https://coveralls.io/github/adityapb/pyspace?branch=barnes
