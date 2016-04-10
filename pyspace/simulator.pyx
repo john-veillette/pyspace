@@ -65,7 +65,7 @@ cdef class Simulator:
 cdef class BarnesSimulator(Simulator):
     """Simulator using Barnes Hut algorithm"""
     def __init__(self, PlanetArray pa, double G, double dt, double theta = 1.0,
-            str sim_name = "pyspace"):
+            double epsilon = 0, str sim_name = "pyspace"):
         self.theta = theta
         Simulator.__init__(self, pa, G, dt, sim_name)
 
@@ -89,7 +89,7 @@ cdef class BarnesSimulator(Simulator):
                     self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
                     self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
                     self.planets.m_ptr, G, dt, self.num_planets,
-                    self.theta)
+                    self.theta, self.epsilon)
 
             if dump_output:
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),

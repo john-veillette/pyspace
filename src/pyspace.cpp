@@ -142,16 +142,16 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
 void get_barnes_acceleration(BarnesNode *node, 
                              double x, double y, double z,
                              double &a_x, double &a_y, double &a_z,
-                             double G, double theta)
+                             double G, double theta, double eps)
 {
     double r_x = node->x - x;
     double r_y = node->y - y;
     double r_z = node->z - z;
-    double dist = MAGNITUDE(r_x, r_y, r_z);
+    double dist = sqrt(eps*eps + NORM2(r_x, r_y, r_z));
     
-    if(dist<ERR)
+    if(dist < ERR)
         return;
-
+    
     if(node->is_child || (node->width)/dist < theta)
     {      
 
@@ -169,7 +169,7 @@ void get_barnes_acceleration(BarnesNode *node,
                     BarnesNode *child = node->children[i][j][k];
                     if(child!=NULL)
                     {
-                        get_barnes_acceleration(child, x, y, z, a_x, a_y, a_z, G, theta);
+                        get_barnes_acceleration(child, x, y, z, a_x, a_y, a_z, G, theta, eps);
                     }
                 }
       
@@ -180,7 +180,7 @@ void barnes_update(double *x, double *y, double *z,
                    double *v_x, double *v_y, double *v_z,
                    double *a_x, double *a_y, double *a_z,
                    double *m, double G, double dt, int num_planets,
-                   double theta)
+                   double theta, double eps)
 {
     list<BarnesPlanet> planets;
     double min_x, max_x, min_y, max_y, min_z, max_z;
@@ -215,7 +215,7 @@ void barnes_update(double *x, double *y, double *z,
         a_z_temp = 0;
         
         get_barnes_acceleration(root, x[i], y[i], z[i], 
-                a_x_temp, a_y_temp, a_z_temp, G, theta);
+                a_x_temp, a_y_temp, a_z_temp, G, theta, eps);
         
         x[i] += v_x[i]*dt + a_x[i]*0.5*dt*dt;
         y[i] += v_y[i]*dt + a_y[i]*0.5*dt*dt;
