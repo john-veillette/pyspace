@@ -39,7 +39,7 @@ Dependencies
 -  ParaView / MayaVi or any other vtk rendering tool (optional)
 
 Linux and OSX
--------------
+~~~~~~~~~~~~~
 
 To install the latest stable version, run::
     
