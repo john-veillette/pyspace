@@ -55,6 +55,9 @@ cdef class Simulator:
         total_time: double
             Total time for simulation
 
+        dump_output: bool
+            Set True if vtk dump is required
+
         """
         if dump_output and (not os.path.isdir(self.sim_name)):
             os.mkdir(self.sim_name)
