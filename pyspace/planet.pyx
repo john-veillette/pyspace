@@ -93,6 +93,10 @@ cdef class PlanetArray:
         self.m_ptr = <double*> self.m.data
         self.r_ptr = <double*> self.r.data
 
+        self.com_x = 0
+        self.com_y = 0
+        self.com_z = 0
+
     cpdef int get_number_of_planets(self):
         """Returns number of planets in the PlanetArray
 
@@ -116,8 +120,11 @@ cdef class PlanetArray:
             Indices of planets whose distance is sought.
 
         """
-        return sqrt((self.x_ptr[i] - self.x_ptr[j])**2 + (self.y_ptr[i] - self.y_ptr[j])**2 + \
-                (self.z_ptr[i] - self.z_ptr[j])**2)
+        return sqrt(
+                (self.x_ptr[i] - self.x_ptr[j])**2 + \
+                (self.y_ptr[i] - self.y_ptr[j])**2 + \
+                (self.z_ptr[i] - self.z_ptr[j])**2
+                )
 
     @cython.cdivision(True)
     cpdef double potential_energy_planet(self, double G, int i):
@@ -137,7 +144,8 @@ cdef class PlanetArray:
         cdef int j
 
         for j from 0<=j<num_planets:
-            pot_energy += -G*self.m_ptr[i]*self.m_ptr[j]/self.dist(i,j)
+            if i!=j:
+                pot_energy += -G*self.m_ptr[i]*self.m_ptr[j]/self.dist(i,j)
 
         return pot_energy
 
@@ -175,4 +183,23 @@ cdef class PlanetArray:
     cpdef double total_energy(self, double G):
         """Returns total energy of PlanetArray"""
         return self.potential_energy(G) + self.kinetic_energy()
+
+    cpdef double com(self):
+        """Sets com_x, com_y, com_z to centre of mass of the system of planets"""
+        cdef double com_x = 0
+        cdef double com_y = 0
+        cdef double com_z = 0
+        cdef double m_tot = 0
+
+        cdef int num_planets = self.get_number_of_planets()
+
+        cdef int i
+        for i from 0<=i<num_planets:
+            com_x += self.x_ptr[i]*self.m_ptr[i]
+            com_y += self.y_ptr[i]*self.m_ptr[i]
+            com_z += self.z_ptr[i]*self.m_ptr[i]
+
+        self.com_x = com_x/m_tot
+        self.com_y = com_y/m_tot
+        self.com_z = com_z/m_tot
 

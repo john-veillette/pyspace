@@ -39,6 +39,10 @@ cdef class PlanetArray:
     cdef double* m_ptr
     cdef double* r_ptr
 
+    cdef double com_x
+    cdef double com_y
+    cdef double com_z
+
     cpdef int get_number_of_planets(self)
     cpdef double dist(self, int i, int j)
 
@@ -51,4 +55,5 @@ cdef class PlanetArray:
     cpdef double total_energy_planet(self, double G, int i)
     cpdef double total_energy(self, double G)
 
+    cpdef double com(self)
 

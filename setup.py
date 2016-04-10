@@ -87,7 +87,7 @@ omp_compile_flags, omp_link_flags, use_omp = get_omp_flags()
 ext_modules += [
         Extension(
             "pyspace.simulator",
-            ["pyspace/simulator.pyx", "src/pyspace.cpp"],
+            ["src/pyspace.cpp", "pyspace/simulator.pyx"],
             include_dirs = ["src", numpy.get_include()],
             extra_compile_args = omp_compile_flags,
             extra_link_args = omp_link_flags

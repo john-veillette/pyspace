@@ -16,7 +16,13 @@ cdef extern from "pyspace.h":
     cdef void brute_force_update(double*, double*, double*,
             double*, double*, double*,
             double*, double*, double*,
-            double*, double, double, int) nogil
+            double*, double, double, int, double) nogil
+
+    cdef void barnes_update(double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*, double, double, int,
+            double, double) nogil
 
 cdef class Simulator:
     cdef PlanetArray planets
@@ -25,6 +31,7 @@ cdef class Simulator:
     cdef double dt
     cdef str sim_name
     cdef int num_planets
+    cdef int curr_time_step
 
     cdef bint _custom_data
     cdef dict _data
@@ -32,8 +39,18 @@ cdef class Simulator:
     cpdef simulate(self, double total_time, bint dump_output = *)
     cdef dict get_data(self)
 
+    cdef void _simulate(self, double total_time, bint dump_output = *)
+
+    cpdef simulate(self, double total_time, bint dump_output = *)
+    cpdef reset(self)
+
 cdef class BruteForceSimulator(Simulator):
+    cdef double epsilon
 
     cdef void _simulate(self, double total_time, bint dump_output = *)
-    cpdef simulate(self, double total_time, bint dump_output = *)
+
+cdef class BarnesSimulator(Simulator):
+    cdef double theta
+
+    cdef void _simulate(self, double total_time, bint dump_output = *)
 

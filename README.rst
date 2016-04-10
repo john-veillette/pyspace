@@ -3,7 +3,7 @@ PySpace
 
 | **A python-based toolbox for galactic simulations**
 |
-| |Build Status| |Docs Status| |Health|
+| |Build Status| |Docs Status| |Coverage|
 
 Documentation
 -------------
@@ -24,7 +24,8 @@ Algorithms
 ----------
 
 -  Brute Force :math:`O(n^2)`
-
+-  Barnes-Hut :math:`O(nlogn)`
+ 
 Installation
 ------------
 
@@ -38,15 +39,49 @@ Dependencies
 -  ParaView / MayaVi or any other vtk rendering tool (optional)
 
 Linux and OSX
-~~~~~~~~~~~~~
+-------------
 
-To install the latest stable version run ``pip install pyspace`` 
+To install the latest stable version, run::
+    
+    $ pip install pyspace
 
-| To install development version, clone this repository by
-  ``git clone https://github.com/adityapb/pyspace.git``
-| Run ``python setup.py install`` to install.
-|
-| **PySpace doesn't support Windows currently**
+To install development version, clone this repository by:: 
+
+    $ git clone https://github.com/adityapb/pyspace.git
+
+To install, run::
+
+    $ python setup.py install
+
+To install without OpenMP, set ``USE_OPENMP`` environment variable
+to 0 and then install::
+
+    $ export USE_OPENMP=0 
+    $ python setup.py install
+
+**PySpace doesn't support Windows currently**
+
+Running the tests
+-----------------
+
+For running the tests you will need to install ``nose``, install using::
+
+    $ pip install nose
+
+To run the tests, cd to pyspace/tests directory and run::
+    
+    $ nosetests -v
+
+Running the benchmarks
+----------------------
+
+For running benchmarks you will need to install ``pandas``, install using::
+
+    $ pip install pandas
+
+To run the benchmarks, cd to benchmarks directory and run::
+
+    $ python run_benchmarks.py
 
 Contributing
 ------------
@@ -62,6 +97,4 @@ for C++.
    :target: http://pyspace.readthedocs.org/en/stable/?badge=stable
    :alt: Documentation Status
 
-.. |Health| image:: https://landscape.io/github/adityapb/pyspace/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/adityapb/pyspace/master
-   :alt: Code Health
+.. |Coverage| image:: https://coveralls.io/repos/github/adityapb/pyspace/badge.svg?branch=barnes :target: https://coveralls.io/github/adityapb/pyspace?branch=barnes

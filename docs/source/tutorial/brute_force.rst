@@ -2,10 +2,6 @@
 Tutorial
 ========
 
---------------------
-Brute Force Tutorial
---------------------
-
 Imports
 ~~~~~~~
 
@@ -25,6 +21,13 @@ Imports
     For dumping vtk output with custom data, use the ``dump_vtk`` function in
     ``pyspace.utils``.
 
+For using ``BarnesSimulator``, use
+
+.. code-block:: python
+
+    # Import BarnesSimulator instead of BruteForceSimulator
+    from pyspace.simulator import BarnesSimulator
+
 
 Setting up PlanetArray
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -43,7 +46,7 @@ The following example sets up a PlanetArray with planets arranged in a cube
 Setting up the Simulation
 ~~~~~~~~~~~~~~~~~~~~~~~~~
 
-``BruteForceSimulator`` is the base of all computations in PySpace.
+``Simulator`` is the base of all computations in PySpace.
 The following snippet shows how to set up the simulation.
 
 .. code-block:: python
@@ -53,6 +56,17 @@ The following snippet shows how to set up the simulation.
 
     sim = BruteForceSimulator(pa, G, dt, "square_grid")
 
+For using ``BarnesSimulator``, you need to define :math:`\theta` (``thetha``) (see framework).
+
+.. code-block:: python
+
+    theta = 0.1
+    sim = BarnesSimulator(pa, G, dt, theta, "square_grid")
+
+.. note::
+
+    As :math:`\theta` is increased, speed of simulation will increase, but accuracy
+    will decrease.
 
 Running the simulator
 ~~~~~~~~~~~~~~~~~~~~~
