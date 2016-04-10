@@ -97,4 +97,4 @@ for C++.
    :target: http://pyspace.readthedocs.org/en/stable/?badge=stable
    :alt: Documentation Status
 
-.. |Coverage| image:: https://coveralls.io/repos/github/adityapb/pyspace/badge.svg?branch=barnes :target: https://coveralls.io/github/adityapb/pyspace?branch=barnes
+.. |Coverage| image:: https://coveralls.io/repos/github/adityapb/pyspace/badge.svg?branch=master :target: https://coveralls.io/github/adityapb/pyspace?branch=master
