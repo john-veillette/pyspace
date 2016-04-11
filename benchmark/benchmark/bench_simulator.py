@@ -8,7 +8,7 @@ class BruteForce(Benchmark):
 
     def time_simulate(self):
         """Time BruteForceSimulator.simulate"""
-        sim = BruteForceSimulator(self.pa, 1, 1, "square_grid")
+        sim = BruteForceSimulator(self.pa, 1, 1, sim_name = "square_grid")
         sim.simulate(10, dump_output = False)
 
 class BarnesHut(Benchmark):
@@ -17,6 +17,6 @@ class BarnesHut(Benchmark):
 
     def time_simulate(self):
         """Time BarnesSimulator.simulate"""
-        sim = BarnesSimulator(self.pa, 1, 1, 0, "square_grid")
+        sim = BarnesSimulator(self.pa, 1, 1, 0, sim_name = "square_grid")
         sim.simulate(10, dump_output = False)
 
