@@ -4,7 +4,6 @@
 #include <omp.h>
 #include <list>
 
-#define MAGNITUDE(X, Y, Z) sqrt(X*X + Y*Y + Z*Z)
 #define NORM2(X, Y, Z) X*X + Y*Y + Z*Z
 #define MIN(X,Y) ((X) < (Y)) ? (X) : (Y)
 #define MAX(X,Y) ((X) < (Y)) ? (Y) : (X)
