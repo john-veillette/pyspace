@@ -1,8 +1,7 @@
 import numpy
-from distutils.core import setup
-from setuptools import find_packages
-from distutils.extension import Extension
-from Cython.Build import cythonize
+from setuptools import find_packages, setup
+from Cython.Distutils import Extension
+from Cython.Distutils import build_ext
 import os
 from os import path
 
@@ -78,7 +77,8 @@ ext_modules += [
         Extension(
             "pyspace.planet",
             ["pyspace/planet.pyx"],
-            include_dirs = [numpy.get_include()]
+            include_dirs = [numpy.get_include()],
+            language="c++"
             )
         ]
 
@@ -90,11 +90,13 @@ ext_modules += [
             ["src/pyspace.cpp", "pyspace/simulator.pyx"],
             include_dirs = ["src", numpy.get_include()],
             extra_compile_args = omp_compile_flags,
-            extra_link_args = omp_link_flags
+            extra_link_args = omp_link_flags,
+            cython_compile_time_env = {'USE_CUDA': False},
+            language="c++"
             )
         ]
 
-ext_modules = cythonize(ext_modules)
+#ext_modules = cythonize(ext_modules)
 
 setup(
         name="PySpace",
@@ -106,6 +108,7 @@ setup(
         version="0.0.2",
         install_requires=requires,
         packages=find_packages(),
-        ext_modules = ext_modules
+        ext_modules = ext_modules,
+        cmdclass = {'build_ext': build_ext}
     )
 

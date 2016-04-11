@@ -1,4 +1,3 @@
-# distutils: language = c++
 from libcpp.vector cimport vector
 from libc.math cimport floor
 from pyspace.planet cimport PlanetArray
@@ -14,6 +13,11 @@ cdef extern from "numpy/arrayobject.h":
 
 cdef extern from "pyspace.h":
     cdef void brute_force_update(double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*, double, double, int, double) nogil
+
+    cdef void brute_force_gpu_update(double*, double*, double*,
             double*, double*, double*,
             double*, double*, double*,
             double*, double, double, int, double) nogil

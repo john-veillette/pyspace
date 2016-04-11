@@ -1,4 +1,3 @@
-# distutils: language = c++
 cimport cython
 import os
 from pyspace.utils import dump_vtk
@@ -140,10 +139,18 @@ cdef class BruteForceSimulator(Simulator):
             self.curr_time_step += 1
 
         for i from 0<=i<n_steps:
-            brute_force_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
-                    self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
-                    self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
-                    self.planets.m_ptr, G, dt, self.num_planets, self.epsilon)
+            IF USE_CUDA:
+                brute_force_gpu_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
+                        self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
+                        self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
+                        self.planets.m_ptr, G, dt, self.num_planets, self.epsilon)
+
+            ELSE:
+                brute_force_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
+                        self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
+                        self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
+                        self.planets.m_ptr, G, dt, self.num_planets, self.epsilon)
+
             if dump_output:
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())
