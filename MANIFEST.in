@@ -4,6 +4,7 @@ recursive-include benchmark *.py
 recursive-include benchmark/benchmark *.py
 recursive-include docs *.rst
 recursive-include docs *.py
+recursive-include src *.cu
 recursive-include pyspace *.pyx *.pxd
 recursive-exclude pyspace *.cpp
 prune docs/build
