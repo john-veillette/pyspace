@@ -97,10 +97,11 @@ cdef class BarnesSimulator(Simulator):
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())
 
-                sys.stdout.write("\r%d%%" % ((self.curr_time_step)*100/n_steps))
-                sys.stdout.flush()
-
                 self.curr_time_step += 1
+
+            sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
+            sys.stdout.flush()
+
 
 
 cdef class BruteForceSimulator(Simulator):
@@ -158,10 +159,11 @@ cdef class BruteForceSimulator(Simulator):
             if dump_output:
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())
-                sys.stdout.write("\r%d%%" % ((self.curr_time_step)*100/n_steps))
-                sys.stdout.flush()
 
                 self.curr_time_step += 1
+
+            sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
+            sys.stdout.flush()
 
 
 
