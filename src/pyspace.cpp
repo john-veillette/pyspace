@@ -141,12 +141,12 @@ BarnesPlanet build_barnes_tree(BarnesNode *node, list<BarnesPlanet> &planets,
 void get_barnes_acceleration(BarnesNode *node, 
                              double x, double y, double z,
                              double &a_x, double &a_y, double &a_z,
-                             double G, double theta, double eps)
+                             double G, double theta, double eps2)
 {
     double r_x = node->x - x;
     double r_y = node->y - y;
     double r_z = node->z - z;
-    double dist = sqrt(eps*eps + NORM2(r_x, r_y, r_z));
+    double dist = sqrt(eps2 + NORM2(r_x, r_y, r_z));
     
     if(dist < ERR)
         return;
@@ -168,7 +168,7 @@ void get_barnes_acceleration(BarnesNode *node,
                     BarnesNode *child = node->children[i][j][k];
                     if(child!=NULL)
                     {
-                        get_barnes_acceleration(child, x, y, z, a_x, a_y, a_z, G, theta, eps);
+                        get_barnes_acceleration(child, x, y, z, a_x, a_y, a_z, G, theta, eps2);
                     }
                 }
       
@@ -185,6 +185,8 @@ void barnes_update(double *x, double *y, double *z,
     double min_x, max_x, min_y, max_y, min_z, max_z;
     min_x = min_y = min_z = INFINITY;
     max_x = max_y = max_z = -INFINITY;
+
+    double eps2 = eps*eps;
 
     for(int i=0;i<num_planets;i++)
     {
@@ -214,7 +216,7 @@ void barnes_update(double *x, double *y, double *z,
         a_z_temp = 0;
         
         get_barnes_acceleration(root, x[i], y[i], z[i], 
-                a_x_temp, a_y_temp, a_z_temp, G, theta, eps);
+                a_x_temp, a_y_temp, a_z_temp, G, theta, eps2);
         
         x[i] += v_x[i]*dt + a_x[i]*0.5*dt*dt;
         y[i] += v_y[i]*dt + a_y[i]*0.5*dt*dt;
@@ -246,6 +248,7 @@ void brute_force_update(double* x, double* y, double* z,
     double temp_a_x = 0, temp_a_y = 0, temp_a_z = 0;
     double dist_ij, cnst;
     double m_j;
+    double eps2 = eps*eps;
 
     double* x_old = new double[num_planets];
     double* y_old = new double[num_planets];
@@ -293,7 +296,7 @@ void brute_force_update(double* x, double* y, double* z,
             y_ji = r_y_j - r_y_i;
             z_ji = r_z_j - r_z_i;
 
-            dist_ij = sqrt(eps*eps + NORM2(x_ji, y_ji, z_ji));
+            dist_ij = sqrt(eps2 + NORM2(x_ji, y_ji, z_ji));
 
             cnst = (G*m_j/(dist_ij*dist_ij*dist_ij));
 
