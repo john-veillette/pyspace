@@ -1,5 +1,6 @@
 cimport cython
 import os
+import sys
 from pyspace.utils import dump_vtk
 
 cdef class Simulator:
@@ -97,6 +98,8 @@ cdef class BarnesSimulator(Simulator):
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())
                 self.curr_time_step += 1
+                sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
+                sys.stdout.flush()
 
 
 cdef class BruteForceSimulator(Simulator):
@@ -155,4 +158,6 @@ cdef class BruteForceSimulator(Simulator):
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())
                 self.curr_time_step += 1
+                sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
+                sys.stdout.flush()
 
