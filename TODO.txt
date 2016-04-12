@@ -2,7 +2,7 @@ ToDo list for PySpace
 
 - Write docs and set up sphinx. Also set up readthedocs ... DONE
 
-- Implement serial version of Barnes Hut algorithm
+- Implement serial version of Barnes Hut algorithm ... DONE
 
 - Write a script to dump vtk output ... DONE
 
@@ -15,3 +15,5 @@ ToDo list for PySpace
 - Find error in example simulations
 
 - Set up framework for benchmarking ... DONE
+
+- Update Tutorial before next release
