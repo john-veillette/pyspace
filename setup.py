@@ -15,7 +15,7 @@ def find_in_path(name, path):
             return os.path.abspath(binpath)
     return None
 
-
+#Implementation based on https://github.com/rmcgibbo/npcuda-example
 def locate_cuda():
     """Locate the CUDA environment on the system
     Returns a dict with keys 'home', 'nvcc', 'include', and 'lib64'
@@ -198,19 +198,7 @@ if CUDA != False:
                 )
             ]
 
-    setup(
-            name="PySpace",
-            author="PySpace developers",
-            author_email="adityapb1546@gmail.com",
-            description="A toolbox for galactic simulations.",
-            url = "https://github.com/adityapb/pyspace",
-            long_description = open('README.rst').read(),
-            version="0.0.2",
-            install_requires=requires,
-            packages=find_packages(),
-            ext_modules = ext_modules,
-            cmdclass = {'build_ext': custom_build_ext}
-        )
+    compiler = custom_build_ext
 
 else:
     ext_modules += [
@@ -225,18 +213,21 @@ else:
                 )
             ]
 
-    setup(
-            name="PySpace",
-            author="PySpace developers",
-            author_email="adityapb1546@gmail.com",
-            description="A toolbox for galactic simulations.",
-            url = "https://github.com/adityapb/pyspace",
-            long_description = open('README.rst').read(),
-            version="0.0.2",
-            install_requires=requires,
-            packages=find_packages(),
-            ext_modules = ext_modules,
-            cmdclass = {'build_ext': build_ext}
-        )
+    compiler = build_ext
+
+
+setup(
+        name="PySpace",
+        author="PySpace developers",
+        author_email="adityapb1546@gmail.com",
+        description="A toolbox for galactic simulations.",
+        url = "https://github.com/adityapb/pyspace",
+        long_description = open('README.rst').read(),
+        version="0.0.2",
+        install_requires=requires,
+        packages=find_packages(),
+        ext_modules = ext_modules,
+        cmdclass = {'build_ext': compiler}
+    )
 
 
