@@ -59,6 +59,12 @@ to 0 and then install::
     $ export USE_OPENMP=0 
     $ python setup.py install
 
+To install without GPU support, set ``USE_CUDA`` environment variable
+to 0 and then install::
+
+    $ export USE_CUDA=0
+    $ python setup.py install
+    
 **PySpace doesn't support Windows currently**
 
 Running the tests
