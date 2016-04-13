@@ -5,6 +5,11 @@ PySpace
 |
 | |Build Status| |Docs Status| |Coverage|
 
+.. figure:: docs/source/screenshots/galaxy_collision.jpg
+    :scale: 70 %
+
+    Galaxy collision simulation done using PySpace
+
 Documentation
 -------------
 
