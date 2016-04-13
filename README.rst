@@ -4,6 +4,7 @@ PySpace
 | **A python-based toolbox for galactic simulations**
 |
 | |Build Status| |Docs Status| |Coverage|
+|
 
 .. figure:: docs/source/screenshots/galaxy_collision.jpg
     :scale: 70 %
