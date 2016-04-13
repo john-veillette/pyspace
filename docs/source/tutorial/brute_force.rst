@@ -18,8 +18,8 @@ Imports
 .. note::
     
     These are common to all simulations with brute force.
-    For dumping vtk output with custom data, use the ``dump_vtk`` function in
-    ``pyspace.utils``.
+    For dumping vtk output with custom data, use the ``set_data`` function in
+    ``pyspace.simulator.Simulator``.
 
 For using ``BarnesSimulator``, use
 
@@ -96,8 +96,6 @@ Using this method for the above problem, you can write,
 .. code-block:: python
 
     # Do all imports and set up the PlanetArray as done above
-    # Import dump_vtk from pyspace.utils
-    from pyspace.utils import dump_vtk
 
     # Set up the simulator
     sim = BruteForceSimulator(pa, G, dt, "square_grid")
