@@ -55,6 +55,7 @@ cdef class BruteForceSimulator(Simulator):
 
 cdef class BarnesSimulator(Simulator):
     cdef double theta
+    cdef double epsilon
 
     cdef void _simulate(self, double total_time, bint dump_output = *)
 

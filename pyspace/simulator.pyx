@@ -70,6 +70,7 @@ cdef class BarnesSimulator(Simulator):
     def __init__(self, PlanetArray pa, double G, double dt, double theta = 1.0,
             double epsilon = 0, str sim_name = "pyspace"):
         self.theta = theta
+        self.epsilon = epsilon
         Simulator.__init__(self, pa, G, dt, sim_name)
 
     @cython.cdivision(True)
@@ -101,7 +102,6 @@ cdef class BarnesSimulator(Simulator):
 
             sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
             sys.stdout.flush()
-
 
 
 cdef class BruteForceSimulator(Simulator):
