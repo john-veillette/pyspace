@@ -3,7 +3,7 @@ Tutorial
 ========
 
 Imports
-~~~~~~~
+-------
 
 .. code-block:: python
 
@@ -30,7 +30,7 @@ For using ``BarnesSimulator``, use
 
 
 Setting up PlanetArray
-~~~~~~~~~~~~~~~~~~~~~~
+----------------------
 
 ``PlanetArray`` is the container for all objects in a simulation.
 The following example sets up a PlanetArray with planets arranged in a cube
@@ -44,7 +44,7 @@ The following example sets up a PlanetArray with planets arranged in a cube
 
 
 Setting up the Simulation
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 ``Simulator`` is the base of all computations in PySpace.
 The following snippet shows how to set up the simulation.
@@ -68,8 +68,26 @@ For using ``BarnesSimulator``, you need to define :math:`\theta` (``thetha``) (s
     As :math:`\theta` is increased, speed of simulation will increase, but accuracy
     will decrease.
 
+Gravity softening
+~~~~~~~~~~~~~~~~~
+
+For using gravity softening (see framework), you can set the value of :math:`\epsilon` by
+doing the following.
+
+.. code:: python
+
+    epsilon = 1
+    G = 1
+    dt = 0.1
+
+    sim = BruteForceSimulator(pa, G = G, dt = dt, epsilon = epsilon, sim_name = "square_grid")
+
+.. note::
+
+    Use :math:`\epsilon` only when planets are colliding.
+
 Running the simulator
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 ``BruteForceSimulator::simulate`` simulates the system for a given time.
 Following is the syntax for ``simulate``.
@@ -84,7 +102,7 @@ Following is the syntax for ``simulate``.
     ``dump_output = True`` essentially dumps a vtk output for every timestep.
 
 Dumping custom vtk output
-~~~~~~~~~~~~~~~~~~~~~~~~~
+-------------------------
 
 ``pyspace.simulator.BruteForceSimulator`` by default only dumps 
 :math:`v_x, v_y, v_z` ie. the velocity in the generated vtk output. To dump
