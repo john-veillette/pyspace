@@ -8,15 +8,14 @@ It is implemented in Cython and the computational part is implemented in pure C+
 PySpace provides parallel support through OpenMP and we plan on providing GPU support
 in future releases.
 
-Here's a video of planets arranged in cube simulation using PySpace.
+Here's a video of galaxy collision simulation using PySpace.
 
 .. raw:: html
 
     <div align="center">
-        <iframe width="420" height="315" src="https://www.youtube.com/embed/aJneOtU__LY" frameborder="0" allowfullscreen>
+        <iframe width="420" height="315" src="https://www.youtube.com/embed/zkY9ozgtPrY" frameborder="0" allowfullscreen>
         </iframe>
     </div>
-
 
 --------
 Features
