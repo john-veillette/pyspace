@@ -1,4 +1,7 @@
 #include "pyspace.h"
+#include <math.h>
+
+#define NORM2(X, Y, Z) X*X + Y*Y + Z*Z
 
 __device__
 void calculate_force(double* x_old, double* y_old, double* z_old, double* m,
@@ -95,8 +98,8 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         cudaMalloc((void**)&dev_a_z, num_planets*sizeof(double)) != cudaSuccess ||
         cudaMalloc((void**)&dev_m, num_planets*sizeof(double)) != cudaSuccess   )
     {
-        std::cerr << "ERROR: cudaMalloc failed!";
-        std::terminate();
+        fprintf(stderr, "ERROR: cudaMalloc failed!");
+        exit(0);
     }
 
     if( cudaMemcpy(dev_x, x, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
@@ -113,8 +116,8 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         cudaMemcpy(dev_a_z, a_z, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_m, m, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess )
     {
-        std::cerr << "ERROR: cudaMemcpy from host to device failed!";
-        std::terminate();
+        fprintf(stderr, "ERROR: cudaMemcpy from host to device failed!");
+        exit(0);
     }
 
     brute_force_kernel<<<num_planets/1024 + 1, 1024>>>(dev_x, dev_y, dev_z,
@@ -137,8 +140,8 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         cudaMemcpy(dev_a_z, a_z, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(dev_m, m, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess )
     {
-        std::cerr << "ERROR: cudaMemcpy from device to host failed!";
-        std::terminate();
+        fprintf(stderr, "ERROR: cudaMemcpy from device to host failed!");
+        exit(0);
     }
 
 }
