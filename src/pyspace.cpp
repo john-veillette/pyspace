@@ -234,6 +234,44 @@ void barnes_update(double *x, double *y, double *z,
     delete root;
 }
 
+void calculate_force(double* x_old, double* y_old, double* z_old, double* m,
+        double x_i, double y_i, double z_i,
+        double& a_x, double& a_y, double& a_z,
+        int num_planets, double eps2, double G)
+{
+    double r_x_j, r_y_j, r_z_j;
+    double x_ji, y_ji, z_ji;
+    double m_j;
+
+    double cnst;
+    double dist_ij;
+
+    for(int j=0; j<num_planets; j++)
+    {
+        r_x_j = x_old[j];
+        r_y_j = y_old[j];
+        r_z_j = z_old[j];
+
+        m_j = m[j];
+
+        x_ji = r_x_j - x_i;
+        y_ji = r_y_j - y_i;
+        z_ji = r_z_j - z_i;
+
+        dist_ij = sqrt(eps2 + NORM2(x_ji, y_ji, z_ji));
+
+        if(dist_ij == 0)
+            return;
+
+        cnst = (G*m_j/(dist_ij*dist_ij*dist_ij));
+
+        a_x += x_ji*cnst;
+        a_y += y_ji*cnst;
+        a_z += z_ji*cnst;
+    }
+
+}
+
 void brute_force_update(double* x, double* y, double* z,
         double* v_x, double* v_y, double* v_z,
         double* a_x, double* a_y, double* a_z,
@@ -242,12 +280,8 @@ void brute_force_update(double* x, double* y, double* z,
     //Calculate and update all pointers
     double a_x_i, a_y_i, a_z_i;
     double v_x_i, v_y_i, v_z_i;
-    double r_x_i, r_y_i, r_z_i;
-    double r_x_j, r_y_j, r_z_j;
-    double x_ji, y_ji, z_ji;
     double temp_a_x = 0, temp_a_y = 0, temp_a_z = 0;
-    double dist_ij, cnst;
-    double m_j;
+    double cnst;
     double eps2 = eps*eps;
 
     double* x_old = new double[num_planets];
@@ -264,9 +298,7 @@ void brute_force_update(double* x, double* y, double* z,
 
     #pragma omp parallel for shared(x, y, z, x_old, y_old, z_old, v_x, v_y, v_z, \
             a_x, a_y, a_z, m, G, dt) \
-    private(a_x_i, a_y_i, a_z_i, v_x_i, v_y_i, v_z_i, r_x_i, r_y_i, r_z_i, r_x_j, \
-      r_y_j, r_z_j, x_ji, y_ji, z_ji, temp_a_x, temp_a_y, temp_a_z, dist_ij, \
-      cnst, m_j)
+    private(a_x_i, a_y_i, a_z_i, v_x_i, v_y_i, v_z_i, temp_a_x, temp_a_y, temp_a_z, cnst)
     for(int i=0; i<num_planets; i++)
     {
         a_x_i = a_x[i];
@@ -277,34 +309,11 @@ void brute_force_update(double* x, double* y, double* z,
         v_y_i = v_y[i];
         v_z_i = v_z[i];
 
-        r_x_i = x[i];
-        r_y_i = y[i];
-        r_z_i = z[i];
-
-        for(int j=0; j<num_planets; j++)
-        {
-            if(j == i)
-                continue;
-
-            r_x_j = x_old[j];
-            r_y_j = y_old[j];
-            r_z_j = z_old[j];
-
-            m_j = m[j];
-
-            x_ji = r_x_j - r_x_i;
-            y_ji = r_y_j - r_y_i;
-            z_ji = r_z_j - r_z_i;
-
-            dist_ij = sqrt(eps2 + NORM2(x_ji, y_ji, z_ji));
-
-            cnst = (G*m_j/(dist_ij*dist_ij*dist_ij));
-
-            temp_a_x += x_ji*cnst;
-            temp_a_y += y_ji*cnst;
-            temp_a_z += z_ji*cnst;
-        }
-
+        calculate_force(x_old, y_old, z_old, m,
+                x_old[i], y_old[i], z_old[i],
+                temp_a_x, temp_a_y, temp_a_z,
+                num_planets, eps2, G);
+        
         a_x[i] = temp_a_x;
         a_y[i] = temp_a_y;
         a_z[i] = temp_a_z;
