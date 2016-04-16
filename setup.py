@@ -227,7 +227,8 @@ setup(
         install_requires=requires,
         packages=find_packages(),
         ext_modules = ext_modules,
-        cmdclass = {'build_ext': compiler}
+        cmdclass = {'build_ext': compiler},
+        zip_safe = False
     )
 
 
