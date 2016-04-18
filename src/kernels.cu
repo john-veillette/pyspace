@@ -54,27 +54,27 @@ void brute_force_kernel(double* x, double* y, double* z,
 
     int id = blockIdx.x*blockDim.x + threadIdx.x;
 
-    if(id > num_planets)
+    if(id >= num_planets)
         return;
     
     //Update id'th planet
 
-    double a_x_i = a_x[i];
-    double a_y_i = a_y[i];
-    double a_z_i = a_z[i];
+    double a_x_i = a_x[id];
+    double a_y_i = a_y[id];
+    double a_z_i = a_z[id];
 
     calculate_force(x_old, y_old, z_old, m,
             x_old[id], y_old[id], z_old[id],
             a_x[id], a_y[id], a_z[id],
             num_planets, eps2, G);
 
-    x[i] += v_x[i]*dt + a_x_i*0.5*dt*dt;
-    y[i] += v_y[i]*dt + a_y_i*0.5*dt*dt;
-    z[i] += v_z[i]*dt + a_z_i*0.5*dt*dt;
+    x[id] += v_x[id]*dt + a_x_i*0.5*dt*dt;
+    y[id] += v_y[id]*dt + a_y_i*0.5*dt*dt;
+    z[id] += v_z[id]*dt + a_z_i*0.5*dt*dt;
 
-    v_x[i] += (a_x_i + a_x[i])*0.5*dt;
-    v_y[i] += (a_y_i + a_y[i])*0.5*dt;
-    v_z[i] += (a_z_i + a_z[i])*0.5*dt;
+    v_x[id] += (a_x_i + a_x[id])*0.5*dt;
+    v_y[id] += (a_y_i + a_y[id])*0.5*dt;
+    v_z[id] += (a_z_i + a_z[id])*0.5*dt;
 }
 
 
