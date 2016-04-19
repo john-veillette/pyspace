@@ -77,24 +77,26 @@ cdef class PlanetArray:
         self.a_y = np.zeros(num_planets)
         self.a_z = np.zeros(num_planets)
 
-        self.x_ptr = <double*> self.x.data
-        self.y_ptr = <double*> self.y.data
-        self.z_ptr = <double*> self.z.data
-
-        self.v_x_ptr = <double*> self.v_x.data
-        self.v_y_ptr = <double*> self.v_y.data
-        self.v_z_ptr = <double*> self.v_z.data
-
-        self.a_x_ptr = <double*> self.a_x.data
-        self.a_y_ptr = <double*> self.a_y.data
-        self.a_z_ptr = <double*> self.a_z.data
-
-        self.m_ptr = <double*> self.m.data
-        self.r_ptr = <double*> self.r.data
-
         self.com_x = 0
         self.com_y = 0
         self.com_z = 0
+
+    cpdef concatenate(self, PlanetArray other):
+        """Concatenates 'other' PlanetArray to self"""
+        self.x = np.concatenate([self.x, other.x])
+        self.y = np.concatenate([self.y, other.y])
+        self.z = np.concatenate([self.z, other.z])
+
+        self.v_x = np.concatenate([self.v_x, other.v_x])
+        self.v_y = np.concatenate([self.v_y, other.v_y])
+        self.v_z = np.concatenate([self.v_z, other.v_z])
+
+        self.a_x = np.concatenate([self.a_x, other.a_x])
+        self.a_y = np.concatenate([self.a_y, other.a_y])
+        self.a_z = np.concatenate([self.a_z, other.a_z])
+
+        self.m = np.concatenate([self.m, other.m])
+        self.r = np.concatenate([self.r, other.r])
 
     cpdef int get_number_of_planets(self):
         """Returns number of planets in the PlanetArray
@@ -119,10 +121,14 @@ cdef class PlanetArray:
             Indices of planets whose distance is sought.
 
         """
+        cdef double* x_ptr = <double*> self.x.data
+        cdef double* y_ptr = <double*> self.y.data
+        cdef double* z_ptr = <double*> self.z.data
+
         return sqrt(
-                (self.x_ptr[i] - self.x_ptr[j])**2 + \
-                (self.y_ptr[i] - self.y_ptr[j])**2 + \
-                (self.z_ptr[i] - self.z_ptr[j])**2
+                (x_ptr[i] - x_ptr[j])**2 + \
+                (y_ptr[i] - y_ptr[j])**2 + \
+                (z_ptr[i] - z_ptr[j])**2
                 )
 
     @cython.cdivision(True)
@@ -138,19 +144,26 @@ cdef class PlanetArray:
             Index of the particle whose potential energy is sought
 
         """
+        cdef double* m_ptr = <double*> self.m.data
+
         cdef double pot_energy = 0
         cdef int num_planets = self.get_number_of_planets()
         cdef int j
 
         for j from 0<=j<num_planets:
             if i!=j:
-                pot_energy += -G*self.m_ptr[i]*self.m_ptr[j]/self.dist(i,j)
+                pot_energy += -G*m_ptr[i]*m_ptr[j]/self.dist(i,j)
 
         return pot_energy
 
     cpdef double kinetic_energy_planet(self, int i):
         """Returns kinetic energy of planet 'j'"""
-        return 0.5*self.m_ptr[i]*(self.v_x_ptr[i]**2 + self.v_y_ptr[i]**2 + self.v_z_ptr[i]**2)
+        cdef double* m_ptr = <double*> self.m.data
+        cdef double* v_x_ptr = <double*> self.v_x.data
+        cdef double* v_y_ptr = <double*> self.v_y.data
+        cdef double* v_z_ptr = <double*> self.v_z.data
+
+        return 0.5*m_ptr[i]*(v_x_ptr[i]**2 + v_y_ptr[i]**2 + v_z_ptr[i]**2)
 
     @cython.cdivision(True)
     cpdef double potential_energy(self, double G):
@@ -185,6 +198,11 @@ cdef class PlanetArray:
 
     cpdef double com(self):
         """Sets com_x, com_y, com_z to centre of mass of the system of planets"""
+        cdef double* x_ptr = <double*> self.x.data
+        cdef double* y_ptr = <double*> self.y.data
+        cdef double* z_ptr = <double*> self.z.data
+        cdef double* m_ptr = <double*> self.m.data
+
         cdef double com_x = 0
         cdef double com_y = 0
         cdef double com_z = 0
@@ -194,9 +212,9 @@ cdef class PlanetArray:
 
         cdef int i
         for i from 0<=i<num_planets:
-            com_x += self.x_ptr[i]*self.m_ptr[i]
-            com_y += self.y_ptr[i]*self.m_ptr[i]
-            com_z += self.z_ptr[i]*self.m_ptr[i]
+            com_x += x_ptr[i]*m_ptr[i]
+            com_y += y_ptr[i]*m_ptr[i]
+            com_z += z_ptr[i]*m_ptr[i]
 
         self.com_x = com_x/m_tot
         self.com_y = com_y/m_tot

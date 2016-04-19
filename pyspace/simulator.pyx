@@ -13,6 +13,21 @@ cdef class Simulator:
         self.sim_name = sim_name
         self._custom_data = False
 
+        self.x_ptr = <double*> self.planets.x.data
+        self.y_ptr = <double*> self.planets.y.data
+        self.z_ptr = <double*> self.planets.z.data
+
+        self.v_x_ptr = <double*> self.planets.v_x.data
+        self.v_y_ptr = <double*> self.planets.v_y.data
+        self.v_z_ptr = <double*> self.planets.v_z.data
+
+        self.a_x_ptr = <double*> self.planets.a_x.data
+        self.a_y_ptr = <double*> self.planets.a_y.data
+        self.a_z_ptr = <double*> self.planets.a_z.data
+
+        self.m_ptr = <double*> self.planets.m.data
+        self.r_ptr = <double*> self.planets.r.data
+
         self.num_planets = pa.get_number_of_planets()
 
     def set_data(self, **kwargs):
@@ -88,10 +103,10 @@ cdef class BarnesSimulator(Simulator):
             self.curr_time_step += 1
 
         for i from 0<=i<n_steps:
-            barnes_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
-                    self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
-                    self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
-                    self.planets.m_ptr, G, dt, self.num_planets,
+            barnes_update(self.x_ptr, self.y_ptr, self.z_ptr,
+                    self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                    self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
+                    self.m_ptr, G, dt, self.num_planets,
                     self.theta, self.epsilon)
 
             if dump_output:
@@ -145,16 +160,16 @@ cdef class BruteForceSimulator(Simulator):
 
         for i from 0<=i<n_steps:
             IF USE_CUDA:
-                brute_force_gpu_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
-                        self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
-                        self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
-                        self.planets.m_ptr, G, dt, self.num_planets, self.epsilon)
+                brute_force_gpu_update(self.x_ptr, self.y_ptr, self.z_ptr,
+                        self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                        self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
+                        self.m_ptr, G, dt, self.num_planets, self.epsilon)
 
             ELSE:
-                brute_force_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
-                        self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
-                        self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
-                        self.planets.m_ptr, G, dt, self.num_planets, self.epsilon)
+                brute_force_update(self.x_ptr, self.y_ptr, self.z_ptr,
+                        self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                        self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
+                        self.m_ptr, G, dt, self.num_planets, self.epsilon)
 
             if dump_output:
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),

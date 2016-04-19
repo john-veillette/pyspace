@@ -40,6 +40,21 @@ cdef class Simulator:
     cdef bint _custom_data
     cdef dict _data
 
+    cdef double* x_ptr
+    cdef double* y_ptr
+    cdef double* z_ptr
+
+    cdef double* v_x_ptr
+    cdef double* v_y_ptr
+    cdef double* v_z_ptr
+
+    cdef double* a_x_ptr
+    cdef double* a_y_ptr
+    cdef double* a_z_ptr
+
+    cdef double* m_ptr
+    cdef double* r_ptr
+
     cpdef simulate(self, double total_time, bint dump_output = *)
     cdef dict get_data(self)
 
