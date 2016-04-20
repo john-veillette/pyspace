@@ -84,6 +84,18 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         double* a_x, double* a_y, double* a_z,
         double* m, double G, double dt, int num_planets, double eps)
 {
+    double* x_old = (double*) malloc(num_planets*sizeof(double));
+    double* y_old = (double*) malloc(num_planets*sizeof(double));
+    double* z_old = (double*) malloc(num_planets*sizeof(double));
+
+    int i;
+    for(i=0; i<num_planets; i++)
+    {
+        x_old[i] = x[i];
+        y_old[i] = y[i];
+        z_old[i] = z[i];
+    }
+
     if( cudaMalloc((void**)&dev_x, num_planets*sizeof(double)) != cudaSuccess ||
         cudaMalloc((void**)&dev_y, num_planets*sizeof(double)) != cudaSuccess ||
         cudaMalloc((void**)&dev_z, num_planets*sizeof(double)) != cudaSuccess ||
@@ -143,6 +155,30 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         fprintf(stderr, "ERROR: cudaMemcpy from device to host failed!");
         exit(0);
     }
+
+    //CUDA free
+
+    if( cudaFree(dev_x) != cudaSuccess ||
+        cudaFree(dev_y) != cudaSuccess ||
+        cudaFree(dev_z) != cudaSuccess ||
+        cudaFree(dev_x_old) != cudaSuccess ||
+        cudaFree(dev_y_old) != cudaSuccess ||
+        cudaFree(dev_z_old) != cudaSuccess ||
+        cudaFree(dev_v_x) != cudaSuccess ||
+        cudaFree(dev_v_y) != cudaSuccess ||
+        cudaFree(dev_v_z) != cudaSuccess ||
+        cudaFree(dev_a_x) != cudaSuccess ||
+        cudaFree(dev_a_y) != cudaSuccess ||
+        cudaFree(dev_a_z) != cudaSuccess ||
+        cudaFree(dev_m) != cudaSuccess  )
+    {
+        fprintf(stderr, "ERROR: cudaFree failed!");
+        exit(0);
+    }
+
+    free(x_old);
+    free(y_old);
+    free(z_old);
 
 }
 
