@@ -4,8 +4,8 @@
 - Release date: Not released yet
 - Add GPU support through CUDA for ``BruteForceSimulator``
 - Re-organized the C++ brute_force_update method. Gives a 2x speedup for benchmarks.
-- Update private API for PlanetArray and Simulator that now allows users to change
-  the underlying numpy arrays in a PlanetArray without having to make new ones.
+- Update private API for ``PlanetArray`` and ``Simulator`` that now allows users to change
+  the underlying numpy arrays in a ``PlanetArray`` without having to make new ones.
 - Print progress percentage for simulations
 
 0.0.2
