@@ -97,6 +97,10 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         z_old[i] = z[i];
     }
 
+    double *dev_x, *dev_y, *dev_z, *dev_x_old, *dev_y_old, *dev_z_old;
+    double *dev_v_x, *dev_v_y, *dev_v_z, *dev_a_x, *dev_a_y, *dev_a_z;
+    double *m;
+
     if( cudaMalloc((void**)&dev_x, num_planets*sizeof(double)) != cudaSuccess ||
         cudaMalloc((void**)&dev_y, num_planets*sizeof(double)) != cudaSuccess ||
         cudaMalloc((void**)&dev_z, num_planets*sizeof(double)) != cudaSuccess ||
