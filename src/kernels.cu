@@ -1,5 +1,6 @@
 #include "pyspace.h"
 #include <math.h>
+#include <stdlib.h>
 
 #define NORM2(X, Y, Z) X*X + Y*Y + Z*Z
 
