@@ -18,7 +18,7 @@ def find_in_path(name, path):
 #Implementation based on https://github.com/rmcgibbo/npcuda-example
 def locate_cuda():
     """Locate the CUDA environment on the system
-    Returns a dict with keys 'home', 'nvcc', 'include', and 'lib64'
+    Returns a dict with keys 'home', 'nvcc', 'include', and 'lib'
     and values giving the absolute path to each directory.
     Starts by looking for the CUDAHOME env variable. If not found, everything
     is based on finding 'nvcc' in the PATH.
@@ -44,18 +44,25 @@ def locate_cuda():
 
     cudaconfig = {'home':home, 'nvcc':nvcc,
                   'include': pjoin(home, 'include'),
-                  'lib64': pjoin(home, 'lib64')}
+                  'lib': pjoin(home, 'lib')}
+    cudalib = 'lib'
     for k, v in cudaconfig.iteritems():
         if not os.path.exists(v):
+            if k == 'lib':
+                cudaconfig.pop('lib')
+                cudaconfig['lib64'] = pjoin(home, 'lib64')
+                if os.path.exists(cudaconfig['lib64']):
+                    cudalib = 'lib64'
+                    continue
             raise EnvironmentError('The CUDA %s path could not be located in %s' % (k, v))
 
     print("-"*70)
     print "Using CUDA."
     print("-"*70)
 
-    return cudaconfig
+    return cudaconfig, cudalib
 
-CUDA = locate_cuda()
+CUDA, cudalib = locate_cuda()
 
 def customize_compiler_for_nvcc(self):
     """inject deep into distutils to customize how the dispatch
@@ -105,6 +112,7 @@ def get_omp_flags():
     """Returns openmp flags if OpenMP is available.
 
     Implementation based on https://bitbucket.org/pysph/pysph
+
     """
     omp_compile_flags, omp_link_flags = ['-fopenmp'], ['-fopenmp']
 
@@ -169,25 +177,27 @@ requires = ["cython", "numpy", "pyevtk"]
 
 ext_modules = []
 
+omp_compile_flags, omp_link_flags, use_omp = get_omp_flags()
+
 ext_modules += [
         Extension(
             "pyspace.planet",
             ["pyspace/planet.pyx"],
             include_dirs = [numpy.get_include()],
+            extra_compile_args = {'gcc': omp_compile_flags},
             language="c++"
             )
         ]
 
-omp_compile_flags, omp_link_flags, use_omp = get_omp_flags()
 
 if CUDA != False:
     ext_modules += [
             Extension(
                 "pyspace.simulator",
                 sources = ["src/kernels.cu", "src/pyspace.cpp", "pyspace/simulator.pyx"],
-                library_dirs = [CUDA['lib64']],
+                library_dirs = [CUDA[cudalib]],
                 libraries = ['cudart'],
-                runtime_library_dirs=[CUDA['lib64']],
+                runtime_library_dirs=[CUDA[cudalib]],
                 include_dirs = ["src", numpy.get_include(), CUDA['include']],
                 extra_compile_args = {'gcc': omp_compile_flags,
                                         'nvcc': ['-arch=sm_20', '--ptxas-options=-v', \
@@ -206,7 +216,7 @@ else:
                 "pyspace.simulator",
                 ["src/pyspace.cpp", "pyspace/simulator.pyx"],
                 include_dirs = ["src", numpy.get_include()],
-                extra_compile_args = omp_compile_flags,
+                extra_compile_args = {'gcc': omp_compile_flags},
                 extra_link_args = omp_link_flags,
                 cython_compile_time_env = {'USE_CUDA': False},
                 language="c++"

@@ -1,11 +1,12 @@
 #include "pyspace.h"
 #include <math.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define NORM2(X, Y, Z) X*X + Y*Y + Z*Z
 
 __device__
-void calculate_force(double* x_old, double* y_old, double* z_old, double* m,
+void calculate_force_device(double* x_old, double* y_old, double* z_old, double* m,
         double x_i, double y_i, double z_i,
         double& a_x, double& a_y, double& a_z,
         int num_planets, double eps2, double G)
@@ -17,7 +18,8 @@ void calculate_force(double* x_old, double* y_old, double* z_old, double* m,
     double cnst;
     double dist_ij;
 
-    for(int j=0; j<num_planets; j++)
+    int j;
+    for(j=0; j<num_planets; j++)
     {
         r_x_j = x_old[j];
         r_y_j = y_old[j];
@@ -49,7 +51,7 @@ void brute_force_kernel(double* x, double* y, double* z,
         double* x_old, double* y_old, double* z_old,
         double* v_x, double* v_y, double* v_z,
         double* a_x, double* a_y, double* a_z,
-        double* m, double G, double dt, int num_planets)
+        double* m, double G, double dt, int num_planets, double eps)
 {
     double eps2 = eps*eps;
 
@@ -64,7 +66,7 @@ void brute_force_kernel(double* x, double* y, double* z,
     double a_y_i = a_y[id];
     double a_z_i = a_z[id];
 
-    calculate_force(x_old, y_old, z_old, m,
+    calculate_force_device(x_old, y_old, z_old, m,
             x_old[id], y_old[id], z_old[id],
             a_x[id], a_y[id], a_z[id],
             num_planets, eps2, G);
@@ -99,7 +101,7 @@ void brute_force_gpu_update(double* x, double* y, double* z,
 
     double *dev_x, *dev_y, *dev_z, *dev_x_old, *dev_y_old, *dev_z_old;
     double *dev_v_x, *dev_v_y, *dev_v_z, *dev_a_x, *dev_a_y, *dev_a_z;
-    double *m;
+    double *dev_m;
 
     if( cudaMalloc((void**)&dev_x, num_planets*sizeof(double)) != cudaSuccess ||
         cudaMalloc((void**)&dev_y, num_planets*sizeof(double)) != cudaSuccess ||
@@ -141,7 +143,7 @@ void brute_force_gpu_update(double* x, double* y, double* z,
             dev_x_old, dev_y_old, dev_z_old,
             dev_v_x, dev_v_y, dev_v_z,
             dev_a_x, dev_a_y, dev_a_z,
-            dev_m, G, dt, num_planets);
+            dev_m, G, dt, num_planets, eps);
 
     if( cudaMemcpy(dev_x, x, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(dev_y, y, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
@@ -184,6 +186,5 @@ void brute_force_gpu_update(double* x, double* y, double* z,
     free(x_old);
     free(y_old);
     free(z_old);
-
 }
 
