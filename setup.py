@@ -179,17 +179,6 @@ ext_modules = []
 
 omp_compile_flags, omp_link_flags, use_omp = get_omp_flags()
 
-ext_modules += [
-        Extension(
-            "pyspace.planet",
-            ["pyspace/planet.pyx"],
-            include_dirs = [numpy.get_include()],
-            extra_compile_args = {'gcc': omp_compile_flags},
-            language="c++"
-            )
-        ]
-
-
 if CUDA != False:
     ext_modules += [
             Extension(
@@ -208,6 +197,17 @@ if CUDA != False:
                 )
             ]
 
+    ext_modules += [
+            Extension(
+                "pyspace.planet",
+                ["pyspace/planet.pyx"],
+                include_dirs = [numpy.get_include()],
+                extra_compile_args = {'gcc': omp_compile_flags},
+                language="c++"
+                )
+            ]
+
+
     compiler = custom_build_ext
 
 else:
@@ -222,6 +222,17 @@ else:
                 language="c++"
                 )
             ]
+
+    ext_modules += [
+            Extension(
+                "pyspace.planet",
+                ["pyspace/planet.pyx"],
+                include_dirs = [numpy.get_include()],
+                extra_compile_args = omp_compile_flags,
+                language="c++"
+                )
+            ]
+
 
     compiler = build_ext
 
