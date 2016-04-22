@@ -216,7 +216,7 @@ else:
                 "pyspace.simulator",
                 ["src/pyspace.cpp", "pyspace/simulator.pyx"],
                 include_dirs = ["src", numpy.get_include()],
-                extra_compile_args = {'gcc': omp_compile_flags},
+                extra_compile_args = omp_compile_flags,
                 extra_link_args = omp_link_flags,
                 cython_compile_time_env = {'USE_CUDA': False},
                 language="c++"
