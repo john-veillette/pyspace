@@ -27,7 +27,7 @@ def locate_cuda():
         print("-"*70)
         print "USE_CUDA set to 0. CUDA disabled."
         print("-"*70)
-        return False
+        return False, False
     # first check if the CUDAHOME env variable is in use
     if 'CUDAHOME' in os.environ:
         home = os.environ['CUDAHOME']
@@ -39,7 +39,7 @@ def locate_cuda():
             print("-"*70)
             print "CUDA not found. Compiling without CUDA"
             print("-"*70)
-            return False
+            return False, False
         home = os.path.dirname(os.path.dirname(nvcc))
 
     cudaconfig = {'home':home, 'nvcc':nvcc,
