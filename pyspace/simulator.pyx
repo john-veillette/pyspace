@@ -52,6 +52,7 @@ cdef class Simulator:
         return data
 
     cpdef reset(self):
+        """Deletes all existing simulations of the same name"""
         self.curr_time_step = 0
         if os.path.isdir(self.sim_name):
             for filename in os.listdir(self.sim_name):
@@ -179,6 +180,5 @@ cdef class BruteForceSimulator(Simulator):
 
             sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
             sys.stdout.flush()
-
 
 
