@@ -1,3 +1,4 @@
+=======
 PySpace
 =======
 
@@ -12,12 +13,12 @@ PySpace
     Galaxy collision simulation done using PySpace
 
 Documentation
--------------
+=============
 
 The documentation for this project can be found at `http://pyspace.readthedocs.org/ <http://pyspace.readthedocs.org/>`_.
 
 Features
---------
+========
 
 -  A python interface for high performance C++ implementation of N-body
    simulation algorithms.
@@ -27,16 +28,16 @@ Features
    ParaView, MayaVi, etc. for visualization.
 
 Algorithms
-----------
+==========
 
 -  Brute Force :math:`O(n^2)`
 -  Barnes-Hut :math:`O(nlogn)`
  
 Installation
-------------
+============
 
 Dependencies
-~~~~~~~~~~~~
+------------
 
 -  Numpy
 -  PyEVTK (``pip install pyevtk``)
@@ -45,7 +46,7 @@ Dependencies
 -  ParaView / MayaVi or any other vtk rendering tool (optional)
 
 Linux and OSX
-~~~~~~~~~~~~~
+-------------
 
 To install the latest stable version, run::
     
@@ -71,10 +72,38 @@ to 0 and then install::
     $ export USE_CUDA=0
     $ python setup.py install
     
+Troubleshooting
+---------------
+
+If you run into any issues regarding installation or otherwise, please report
+`here <https://github.com/adityapb/pyspace/issues>`_.
+
+Some common issues are addressed below
+
+CUDA not found
+~~~~~~~~~~~~~~
+
+Make sure if the CUDA toolkit is installed. If you still get this message after installation,
+follow the instructions given below.
+
+Add CUDA it to ``PATH`` environmental variable and try again
+
+Or, set ``CUDAHOME`` environmental variable to path of the CUDA installation by::
+
+    $ export CUDAHOME=/usr/local/cuda
+
+Image not found
+~~~~~~~~~~~~~~~
+
+If your code compiles and you get this error at runtime, make sure you have a CUDA
+compatible device installed.
+
+If you don't, install without GPU support (see Installation)
+    
 **PySpace doesn't support Windows currently**
 
 Running the tests
------------------
+=================
 
 For running the tests you will need to install ``nose``, install using::
 
@@ -85,7 +114,7 @@ To run the tests, cd to pyspace/tests directory and run::
     $ nosetests -v
 
 Running the benchmarks
-----------------------
+======================
 
 For running benchmarks you will need to install ``pandas``, install using::
 
@@ -96,7 +125,7 @@ To run the benchmarks, cd to benchmarks directory and run::
     $ python run_benchmarks.py
 
 Contributing
-------------
+============
 
 Use PEP 8 coding standard for python and follow
 `this <https://users.ece.cmu.edu/~eno/coding/CppCodingStandard.html>`__
