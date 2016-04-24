@@ -16,6 +16,7 @@ install:
     - pip install python-coveralls
 
 script:
+    - make
     - make install
     - nosetests --with-coverage -v
     - make cleanall
