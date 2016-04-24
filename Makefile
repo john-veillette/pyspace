@@ -11,11 +11,10 @@ build:
 	python setup.py build_ext --inplace
 
 clean:
-	rm -r -f pyspace/*.cpp
-
-cleanall:
 	python setup.py clean
 	rm -r -f pyspace/*.cpp
+
+cleanall: clean
 	rm -r -f pyspace/*.so
 
 install:
@@ -24,4 +23,6 @@ install:
 develop:
 	python setup.py develop
 
+test:
+	python `which nosetests` --exe pyspace
 
