@@ -139,7 +139,7 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         exit(0);
     }
 
-    brute_force_kernel<<<num_planets/1024 + 1, 1024>>>(dev_x, dev_y, dev_z,
+    brute_force_kernel<<<ceil(num_planets/1024), 1024>>>(dev_x, dev_y, dev_z,
             dev_x_old, dev_y_old, dev_z_old,
             dev_v_x, dev_v_y, dev_v_z,
             dev_a_x, dev_a_y, dev_a_z,
