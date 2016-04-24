@@ -7,6 +7,7 @@
 - Update private API for ``PlanetArray`` and ``Simulator`` that now allows users to change
   the underlying numpy arrays in a ``PlanetArray`` without having to make new ones.
 - Print progress percentage for simulations
+- Added a Makefile for easier building of extension modules.
 
 0.0.2
 -----
