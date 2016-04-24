@@ -20,6 +20,7 @@ script:
     - make install
     - nosetests --with-coverage -v
     - make cleanall
+    - USE_OPENMP=0 make
     - USE_OPENMP=0 make install
     - nosetests --with-coverage -v
 
