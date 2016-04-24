@@ -14,6 +14,7 @@ clean:
 	rm -r -f pyspace/*.cpp
 
 cleanall:
+	python setup.py clean
 	rm -r -f pyspace/*.cpp
 	rm -r -f pyspace/*.so
 
