@@ -196,6 +196,7 @@ cdef class PlanetArray:
         """Returns total energy of PlanetArray"""
         return self.potential_energy(G) + self.kinetic_energy()
 
+    @cython.cdivision(True)
     cpdef double com(self):
         """Sets com_x, com_y, com_z to centre of mass of the system of planets"""
         cdef double* x_ptr = <double*> self.x.data
