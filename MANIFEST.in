@@ -1,4 +1,4 @@
-include *rst LICENSE docs/Makefile
+include Makefile *rst LICENSE docs/Makefile
 recursive-include examples *.py
 recursive-include benchmark *.py
 recursive-include benchmark/benchmark *.py
