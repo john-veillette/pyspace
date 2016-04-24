@@ -8,7 +8,7 @@ docs:
 	cd docs; make html
 
 build:
-	python setup.py build_ext
+	python setup.py build_ext --inplace
 
 clean:
 	rm -r -f pyspace/*.cpp

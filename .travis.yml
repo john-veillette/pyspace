@@ -16,8 +16,10 @@ install:
     - pip install python-coveralls
 
 script:
-    - python setup.py install
-    - cd pyspace/tests
+    - make install
+    - nosetests --with-coverage -v
+    - make cleanall
+    - USE_OPENMP=0 make install
     - nosetests --with-coverage -v
 
 after_success:
