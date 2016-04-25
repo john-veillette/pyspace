@@ -25,6 +25,7 @@ Features
    simulation algorithms.
 -  PySpace has a numpy friendly API which makes it easier to use.
 -  Parallel support using OpenMP.
+-  GPU support using CUDA 
 -  Dumps vtk output which allows users to take advantage of tools like
    ParaView, MayaVi, etc. for visualization.
 
