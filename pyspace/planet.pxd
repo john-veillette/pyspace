@@ -23,10 +23,6 @@ cdef class PlanetArray:
     cdef public ndarray m
     cdef public ndarray r
 
-    cdef double com_x
-    cdef double com_y
-    cdef double com_z
-
     cpdef int get_number_of_planets(self)
     cpdef concatenate(self, PlanetArray other)
     cpdef double dist(self, int i, int j)
@@ -40,5 +36,5 @@ cdef class PlanetArray:
     cpdef double total_energy_planet(self, double G, int i)
     cpdef double total_energy(self, double G)
 
-    cpdef double com(self)
+    cpdef tuple com(self)
 

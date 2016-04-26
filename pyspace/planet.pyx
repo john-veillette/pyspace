@@ -77,10 +77,6 @@ cdef class PlanetArray:
         self.a_y = np.zeros(num_planets)
         self.a_z = np.zeros(num_planets)
 
-        self.com_x = 0
-        self.com_y = 0
-        self.com_z = 0
-
     cpdef concatenate(self, PlanetArray other):
         """Concatenates 'other' PlanetArray to self"""
         self.x = np.concatenate([self.x, other.x])
@@ -197,8 +193,8 @@ cdef class PlanetArray:
         return self.potential_energy(G) + self.kinetic_energy()
 
     @cython.cdivision(True)
-    cpdef double com(self):
-        """Sets com_x, com_y, com_z to centre of mass of the system of planets"""
+    cpdef tuple com(self):
+        """Return centre of mass of the system of planets"""
         cdef double* x_ptr = <double*> self.x.data
         cdef double* y_ptr = <double*> self.y.data
         cdef double* z_ptr = <double*> self.z.data
@@ -217,7 +213,5 @@ cdef class PlanetArray:
             com_y += y_ptr[i]*m_ptr[i]
             com_z += z_ptr[i]*m_ptr[i]
 
-        self.com_x = com_x/m_tot
-        self.com_y = com_y/m_tot
-        self.com_z = com_z/m_tot
+        return com_x/m_tot, com_y/m_tot, com_z/m_tot
 
