@@ -9,8 +9,7 @@ Welcome to PySpace's documentation!
 PySpace is an open-source framework for galactic simulations.
 It is implemented in Cython and the computational part is implemented in pure C++.
 
-PySpace provides parallel support through OpenMP and we plan on providing GPU support
-in future releases.
+PySpace provides parallel support through OpenMP and GPU support through CUDA.
 
 
 ********
