@@ -24,5 +24,5 @@ develop:
 	python setup.py develop
 
 test:
-	python `which nosetests` --exe pyspace
+	python `which nosetests` --exe -v pyspace
 

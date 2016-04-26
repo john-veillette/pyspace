@@ -110,9 +110,9 @@ For running the tests you will need to install ``nose``, install using::
 
     $ pip install nose
 
-To run the tests, cd to pyspace/tests directory and run::
+To run the tests, from project's root directory run::
     
-    $ nosetests -v
+    $ make test
 
 Running the benchmarks
 ======================
