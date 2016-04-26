@@ -54,14 +54,14 @@ The following snippet shows how to set up the simulation.
     G = 1
     dt = 0.1
 
-    sim = BruteForceSimulator(pa, G, dt, "square_grid")
+    sim = BruteForceSimulator(pa, G, dt, sim_name = "square_grid")
 
 For using ``BarnesSimulator``, you need to define :math:`\theta` (``thetha``) (see framework).
 
 .. code-block:: python
 
     theta = 0.1
-    sim = BarnesSimulator(pa, G, dt, theta, "square_grid")
+    sim = BarnesSimulator(pa, G, dt, theta, sim_name = "square_grid")
 
 .. note::
 
@@ -116,7 +116,7 @@ Using this method for the above problem, you can write,
     # Do all imports and set up the PlanetArray as done above
 
     # Set up the simulator
-    sim = BruteForceSimulator(pa, G, dt, "square_grid")
+    sim = BruteForceSimulator(pa, G, dt, sim_name = "square_grid")
 
     # Use set_data() to tell the simulator what to dump
     # For this problem, lets say you only need a_x, a_y and a_z
