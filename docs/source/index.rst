@@ -46,7 +46,7 @@ Tutorials
 .. toctree::
     :maxdepth: 2
  
-    tutorial/brute_force.rst
+    tutorial/tutorial.rst
 
 ***********************
 Reference Documentation
