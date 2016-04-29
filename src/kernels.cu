@@ -148,16 +148,12 @@ void brute_force_gpu_update(double* x, double* y, double* z,
     if( cudaMemcpy(dev_x, x, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(dev_y, y, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(dev_z, z, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
-        cudaMemcpy(dev_x_old, x_old, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
-        cudaMemcpy(dev_y_old, y_old, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
-        cudaMemcpy(dev_z_old, z_old, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(dev_v_x, v_x, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(dev_v_y, v_y, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(dev_v_z, v_z, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(dev_a_x, a_x, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(dev_a_y, a_y, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
-        cudaMemcpy(dev_a_z, a_z, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
-        cudaMemcpy(dev_m, m, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess )
+        cudaMemcpy(dev_a_z, a_z, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess    )
     {
         fprintf(stderr, "ERROR: cudaMemcpy from device to host failed!");
         exit(0);
