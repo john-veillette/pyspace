@@ -3,6 +3,7 @@
 
 - Release date: Not released yet
 - Add GPU support through CUDA for ``BruteForceSimulator``
+- Add OpenMP support to ``BarnesSimulator``. More than 2x speed up with 4 threads.
 - Re-organized the C++ brute_force_update method. Gives a 2x speedup for benchmarks.
 - Update private API for ``PlanetArray`` and ``Simulator`` that now allows users to change
   the underlying numpy arrays in a ``PlanetArray`` without having to make new ones.
