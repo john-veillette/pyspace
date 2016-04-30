@@ -1,6 +1,6 @@
-# distutils: language = c++
 cimport cython
 import os
+import sys
 from pyspace.utils import dump_vtk
 
 cdef class Simulator:
@@ -12,6 +12,21 @@ cdef class Simulator:
         self.curr_time_step = 0
         self.sim_name = sim_name
         self._custom_data = False
+
+        self.x_ptr = <double*> self.planets.x.data
+        self.y_ptr = <double*> self.planets.y.data
+        self.z_ptr = <double*> self.planets.z.data
+
+        self.v_x_ptr = <double*> self.planets.v_x.data
+        self.v_y_ptr = <double*> self.planets.v_y.data
+        self.v_z_ptr = <double*> self.planets.v_z.data
+
+        self.a_x_ptr = <double*> self.planets.a_x.data
+        self.a_y_ptr = <double*> self.planets.a_y.data
+        self.a_z_ptr = <double*> self.planets.a_z.data
+
+        self.m_ptr = <double*> self.planets.m.data
+        self.r_ptr = <double*> self.planets.r.data
 
         self.num_planets = pa.get_number_of_planets()
 
@@ -37,6 +52,7 @@ cdef class Simulator:
         return data
 
     cpdef reset(self):
+        """Deletes all existing simulations of the same name"""
         self.curr_time_step = 0
         if os.path.isdir(self.sim_name):
             for filename in os.listdir(self.sim_name):
@@ -70,6 +86,7 @@ cdef class BarnesSimulator(Simulator):
     def __init__(self, PlanetArray pa, double G, double dt, double theta = 1.0,
             double epsilon = 0, str sim_name = "pyspace"):
         self.theta = theta
+        self.epsilon = epsilon
         Simulator.__init__(self, pa, G, dt, sim_name)
 
     @cython.cdivision(True)
@@ -86,18 +103,21 @@ cdef class BarnesSimulator(Simulator):
                     base = self.sim_name, **self.get_data())
             self.curr_time_step += 1
 
-
         for i from 0<=i<n_steps:
-            barnes_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
-                    self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
-                    self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
-                    self.planets.m_ptr, G, dt, self.num_planets,
+            barnes_update(self.x_ptr, self.y_ptr, self.z_ptr,
+                    self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                    self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
+                    self.m_ptr, G, dt, self.num_planets,
                     self.theta, self.epsilon)
 
             if dump_output:
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())
+
                 self.curr_time_step += 1
+
+            sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
+            sys.stdout.flush()
 
 
 cdef class BruteForceSimulator(Simulator):
@@ -140,12 +160,25 @@ cdef class BruteForceSimulator(Simulator):
             self.curr_time_step += 1
 
         for i from 0<=i<n_steps:
-            brute_force_update(self.planets.x_ptr, self.planets.y_ptr, self.planets.z_ptr,
-                    self.planets.v_x_ptr, self.planets.v_y_ptr, self.planets.v_z_ptr,
-                    self.planets.a_x_ptr, self.planets.a_y_ptr, self.planets.a_z_ptr,
-                    self.planets.m_ptr, G, dt, self.num_planets, self.epsilon)
+            IF USE_CUDA:
+                brute_force_gpu_update(self.x_ptr, self.y_ptr, self.z_ptr,
+                        self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                        self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
+                        self.m_ptr, G, dt, self.num_planets, self.epsilon)
+
+            ELSE:
+                brute_force_update(self.x_ptr, self.y_ptr, self.z_ptr,
+                        self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                        self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
+                        self.m_ptr, G, dt, self.num_planets, self.epsilon)
+
             if dump_output:
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())
+
                 self.curr_time_step += 1
+
+            sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
+            sys.stdout.flush()
+
 

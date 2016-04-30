@@ -8,6 +8,8 @@ ToDo list for PySpace
 
 - Write tests for Simulator ... DONE
 
+- Make python3 compatible
+
 - Test for constant total energy
 
 - Implement algorithms in CUDA
@@ -16,4 +18,10 @@ ToDo list for PySpace
 
 - Set up framework for benchmarking ... DONE
 
-- Update Tutorial before next release
+- Update Tutorial before next release ... DONE
+
+- Implement Range Kutta 4th order
+
+- Study the limitations of current implementation of brute_force_gpu_update
+
+- Write benchmarks for serial and parallel versions of algorithms to include the results in the report
