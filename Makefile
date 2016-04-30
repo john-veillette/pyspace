@@ -23,6 +23,6 @@ install:
 develop:
 	python setup.py develop
 
-test:
+test: build
 	python2 `which nosetests` --exe -v pyspace
 
