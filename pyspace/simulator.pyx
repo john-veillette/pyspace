@@ -104,11 +104,18 @@ cdef class BarnesSimulator(Simulator):
             self.curr_time_step += 1
 
         for i from 0<=i<n_steps:
-            barnes_update(self.x_ptr, self.y_ptr, self.z_ptr,
-                    self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
-                    self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
-                    self.m_ptr, G, dt, self.num_planets,
-                    self.theta, self.epsilon)
+            IF USE_CUDA:
+                barnes_gpu_update(self.x_ptr, self.y_ptr, self.z_ptr,
+                        self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                        self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
+                        self.m_ptr, G, dt, self.num_planets,
+                        self.theta, self.epsilon)
+            ELSE:
+                barnes_update(self.x_ptr, self.y_ptr, self.z_ptr,
+                        self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                        self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
+                        self.m_ptr, G, dt, self.num_planets,
+                        self.theta, self.epsilon)
 
             if dump_output:
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),

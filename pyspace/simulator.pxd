@@ -28,6 +28,12 @@ cdef extern from "pyspace.h":
             double*, double, double, int,
             double, double) nogil
 
+    cdef void barnes_gpu_update(double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*, double, double, int,
+            double, double) nogil
+
 cdef class Simulator:
     cdef PlanetArray planets
 
