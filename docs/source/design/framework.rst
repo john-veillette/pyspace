@@ -66,7 +66,7 @@ Understanding the framework
 
 PySpace uses ``pyspace.planet.PlanetArray`` for storing planets.
 
-``pyspace.planet.PlanetArray`` stores numpy arrays for :math:`x, y, z, v_x, v_y, v_z, a_x, a_y, a_z, m, r` and also stores a raw pointer to each numpy array.
+``pyspace.planet.PlanetArray`` stores numpy arrays for :math:`x, y, z, v_x, v_y, v_z, a_x, a_y, a_z, m, r`.
 
 .. code-block:: cython
 
@@ -82,28 +82,13 @@ PySpace uses ``pyspace.planet.PlanetArray`` for storing planets.
     cdef public ndarray m
     cdef public ndarray r
 
-    cdef double* x_ptr
-    cdef double* y_ptr
-    cdef double* z_ptr
-
-    cdef double* v_x_ptr
-    cdef double* v_y_ptr
-    cdef double* v_z_ptr
-
-    cdef double* a_x_ptr
-    cdef double* a_y_ptr
-    cdef double* a_z_ptr
-
-    cdef double* m_ptr
-    cdef double* r_ptr
-
 .. note::
 
     Currently ``r`` doesn't have any use per se. However, we plan to use it
     for better collision handling in the future.
 
-``pyspace.simulator.Simulator`` then passes these raw pointers to the C++ function, ``brute_force_update`` which then updates the pointers using the above numerical integration 
-scheme.
+``pyspace.simulator.Simulator`` stores pointers to these numpy arrays and then passes these raw pointers
+to the C++ function, ``brute_force_update`` which then updates the pointers using the above numerical integration scheme.
 
 ----------
 Algorithms

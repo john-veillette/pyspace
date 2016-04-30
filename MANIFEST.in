@@ -1,9 +1,10 @@
-include *rst LICENSE docs/Makefile
+include Makefile *rst LICENSE docs/Makefile
 recursive-include examples *.py
 recursive-include benchmark *.py
 recursive-include benchmark/benchmark *.py
 recursive-include docs *.rst
 recursive-include docs *.py
+recursive-include src *.cu
 recursive-include pyspace *.pyx *.pxd
 recursive-exclude pyspace *.cpp
 prune docs/build

@@ -1,4 +1,3 @@
-# distutils: language = c++
 import numpy as np
 cimport numpy as np
 
@@ -24,26 +23,8 @@ cdef class PlanetArray:
     cdef public ndarray m
     cdef public ndarray r
 
-    cdef double* x_ptr
-    cdef double* y_ptr
-    cdef double* z_ptr
-
-    cdef double* v_x_ptr
-    cdef double* v_y_ptr
-    cdef double* v_z_ptr
-
-    cdef double* a_x_ptr
-    cdef double* a_y_ptr
-    cdef double* a_z_ptr
-
-    cdef double* m_ptr
-    cdef double* r_ptr
-
-    cdef double com_x
-    cdef double com_y
-    cdef double com_z
-
     cpdef int get_number_of_planets(self)
+    cpdef concatenate(self, PlanetArray other)
     cpdef double dist(self, int i, int j)
 
     cpdef double potential_energy_planet(self, double G, int i)
@@ -55,5 +36,5 @@ cdef class PlanetArray:
     cpdef double total_energy_planet(self, double G, int i)
     cpdef double total_energy(self, double G)
 
-    cpdef double com(self)
+    cpdef tuple com(self)
 

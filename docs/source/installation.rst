@@ -34,6 +34,40 @@ to 0 and then install::
     $ export USE_OPENMP=0 
     $ python setup.py install
 
+To install without GPU support, set ``USE_CUDA`` environment variable
+to 0 and then install::
+
+    $ export USE_CUDA=0
+    $ python setup.py install
+ 
+Troubleshooting
+---------------
+
+If you run into any issues regarding installation or otherwise, please report
+`here <https://github.com/adityapb/pyspace/issues>`_.
+
+Some common issues are addressed below
+
+CUDA not found
+~~~~~~~~~~~~~~
+
+Make sure if the CUDA toolkit is installed. If you still get this message after installation,
+follow the instructions given below.
+
+Add CUDA it to ``PATH`` environmental variable and try again
+
+Or, set ``CUDAHOME`` environmental variable to path of the CUDA installation by::
+
+    $ export CUDAHOME=/usr/local/cuda
+
+Image not found
+~~~~~~~~~~~~~~~
+
+If your code compiles and you get this error at runtime, make sure you have a CUDA
+compatible device installed.
+
+If you don't, install without GPU support (see Installation)
+ 
 **PySpace doesn't support Windows currently**
 
 -----------------
@@ -44,9 +78,9 @@ For running the tests you will need to install ``nose``, install using::
 
     $ pip install nose
 
-To run the tests, cd to pyspace/tests directory and run::
+To run the tests, from project's root directory run::
     
-    $ nosetests -v
+    $ make test
 
 ----------------------
 Running the benchmarks
