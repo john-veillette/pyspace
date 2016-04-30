@@ -58,10 +58,10 @@ def locate_cuda():
     cudaconfig = {'home':home, 'nvcc':nvcc,
                   'include': pjoin(home, 'include')}
 
-    if platform.machine() == 'x86_64':
+    if platform.machine() == 'x86_64' and os.path.exists(pjoin(home, 'lib64')):
         cudaconfig['lib'] = pjoin(home, 'lib' + '64')
     else:
-         cudaconfig['lib'] = pjoin(home, 'lib')
+        cudaconfig['lib'] = pjoin(home, 'lib')
 
     cudalib = 'lib'
     for k, v in cudaconfig.iteritems():
