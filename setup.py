@@ -1,11 +1,23 @@
-import numpy
-from setuptools import find_packages, setup
-from Cython.Distutils import Extension
-from Cython.Distutils import build_ext
 import os
 from os.path import join as pjoin
 from os import path
 import platform
+import sys
+
+def python_version_check():
+    if sys.version_info[0] != 2:
+        print("-"*85)
+        print("PySpace doesn't support python 3. Please use 'python2 setup.py install' to install")
+        print("Also run your scripts using python2 or make python 2.7 your default python interpreter")
+        print("-"*85)
+        sys.exit()
+
+python_version_check()
+
+import numpy
+from setuptools import find_packages, setup
+from Cython.Distutils import Extension
+from Cython.Distutils import build_ext
 
 def find_in_path(name, path):
     "Find a file in a search path"
@@ -26,7 +38,7 @@ def locate_cuda():
     """
     if os.environ.get('USE_CUDA', '') == '0':
         print("-"*70)
-        print "USE_CUDA set to 0. CUDA disabled."
+        print("USE_CUDA set to 0. CUDA disabled.")
         print("-"*70)
         return False, False
     # first check if the CUDAHOME env variable is in use
@@ -38,11 +50,11 @@ def locate_cuda():
         nvcc = find_in_path('nvcc', os.environ['PATH'])
         if nvcc is None:
             print("-"*70)
-            print "CUDA not found. Compiling without CUDA"
+            print("CUDA not found. Compiling without CUDA")
             print("-"*70)
             return False, False
         home = os.path.dirname(os.path.dirname(nvcc))
-    
+
     cudaconfig = {'home':home, 'nvcc':nvcc,
                   'include': pjoin(home, 'include')}
 
@@ -50,14 +62,14 @@ def locate_cuda():
         cudaconfig['lib'] = pjoin(home, 'lib' + '64')
     else:
          cudaconfig['lib'] = pjoin(home, 'lib')
-       
+
     cudalib = 'lib'
     for k, v in cudaconfig.iteritems():
         if not os.path.exists(v):
             raise EnvironmentError('The CUDA %s path could not be located in %s' % (k, v))
 
     print("-"*70)
-    print "Using CUDA."
+    print("Using CUDA.")
     print("-"*70)
 
     return cudaconfig, cudalib
@@ -119,7 +131,7 @@ def get_omp_flags():
     env_var = os.environ.get('USE_OPENMP', '')
     if env_var.lower() in ['0', 'false', 'n']:
         print("-"*70)
-        print "OpenMP disabled. Enable using 'USE_OPENMP'"
+        print("OpenMP disabled. Enable using 'USE_OPENMP'")
         print("-"*70)
         return [], [], False
 
