@@ -8,21 +8,21 @@ docs:
 	cd docs; make html
 
 build:
-	python setup.py build_ext --inplace
+	python2 setup.py build_ext --inplace
 
 clean:
-	python setup.py clean
+	python2 setup.py clean
 	rm -r -f pyspace/*.cpp
 
 cleanall: clean
 	rm -r -f pyspace/*.so
 
 install:
-	python setup.py install
+	python2 setup.py install
 
 develop:
-	python setup.py develop
+	python2 setup.py develop
 
 test:
-	python `which nosetests` --exe -v pyspace
+	python2 `which nosetests` --exe -v pyspace
 

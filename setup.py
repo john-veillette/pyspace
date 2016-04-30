@@ -5,6 +5,7 @@ from Cython.Distutils import build_ext
 import os
 from os.path import join as pjoin
 from os import path
+import platform
 
 def find_in_path(name, path):
     "Find a file in a search path"
@@ -41,19 +42,18 @@ def locate_cuda():
             print("-"*70)
             return False, False
         home = os.path.dirname(os.path.dirname(nvcc))
-
+    
     cudaconfig = {'home':home, 'nvcc':nvcc,
-                  'include': pjoin(home, 'include'),
-                  'lib': pjoin(home, 'lib')}
+                  'include': pjoin(home, 'include')}
+
+    if platform.machine() == 'x86_64':
+        cudaconfig['lib'] = pjoin(home, 'lib' + '64')
+    else:
+         cudaconfig['lib'] = pjoin(home, 'lib')
+       
     cudalib = 'lib'
     for k, v in cudaconfig.iteritems():
         if not os.path.exists(v):
-            if k == 'lib':
-                cudaconfig.pop('lib')
-                cudaconfig['lib64'] = pjoin(home, 'lib64')
-                if os.path.exists(cudaconfig['lib64']):
-                    cudalib = 'lib64'
-                    continue
             raise EnvironmentError('The CUDA %s path could not be located in %s' % (k, v))
 
     print("-"*70)
