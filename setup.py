@@ -1,11 +1,23 @@
-import numpy
-from setuptools import find_packages, setup
-from Cython.Distutils import Extension
-from Cython.Distutils import build_ext
 import os
 from os.path import join as pjoin
 from os import path
 import platform
+import sys
+
+def python_version_check():
+    if sys.version_info[0] != 2:
+        print("-"*85)
+        print("PySpace doesn't support python 3. Please use 'python2 setup.py install' to install")
+        print("Also run your scripts using python2 or make python 2.7 your default python interpreter")
+        print("-"*85)
+        sys.exit()
+
+python_version_check()
+
+import numpy
+from setuptools import find_packages, setup
+from Cython.Distutils import Extension
+from Cython.Distutils import build_ext
 
 def find_in_path(name, path):
     "Find a file in a search path"
