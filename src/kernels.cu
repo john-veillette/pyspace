@@ -66,10 +66,18 @@ void brute_force_kernel(double* x, double* y, double* z,
     double a_y_i = a_y[id];
     double a_z_i = a_z[id];
 
+    double temp_a_x = 0;
+    double temp_a_y = 0;
+    double temp_a_z = 0;
+
     calculate_force_device(x_old, y_old, z_old, m,
             x_old[id], y_old[id], z_old[id],
-            a_x[id], a_y[id], a_z[id],
+            temp_a_x, temp_a_y, temp_a_z,
             num_planets, eps2, G);
+
+    a_x[id] = temp_a_x;
+    a_y[id] = temp_a_y;
+    a_z[id] = temp_a_z;
 
     x[id] += v_x[id]*dt + a_x_i*0.5*dt*dt;
     y[id] += v_y[id]*dt + a_y_i*0.5*dt*dt;
