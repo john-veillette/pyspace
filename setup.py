@@ -103,7 +103,7 @@ setup(
         description="A toolbox for galactic simulations.",
         url = "https://github.com/adityapb/pyspace",
         long_description = open('README.rst').read(),
-        version="0.0.2",
+        version="0.1.0",
         install_requires=requires,
         packages=find_packages(),
         ext_modules = ext_modules
