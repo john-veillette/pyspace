@@ -168,7 +168,8 @@ void get_barnes_acceleration(BarnesNode *node,
                     BarnesNode *child = node->children[i][j][k];
                     if(child!=NULL)
                     {
-                        get_barnes_acceleration(child, x, y, z, a_x, a_y, a_z, G, theta, eps2);
+                        get_barnes_acceleration(child, x, y, z, a_x, a_y, a_z,
+                                G, theta, eps2);
                     }
                 }
       
@@ -208,7 +209,9 @@ void barnes_update(double *x, double *y, double *z,
     double a_x_temp = 0;
     double a_y_temp = 0;
     double a_z_temp = 0;
-    
+   
+    #pragma omp parallel for shared(root, x, y, z, v_x, v_y, v_z, a_x, a_y, a_z) \
+    private(a_x_temp, a_y_temp, a_z_temp)
     for(int i=0;i<num_planets;i++)
     {
         a_x_temp = 0;
