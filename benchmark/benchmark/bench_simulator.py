@@ -17,6 +17,6 @@ class BarnesHut(Benchmark):
 
     def time_simulate(self):
         """Time BarnesSimulator.simulate"""
-        sim = BarnesSimulator(self.pa, 1, 1, 0, sim_name = "square_grid")
+        sim = BarnesSimulator(self.pa, 1, 1, theta=0.5, sim_name = "square_grid")
         sim.simulate(10, dump_output = False)
 
