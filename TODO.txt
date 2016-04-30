@@ -8,6 +8,8 @@ ToDo list for PySpace
 
 - Write tests for Simulator ... DONE
 
+- Make python3 compatible
+
 - Test for constant total energy
 
 - Implement algorithms in CUDA
