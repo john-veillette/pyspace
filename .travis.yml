@@ -14,7 +14,6 @@ install:
     - conda create --yes -n test python=$TRAVIS_PYTHON_VERSION
     - source activate test
     - conda install --yes cython nose numpy
-    - pip install vtk
     - pip install pyevtk
     - pip install coverage
     - pip install python-coveralls
