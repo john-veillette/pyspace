@@ -90,15 +90,16 @@ void brute_force_kernel(double* x, double* y, double* z,
 
 
 __host__
-void brute_force_gpu_update(double* x, double* y, double* z,
+void malloc_device(double* x, double* y, double* z,
         double* v_x, double* v_y, double* v_z,
-        double* a_x, double* a_y, double* a_z,
-        double* m, double G, double dt, int num_planets, double eps)
+        double* a_x, double* a_y, double* a_z, double* m,
+        double* dev_x, double* dev_y, double* dev_z,
+        double* dev_x_old, double* dev_y_old, double* dev_z_old,
+        double* dev_v_x, double* dev_v_y, double* dev_v_z,
+        double* dev_a_x, double* dev_a_y, double* dev_a_z, 
+        double* dev_m, int num_planets)
 {
-    double *dev_x, *dev_y, *dev_z, *dev_x_old, *dev_y_old, *dev_z_old;
-    double *dev_v_x, *dev_v_y, *dev_v_z, *dev_a_x, *dev_a_y, *dev_a_z;
-    double *dev_m;
-
+    //cuda Malloc and set dev ptrs
     if( cudaMalloc((void**)&dev_x, num_planets*sizeof(double)) != cudaSuccess ||
         cudaMalloc((void**)&dev_y, num_planets*sizeof(double)) != cudaSuccess ||
         cudaMalloc((void**)&dev_z, num_planets*sizeof(double)) != cudaSuccess ||
@@ -120,9 +121,6 @@ void brute_force_gpu_update(double* x, double* y, double* z,
     if( cudaMemcpy(dev_x, x, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_y, y, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_z, z, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
-        cudaMemcpy(dev_x_old, x, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
-        cudaMemcpy(dev_y_old, y, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
-        cudaMemcpy(dev_z_old, z, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_v_x, v_x, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_v_y, v_y, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_v_z, v_z, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
@@ -135,20 +133,18 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         exit(0);
     }
 
-    int num_blocks = ceil(num_planets/256);
-    brute_force_kernel<<<num_blocks, 256>>>(dev_x, dev_y, dev_z,
-            dev_x_old, dev_y_old, dev_z_old,
-            dev_v_x, dev_v_y, dev_v_z,
-            dev_a_x, dev_a_y, dev_a_z,
-            dev_m, G, dt, num_planets, eps);
+}
 
-    cudaError_t err = cudaGetLastError();
-
-    if(err != cudaSuccess)
-    {
-        fprintf(stderr, "CUDA Error: %s\n", cudaGetErrorString(err));
-        exit(0);
-    }
+__host__
+void memcpy_to_host(double* x, double* y, double* z,
+        double* v_x, double* v_y, double* v_z,
+        double* a_x, double* a_y, double* a_z, double* m,
+        double* dev_x, double* dev_y, double* dev_z,
+        double* dev_v_x, double* dev_v_y, double* dev_v_z,
+        double* dev_a_x, double* dev_a_y, double* dev_a_z,
+        double* dev_m, int num_planets)
+{
+    //Copy data to host
 
     if( cudaMemcpy(x, dev_x, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(y, dev_y, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
@@ -161,14 +157,18 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         cudaMemcpy(a_z, dev_a_z, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess )
     {
         fprintf(stderr, "ERROR: cudaMemcpy from device to host failed!\n");
-        cudaError_t error = cudaMemcpy(x, dev_x, num_planets*sizeof(double), cudaMemcpyDeviceToHost);
-        fprintf(stderr, cudaGetErrorString(error));
-        fprintf(stderr, "\n");
         exit(0);
     }
 
-    //CUDA free
+}
 
+__host__
+void free_device(double* dev_x, double* dev_y, double* dev_z,
+        double* dev_x_old, double* dev_y_old, double* dev_z_old,
+        double* dev_v_x, double* dev_v_y, double* dev_v_z,
+        double* dev_a_x, double* dev_a_y, double* dev_a_z,
+        double* dev_m)
+{
     if( cudaFree(dev_x) != cudaSuccess ||
         cudaFree(dev_y) != cudaSuccess ||
         cudaFree(dev_z) != cudaSuccess ||
@@ -186,6 +186,36 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         fprintf(stderr, "ERROR: cudaFree failed!");
         exit(0);
     }
+}
 
+__host__
+void brute_force_gpu_update(double* dev_x, double* dev_y, double* dev_z,
+        double* dev_x_old, double* dev_y_old, double* dev_z_old,
+        double* dev_v_x, double* dev_v_y, double* dev_v_z,
+        double* dev_a_x, double* dev_a_y, double* dev_a_z,
+        double* dev_m, double G, double dt, int num_planets, double eps)
+{
+    if( cudaMemcpy(dev_x_old, dev_x, num_planets*sizeof(double), cudaMemcpyDeviceToDevice) != cudaSuccess ||
+        cudaMemcpy(dev_y_old, dev_y, num_planets*sizeof(double), cudaMemcpyDeviceToDevice) != cudaSuccess ||
+        cudaMemcpy(dev_z_old, dev_z, num_planets*sizeof(double), cudaMemcpyDeviceToDevice) != cudaSuccess  )
+    {
+        fprintf(stderr, "ERROR: cudaMemcpy from device to device failed!\n");
+        exit(0);
+    }
+        
+    int num_blocks = ceil(num_planets/256);
+    brute_force_kernel<<<num_blocks, 256>>>(dev_x, dev_y, dev_z,
+            dev_x_old, dev_y_old, dev_z_old,
+            dev_v_x, dev_v_y, dev_v_z,
+            dev_a_x, dev_a_y, dev_a_z,
+            dev_m, G, dt, num_planets, eps);
+
+    cudaError_t err = cudaGetLastError();
+
+    if(err != cudaSuccess)
+    {
+        fprintf(stderr, "CUDA Error: %s\n", cudaGetErrorString(err));
+        exit(0);
+    }
 }
 

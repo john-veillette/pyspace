@@ -20,6 +20,7 @@ cdef extern from "pyspace.h":
     cdef void brute_force_gpu_update(double*, double*, double*,
             double*, double*, double*,
             double*, double*, double*,
+            double*, double*, double*,
             double*, double, double, int, double) nogil
 
     cdef void barnes_update(double*, double*, double*,
@@ -27,6 +28,29 @@ cdef extern from "pyspace.h":
             double*, double*, double*,
             double*, double, double, int,
             double, double) nogil
+
+    cdef void malloc_device(double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*, int)
+
+    cdef void memcpy_to_host(double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*, int)
+
+    cdef void free_device(double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*, double*, double*,
+            double*)
 
 cdef class Simulator:
     cdef PlanetArray planets
@@ -54,6 +78,24 @@ cdef class Simulator:
 
     cdef double* m_ptr
     cdef double* r_ptr
+
+    cdef double* dev_x_ptr
+    cdef double* dev_y_ptr
+    cdef double* dev_z_ptr
+
+    cdef double* dev_x_old
+    cdef double* dev_y_old
+    cdef double* dev_z_old
+
+    cdef double* dev_v_x_ptr
+    cdef double* dev_v_y_ptr
+    cdef double* dev_v_z_ptr
+
+    cdef double* dev_a_x_ptr
+    cdef double* dev_a_y_ptr
+    cdef double* dev_a_z_ptr
+
+    cdef double* dev_m_ptr
 
     cpdef simulate(self, double total_time, bint dump_output = *)
     cdef dict get_data(self)

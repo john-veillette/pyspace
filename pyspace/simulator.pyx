@@ -28,6 +28,24 @@ cdef class Simulator:
         self.m_ptr = <double*> self.planets.m.data
         self.r_ptr = <double*> self.planets.r.data
 
+        self.dev_x_ptr = NULL
+        self.dev_y_ptr = NULL
+        self.dev_z_ptr = NULL
+
+        self.dev_x_old = NULL
+        self.dev_y_old = NULL
+        self.dev_z_old = NULL
+
+        self.dev_v_x_ptr = NULL
+        self.dev_v_y_ptr = NULL
+        self.dev_v_z_ptr = NULL
+
+        self.dev_a_x_ptr = NULL
+        self.dev_a_y_ptr = NULL
+        self.dev_a_z_ptr = NULL
+
+        self.dev_m_ptr = NULL
+
         self.num_planets = pa.get_number_of_planets()
 
     def set_data(self, **kwargs):
@@ -159,12 +177,23 @@ cdef class BruteForceSimulator(Simulator):
                     base = self.sim_name, **self.get_data())
             self.curr_time_step += 1
 
+        IF USE_CUDA:
+            malloc_device(self.x_ptr, self.y_ptr, self.z_ptr,
+                    self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                    self.a_x_ptr, self.a_y_ptr, self.a_z_ptr, self.m_ptr,
+                    self.dev_x_ptr, self.dev_y_ptr, self.dev_z_ptr,
+                    self.dev_x_old, self.dev_y_old, self.dev_z_old,
+                    self.dev_v_x_ptr, self.dev_v_y_ptr, self.dev_v_z_ptr,
+                    self.dev_a_x_ptr, self.dev_a_y_ptr, self.dev_a_z_ptr,
+                    self.dev_m_ptr, self.num_planets)
+
         for i from 0<=i<n_steps:
             IF USE_CUDA:
-                brute_force_gpu_update(self.x_ptr, self.y_ptr, self.z_ptr,
-                        self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
-                        self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
-                        self.m_ptr, G, dt, self.num_planets, self.epsilon)
+                brute_force_gpu_update(self.dev_x_ptr, self.dev_y_ptr, self.dev_z_ptr,
+                        self.dev_x_old, self.dev_y_old, self.dev_z_old,
+                        self.dev_v_x_ptr, self.dev_v_y_ptr, self.dev_v_z_ptr,
+                        self.dev_a_x_ptr, self.dev_a_y_ptr, self.dev_a_z_ptr,
+                        self.dev_m_ptr, G, dt, self.num_planets, self.epsilon)
 
             ELSE:
                 brute_force_update(self.x_ptr, self.y_ptr, self.z_ptr,
@@ -173,6 +202,15 @@ cdef class BruteForceSimulator(Simulator):
                         self.m_ptr, G, dt, self.num_planets, self.epsilon)
 
             if dump_output:
+                IF USE_CUDA:
+                    memcpy_to_host(self.x_ptr, self.y_ptr, self.z_ptr,
+                            self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                            self.a_x_ptr, self.a_y_ptr, self.a_z_ptr, self.m_ptr,
+                            self.dev_x_ptr, self.dev_y_ptr, self.dev_z_ptr,
+                            self.dev_v_x_ptr, self.dev_v_y_ptr, self.dev_v_z_ptr,
+                            self.dev_a_x_ptr, self.dev_a_y_ptr, self.dev_a_z_ptr,
+                            self.dev_m_ptr, self.num_planets)
+
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())
 
@@ -181,4 +219,19 @@ cdef class BruteForceSimulator(Simulator):
             sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
             sys.stdout.flush()
 
+        IF USE_CUDA:
+            if not dump_output:
+                memcpy_to_host(self.x_ptr, self.y_ptr, self.z_ptr,
+                        self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
+                        self.a_x_ptr, self.a_y_ptr, self.a_z_ptr, self.m_ptr,
+                        self.dev_x_ptr, self.dev_y_ptr, self.dev_z_ptr,
+                        self.dev_v_x_ptr, self.dev_v_y_ptr, self.dev_v_z_ptr,
+                        self.dev_a_x_ptr, self.dev_a_y_ptr, self.dev_a_z_ptr,
+                        self.dev_m_ptr, self.num_planets)
+
+            free_device(self.dev_x_ptr, self.dev_y_ptr, self.dev_z_ptr,
+                    self.dev_x_old, self.dev_y_old, self.dev_z_old,
+                    self.dev_v_x_ptr, self.dev_v_y_ptr, self.dev_v_z_ptr,
+                    self.dev_a_x_ptr, self.dev_a_y_ptr, self.dev_a_z_ptr,
+                    self.dev_m_ptr)
 
