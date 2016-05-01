@@ -95,18 +95,6 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         double* a_x, double* a_y, double* a_z,
         double* m, double G, double dt, int num_planets, double eps)
 {
-    double* x_old = (double*) malloc(num_planets*sizeof(double));
-    double* y_old = (double*) malloc(num_planets*sizeof(double));
-    double* z_old = (double*) malloc(num_planets*sizeof(double));
-
-    int i;
-    for(i=0; i<num_planets; i++)
-    {
-        x_old[i] = x[i];
-        y_old[i] = y[i];
-        z_old[i] = z[i];
-    }
-
     double *dev_x, *dev_y, *dev_z, *dev_x_old, *dev_y_old, *dev_z_old;
     double *dev_v_x, *dev_v_y, *dev_v_z, *dev_a_x, *dev_a_y, *dev_a_z;
     double *dev_m;
@@ -132,9 +120,9 @@ void brute_force_gpu_update(double* x, double* y, double* z,
     if( cudaMemcpy(dev_x, x, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_y, y, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_z, z, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
-        cudaMemcpy(dev_x_old, x_old, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
-        cudaMemcpy(dev_y_old, y_old, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
-        cudaMemcpy(dev_z_old, z_old, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
+        cudaMemcpy(dev_x_old, x, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
+        cudaMemcpy(dev_y_old, y, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
+        cudaMemcpy(dev_z_old, z, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_v_x, v_x, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_v_y, v_y, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
         cudaMemcpy(dev_v_z, v_z, num_planets*sizeof(double), cudaMemcpyHostToDevice) != cudaSuccess ||
@@ -190,8 +178,5 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         exit(0);
     }
 
-    free(x_old);
-    free(y_old);
-    free(z_old);
 }
 
