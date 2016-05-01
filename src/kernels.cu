@@ -135,11 +135,20 @@ void brute_force_gpu_update(double* x, double* y, double* z,
         exit(0);
     }
 
-    brute_force_kernel<<<ceil(num_planets/512), 512>>>(dev_x, dev_y, dev_z,
+    int num_blocks = ceil(num_planets/256);
+    brute_force_kernel<<<num_blocks, 256>>>(dev_x, dev_y, dev_z,
             dev_x_old, dev_y_old, dev_z_old,
             dev_v_x, dev_v_y, dev_v_z,
             dev_a_x, dev_a_y, dev_a_z,
             dev_m, G, dt, num_planets, eps);
+
+    cudaError_t err = cudaGetLastError();
+
+    if(err != cudaSuccess)
+    {
+        fprintf(stderr, "CUDA Error: %s\n", cudaGetErrorString(err));
+        exit(0);
+    }
 
     if( cudaMemcpy(x, dev_x, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
         cudaMemcpy(y, dev_y, num_planets*sizeof(double), cudaMemcpyDeviceToHost) != cudaSuccess ||
