@@ -7,7 +7,7 @@
 
 __device__
 void calculate_force_device(double* x_old, double* y_old, double* z_old, double* m,
-        double x_i, double y_i, double z_i,
+        double x_i, double y_i, double z_i, int i,
         double& a_x, double& a_y, double& a_z,
         int num_planets, double eps2, double G)
 {
@@ -21,6 +21,9 @@ void calculate_force_device(double* x_old, double* y_old, double* z_old, double*
     int j;
     for(j=0; j<num_planets; j++)
     {
+        if(j == i)
+            continue;
+
         r_x_j = x_old[j];
         r_y_j = y_old[j];
         r_z_j = z_old[j];
@@ -32,9 +35,6 @@ void calculate_force_device(double* x_old, double* y_old, double* z_old, double*
         z_ji = r_z_j - z_i;
 
         dist_ij = sqrt(eps2 + NORM2(x_ji, y_ji, z_ji));
-
-        if(dist_ij == 0)
-            return;
 
         cnst = (G*m_j/(dist_ij*dist_ij*dist_ij));
 
@@ -71,7 +71,7 @@ void brute_force_kernel(double* x, double* y, double* z,
     double temp_a_z = 0;
 
     calculate_force_device(x_old, y_old, z_old, m,
-            x_old[id], y_old[id], z_old[id],
+            x_old[id], y_old[id], z_old[id], int id,
             temp_a_x, temp_a_y, temp_a_z,
             num_planets, eps2, G);
 
