@@ -238,7 +238,7 @@ void barnes_update(double *x, double *y, double *z,
 }
 
 void calculate_force(double* x_old, double* y_old, double* z_old, double* m,
-        double x_i, double y_i, double z_i,
+        double x_i, double y_i, double z_i, int i,
         double& a_x, double& a_y, double& a_z,
         int num_planets, double eps2, double G)
 {
@@ -251,6 +251,9 @@ void calculate_force(double* x_old, double* y_old, double* z_old, double* m,
 
     for(int j=0; j<num_planets; j++)
     {
+        if(j == i)
+            continue;
+
         r_x_j = x_old[j];
         r_y_j = y_old[j];
         r_z_j = z_old[j];
@@ -262,9 +265,6 @@ void calculate_force(double* x_old, double* y_old, double* z_old, double* m,
         z_ji = r_z_j - z_i;
 
         dist_ij = sqrt(eps2 + NORM2(x_ji, y_ji, z_ji));
-
-        if(dist_ij == 0)
-            return;
 
         cnst = (G*m_j/(dist_ij*dist_ij*dist_ij));
 
@@ -312,7 +312,7 @@ void brute_force_update(double* x, double* y, double* z,
         v_z_i = v_z[i];
 
         calculate_force(x_old, y_old, z_old, m,
-                x_old[i], y_old[i], z_old[i],
+                x_old[i], y_old[i], z_old[i], i,
                 temp_a_x, temp_a_y, temp_a_z,
                 num_planets, eps2, G);
         
