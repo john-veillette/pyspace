@@ -203,7 +203,7 @@ void brute_force_gpu_update(double* dev_x, double* dev_y, double* dev_z,
         exit(0);
     }
         
-    int num_blocks = ceil(num_planets/256);
+    int num_blocks = ceil(num_planets/256) + 1;
     brute_force_kernel<<<num_blocks, 256>>>(dev_x, dev_y, dev_z,
             dev_x_old, dev_y_old, dev_z_old,
             dev_v_x, dev_v_y, dev_v_z,
