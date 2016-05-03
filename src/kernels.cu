@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+#define THREADS_PER_BLOCK 256
+
 #define NORM2(X, Y, Z) X*X + Y*Y + Z*Z
 
 __device__
@@ -188,6 +190,17 @@ void free_device(double* dev_x, double* dev_y, double* dev_z,
     }
 }
 
+__global__
+void memcpy_in_device(double* src, double* dst, int length)
+{
+    int id = blockIdx.x*blockDim.x + threadIdx.x;
+
+    if(id >= length)
+        return;
+    
+    dst[id] = src[id];
+}
+
 __host__
 void brute_force_gpu_update(double* dev_x, double* dev_y, double* dev_z,
         double* dev_x_old, double* dev_y_old, double* dev_z_old,
@@ -195,16 +208,22 @@ void brute_force_gpu_update(double* dev_x, double* dev_y, double* dev_z,
         double* dev_a_x, double* dev_a_y, double* dev_a_z,
         double* dev_m, double G, double dt, int num_planets, double eps)
 {
-    if( cudaMemcpy(dev_x_old, dev_x, num_planets*sizeof(double), cudaMemcpyDeviceToDevice) != cudaSuccess ||
-        cudaMemcpy(dev_y_old, dev_y, num_planets*sizeof(double), cudaMemcpyDeviceToDevice) != cudaSuccess ||
-        cudaMemcpy(dev_z_old, dev_z, num_planets*sizeof(double), cudaMemcpyDeviceToDevice) != cudaSuccess  )
+    int num_blocks = ceil(num_planets/THREADS_PER_BLOCK) + 1;
+
+    memcpy_in_device<<<num_blocks, THREADS_PER_BLOCK>>>(dev_x, dev_x_old)
+    memcpy_in_device<<<num_blocks, THREADS_PER_BLOCK>>>(dev_y, dev_y_old)
+    memcpy_in_device<<<num_blocks, THREADS_PER_BLOCK>>>(dev_z, dev_z_old)
+    
+    cudaError_t err = cudaGetLastError();
+
+    if(err != cudaSuccess)
     {
-        fprintf(stderr, "ERROR: cudaMemcpy from device to device failed!\n");
+        fprintf(stderr, "CUDA Error memcpy_in_device: %s\n", cudaGetErrorString(err));
         exit(0);
     }
-        
-    int num_blocks = ceil(num_planets/256) + 1;
-    brute_force_kernel<<<num_blocks, 256>>>(dev_x, dev_y, dev_z,
+
+
+    brute_force_kernel<<<num_blocks, THREADS_PER_BLOCK>>>(dev_x, dev_y, dev_z,
             dev_x_old, dev_y_old, dev_z_old,
             dev_v_x, dev_v_y, dev_v_z,
             dev_a_x, dev_a_y, dev_a_z,
@@ -217,5 +236,6 @@ void brute_force_gpu_update(double* dev_x, double* dev_y, double* dev_z,
         fprintf(stderr, "CUDA Error: %s\n", cudaGetErrorString(err));
         exit(0);
     }
+
 }
 
