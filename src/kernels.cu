@@ -73,7 +73,7 @@ void brute_force_kernel(double* x, double* y, double* z,
     double temp_a_z = 0;
 
     calculate_force_device(x_old, y_old, z_old, m,
-            x_old[id], y_old[id], z_old[id], int id,
+            x_old[id], y_old[id], z_old[id], id,
             temp_a_x, temp_a_y, temp_a_z,
             num_planets, eps2, G);
 
@@ -210,9 +210,9 @@ void brute_force_gpu_update(double* dev_x, double* dev_y, double* dev_z,
 {
     int num_blocks = ceil(num_planets/THREADS_PER_BLOCK) + 1;
 
-    memcpy_in_device<<<num_blocks, THREADS_PER_BLOCK>>>(dev_x, dev_x_old)
-    memcpy_in_device<<<num_blocks, THREADS_PER_BLOCK>>>(dev_y, dev_y_old)
-    memcpy_in_device<<<num_blocks, THREADS_PER_BLOCK>>>(dev_z, dev_z_old)
+    memcpy_in_device<<<num_blocks, THREADS_PER_BLOCK>>>(dev_x, dev_x_old, num_planets);
+    memcpy_in_device<<<num_blocks, THREADS_PER_BLOCK>>>(dev_y, dev_y_old, num_planets);
+    memcpy_in_device<<<num_blocks, THREADS_PER_BLOCK>>>(dev_z, dev_z_old, num_planets);
     
     cudaError_t err = cudaGetLastError();
 
@@ -229,7 +229,7 @@ void brute_force_gpu_update(double* dev_x, double* dev_y, double* dev_z,
             dev_a_x, dev_a_y, dev_a_z,
             dev_m, G, dt, num_planets, eps);
 
-    cudaError_t err = cudaGetLastError();
+    err = cudaGetLastError();
 
     if(err != cudaSuccess)
     {
