@@ -205,11 +205,11 @@ cdef class BruteForceSimulator(Simulator):
                 IF USE_CUDA:
                     memcpy_to_host(self.x_ptr, self.y_ptr, self.z_ptr,
                             self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
-                            self.a_x_ptr, self.a_y_ptr, self.a_z_ptr, self.m_ptr,
+                            self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
                             self.dev_x_ptr, self.dev_y_ptr, self.dev_z_ptr,
                             self.dev_v_x_ptr, self.dev_v_y_ptr, self.dev_v_z_ptr,
                             self.dev_a_x_ptr, self.dev_a_y_ptr, self.dev_a_z_ptr,
-                            self.dev_m_ptr, self.num_planets)
+                            self.num_planets)
 
                 dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                         base = self.sim_name, **self.get_data())
@@ -223,11 +223,11 @@ cdef class BruteForceSimulator(Simulator):
             if not dump_output:
                 memcpy_to_host(self.x_ptr, self.y_ptr, self.z_ptr,
                         self.v_x_ptr, self.v_y_ptr, self.v_z_ptr,
-                        self.a_x_ptr, self.a_y_ptr, self.a_z_ptr, self.m_ptr,
+                        self.a_x_ptr, self.a_y_ptr, self.a_z_ptr,
                         self.dev_x_ptr, self.dev_y_ptr, self.dev_z_ptr,
                         self.dev_v_x_ptr, self.dev_v_y_ptr, self.dev_v_z_ptr,
                         self.dev_a_x_ptr, self.dev_a_y_ptr, self.dev_a_z_ptr,
-                        self.dev_m_ptr, self.num_planets)
+                        self.num_planets)
 
             free_device(self.dev_x_ptr, self.dev_y_ptr, self.dev_z_ptr,
                     self.dev_x_old, self.dev_y_old, self.dev_z_old,

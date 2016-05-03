@@ -40,11 +40,11 @@ cdef extern from "pyspace.h":
 
     cdef void memcpy_to_host(double*, double*, double*,
             double*, double*, double*,
-            double*, double*, double*, double*,
             double*, double*, double*,
             double*, double*, double*,
             double*, double*, double*,
-            double*, int)
+            double*, double*, double*,
+            int)
 
     cdef void free_device(double*, double*, double*,
             double*, double*, double*,
