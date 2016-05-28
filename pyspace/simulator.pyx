@@ -1,3 +1,5 @@
+#cython: embedsignature=True
+
 cimport cython
 import os
 import sys
