@@ -1,3 +1,5 @@
+#cython: embedsignature=True
+
 from libcpp.vector cimport vector
 from libc.math cimport floor
 from pyspace.planet cimport PlanetArray
