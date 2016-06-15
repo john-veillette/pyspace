@@ -1,9 +1,8 @@
-0.2.0
+0.1.1
 -----
 
 - Release date: Not yet released
 - Fix minor bugs in CUDA ``BruteForceSimulator``
-
 
 0.1.0
 -----
