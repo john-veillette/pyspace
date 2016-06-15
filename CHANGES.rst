@@ -1,7 +1,13 @@
+0.1.1
+-----
+
+- Release date: Not yet released
+- Fix minor bugs in CUDA ``BruteForceSimulator``
+
 0.1.0
 -----
 
-- Release date: Not released yet
+- Release date: 30th April, 2016
 - Add GPU support through CUDA for ``BruteForceSimulator``
 - Add OpenMP support to ``BarnesSimulator``. More than 2x speed up with 4 threads.
 - Re-organized the C++ brute_force_update method. Gives a 2x speedup for benchmarks.
