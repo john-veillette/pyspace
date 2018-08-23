@@ -201,7 +201,7 @@ if CUDA != False:
                 runtime_library_dirs=[CUDA[cudalib]],
                 include_dirs = ["src", numpy.get_include(), CUDA['include']],
                 extra_compile_args = {'gcc': omp_compile_flags,
-                                        'nvcc': ['-arch=sm_20', '--ptxas-options=-v', \
+                                        'nvcc': ['-arch=sm_30', '--ptxas-options=-v', \
                                         '-c', '--compiler-options', "'-fPIC'"]},
                 extra_link_args = omp_link_flags,
                 cython_compile_time_env = {'USE_CUDA': True},
