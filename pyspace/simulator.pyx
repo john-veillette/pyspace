@@ -194,8 +194,8 @@ cdef class BruteForceSimulator(Simulator):
             sys.stdout.flush()
 
         if return_npy:
-            result =  np.array(npy_dump)
-            npy_dump = [] # clear
+            result =  np.array(self.npy_dump)
+            self.npy_dump = [] # clear
             return result
 
 
