@@ -3,7 +3,7 @@
 cimport cython
 import os
 import sys
-from pyspace.utils import dump_vtk
+from pyspace.utils import dump_vtk, get_pos
 
 cdef class Simulator:
     """Base class for all simulators"""
@@ -146,9 +146,11 @@ cdef class BruteForceSimulator(Simulator):
         """
         Simulator.__init__(self, pa, G, dt, sim_name)
         self.epsilon = epsilon
+        self.npy_dump = []
 
     @cython.cdivision(True)
-    cdef void _simulate(self, double total_time, bint dump_output = False):
+    cdef void _simulate(self, double total_time, 
+        bint dump_output = False, bint return_npy = False):
 
         cdef double G = self.G
         cdef double dt = self.dt
@@ -160,6 +162,10 @@ cdef class BruteForceSimulator(Simulator):
             dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                     base = self.sim_name, **self.get_data())
             self.curr_time_step += 1
+
+        if return_npy:
+            xyz = get_pos(self.planets)
+            self.npy_dump.append(xyz)
 
         for i from 0<=i<n_steps:
             IF USE_CUDA:
@@ -180,7 +186,17 @@ cdef class BruteForceSimulator(Simulator):
 
                 self.curr_time_step += 1
 
+            if return_npy:
+                xyz = get_pos(self.planets)
+                self.npy_dump.append(xyz)
+
             sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
             sys.stdout.flush()
+
+        if return_npy:
+            result =  np.array(npy_dump)
+            npy_dump = [] # clear
+            return result
+
 
 
