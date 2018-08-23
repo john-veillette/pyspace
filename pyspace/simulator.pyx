@@ -4,6 +4,8 @@ cimport cython
 import os
 import sys
 from pyspace.utils import dump_vtk, get_pos
+import numpy as np
+cimport numpy as np
 
 cdef class Simulator:
     """Base class for all simulators"""
@@ -149,7 +151,7 @@ cdef class BruteForceSimulator(Simulator):
         self.npy_dump = []
 
     @cython.cdivision(True)
-    cdef void _simulate(self, double total_time, 
+    cpdef simulate(self, double total_time, 
         bint dump_output = False, bint return_npy = False):
 
         cdef double G = self.G
