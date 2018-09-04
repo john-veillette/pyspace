@@ -87,14 +87,17 @@ cdef class Simulator:
 
 cdef class BarnesSimulator(Simulator):
     """Simulator using Barnes Hut algorithm"""
+
     def __init__(self, PlanetArray pa, double G, double dt, double theta = 1.0,
             double epsilon = 0, str sim_name = "pyspace"):
         self.theta = theta
         self.epsilon = epsilon
+        self.npy_dump = []
         Simulator.__init__(self, pa, G, dt, sim_name)
 
     @cython.cdivision(True)
-    cdef void _simulate(self, double total_time, bint dump_output = False):
+    cpdef simulate(self, double total_time, 
+        bint dump_output = False, bint return_npy = False):
 
         cdef double G = self.G
         cdef double dt = self.dt
@@ -106,6 +109,10 @@ cdef class BarnesSimulator(Simulator):
             dump_vtk(self.planets, self.sim_name + str(self.curr_time_step),
                     base = self.sim_name, **self.get_data())
             self.curr_time_step += 1
+
+        if return_npy:
+            xyz = get_pos(self.planets)
+            self.npy_dump.append(xyz)
 
         for i from 0<=i<n_steps:
             barnes_update(self.x_ptr, self.y_ptr, self.z_ptr,
@@ -120,12 +127,22 @@ cdef class BarnesSimulator(Simulator):
 
                 self.curr_time_step += 1
 
+            if return_npy:
+                xyz = get_pos(self.planets)
+                self.npy_dump.append(xyz)
+
             sys.stdout.write("\r%d%%" % ((i+1)*100/n_steps))
             sys.stdout.flush()
+
+        if return_npy:
+            result =  np.array(self.npy_dump)
+            self.npy_dump = [] # clear
+            return result
 
 
 cdef class BruteForceSimulator(Simulator):
     """Simulator using Brute Force algorithm"""
+
     def __init__(self, PlanetArray pa, double G, double dt, double epsilon = 0,
             str sim_name = "pyspace"):
         """Constructor for BruteForceSimulator

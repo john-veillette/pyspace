@@ -67,12 +67,14 @@ cdef class Simulator:
 
 cdef class BruteForceSimulator(Simulator):
     cdef double epsilon
+    cdef list npy_dump
 
     cdef void _simulate(self, double total_time, bint dump_output = *)
 
 cdef class BarnesSimulator(Simulator):
     cdef double theta
     cdef double epsilon
+    cdef list npy_dump
 
     cdef void _simulate(self, double total_time, bint dump_output = *)
 
